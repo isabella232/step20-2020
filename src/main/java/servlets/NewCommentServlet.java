@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet responsible for creating new tasks. */
+/** Servlet responsible for creating new comments. */
 @WebServlet("/new-comment")
 public class NewCommentServlet extends HttpServlet {
 
