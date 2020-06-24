@@ -35,18 +35,6 @@ function createCommentElement(comment) {
   return commentElement;
 }
 
-function createRecipeElement(recipe) {
-  const recipeElement = document.createElement('div');
-  recipeElement.className = 'small-sep';
-
-  const recipe = document.createElement('span');
-  var recipeInfo = recipe.name + " • " + recipe.ingred1 + " • " + recipe.ingred2 + " • " + recipe.tag1 + " • " + recipe.tag1;
-  recipe.innerHTML += addParagraph(recipeInfo);
-
-  recipeElement.appendChild(recipe);
-  return recipeElement;
-}
-
 function addParagraph(content) {
   return "<p>" + content + "</p>";
 }

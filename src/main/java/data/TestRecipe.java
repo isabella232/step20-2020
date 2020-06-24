@@ -13,27 +13,26 @@
 // limitations under the License.
 
 package com.google.sps.data;
+
+import java.util.ArrayList;
+import java.util.List;
  
-/** A user's comment, with corresponding user info. */
+/** A recipe, with corresponding recipe info. */
 public class TestRecipe {
   long id;
   String name;
-  String ingred1;
-  String ingred2;
-  String tag1;
-  String tag2;
+  List<String> ingredients;
+  List<String> tags;
   long timestamp;
 
  /**
   * @param id The entity's id.
   */
-  public TestRecipe(long id, String name, String ingred1, String ingred2, String tag1, String tag2, long timestamp) {
-      this.id = id;
-      this.name = name;
-      this.ingred1 = ingred1;
-      this.ingred2 = ingred2;
-      this.tag1 = tag1;
-      this.tag2 = tag2;
-      this.timestamp = timestamp;
-    }
+  public TestRecipe(long id, String name, List<String> ingredients, List<String> tags, long timestamp) {
+    this.id = id;
+    this.name = name;
+    this.ingredients = ingredients;
+    this.tags = tags;
+    this.timestamp = timestamp;
+  }
 }   
