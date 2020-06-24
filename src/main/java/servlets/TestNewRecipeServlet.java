@@ -53,6 +53,6 @@ public class TestNewRecipeServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(recipeEntity);
 
-    response.sendRedirect("/search-test.html");
+    response.sendRedirect("/recipe-test.html");
   }
 }
