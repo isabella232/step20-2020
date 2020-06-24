@@ -24,7 +24,7 @@ function loadComments() {
 
 /** Creates an element that represents a comment. */
 function createCommentElement(comment) {
-  const commentElement = document.createElement('li');
+  const commentElement = document.createElement('div');
   commentElement.className = 'small-sep';
 
   const userComment = document.createElement('span');

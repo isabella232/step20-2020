@@ -238,10 +238,10 @@ THE SOFTWARE.-->
             </div>
           </div>
 
-          <form method="POST" action="/new-comment">
-            <input type="text" name="comment-input"/>
+          <form method="POST" action="/new-comment" class="form-group">
+            <textarea class="form-control" name="comment-input" placeholder="Leave a comment..."></textarea>
             <br/>
-            <button>Submit</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
           </form>
 
           <ul id="comment-list"></ul>
