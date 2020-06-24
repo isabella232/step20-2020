@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/display-comments")
 public class DisplayCommentsServlet extends HttpServlet {
 
+/** A user's comment, with corresponding user info. */
 private class UserComment {
     long id;
     String username;
