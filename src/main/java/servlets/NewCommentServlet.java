@@ -33,6 +33,8 @@ public class NewCommentServlet extends HttpServlet {
     long timestamp = System.currentTimeMillis();
 
     Entity userCommentEntity = new Entity("UserComment");
+    userCommentEntity.setProperty("username", "mcardenas");
+    userCommentEntity.setProperty("location", "Seattle, WA");
     userCommentEntity.setProperty("comment", comment);
     userCommentEntity.setProperty("timestamp", timestamp);
 
