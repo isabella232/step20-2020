@@ -28,7 +28,7 @@ function createTaskElement(task) {
   taskElement.className = 'task';
 
   const titleElement = document.createElement('span');
-  titleElement.innerText = task.title;
+  titleElement.innerText = task.comment;
 
   taskElement.appendChild(titleElement);
   return taskElement;

@@ -35,17 +35,17 @@ public class DisplayCommentsServlet extends HttpServlet {
 
 private class Task {
     long id;
-    String title;
+    String comment;
     long timestamp;
 
    /**
     * @param id The visitor's id.
-    * @param title The title.
+    * @param comment The user's comment.
     * @param timestamp The time at which the comment was submitted.
     */
-    private Task(long id, String title, long timestamp) {
+    private Task(long id, String comment, long timestamp) {
         this.id = id;
-        this.title = title;
+        this.comment = comment;
         this.timestamp = timestamp;
     }
   }   
@@ -60,10 +60,10 @@ private class Task {
     List<Task> tasks = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
-      String title = (String) entity.getProperty("title");
+      String comment = (String) entity.getProperty("comment");
       long timestamp = (long) entity.getProperty("timestamp");
 
-      Task task = new Task(id, title, timestamp);
+      Task task = new Task(id, comment, timestamp);
       tasks.add(task);
     }
 
