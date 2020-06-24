@@ -14,6 +14,8 @@
 
 package com.google.sps.servlets;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -32,16 +34,20 @@ public class TestNewRecipeServlet extends HttpServlet {
     String name = request.getParameter("name-input");
     String ingred1 = request.getParameter("ingred-input-1");
     String ingred2 = request.getParameter("ingred-input-2");
+    List<String> ingredients = new ArrayList<String>();
+    ingredients.add(ingred1);
+    ingredients.add(ingred2);
     String tag1 = request.getParameter("tag-input-1");
     String tag2 = request.getParameter("tag-input-2");
+    List<String> tags = new ArrayList<String>();
+    tags.add(tag1);
+    tags.add(tag2);
     long timestamp = System.currentTimeMillis();
 
     Entity recipeEntity = new Entity("Recipe");
     recipeEntity.setProperty("name", name);
-    recipeEntity.setProperty("ingred1", ingred1);
-    recipeEntity.setProperty("ingred2", ingred2);
-    recipeEntity.setProperty("tag1", tag1);
-    recipeEntity.setProperty("tag2", tag2);
+    recipeEntity.setProperty("ingredients", ingredients);
+    recipeEntity.setProperty("tags", tags);
     recipeEntity.setProperty("timestamp", timestamp);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
