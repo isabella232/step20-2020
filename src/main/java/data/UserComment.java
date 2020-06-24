@@ -29,5 +29,5 @@ public class UserComment {
       this.id = id;
       this.comment = comment;
       this.timestamp = timestamp;
-    }
+  }
 }   
