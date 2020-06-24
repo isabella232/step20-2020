@@ -14,22 +14,22 @@
 
 /** Fetches tasks from the server and adds them to the DOM. */
 function loadComments() {
-  fetch('/display-comments').then(response => response.json()).then((tasks) => {
-    const taskListElement = document.getElementById('comment-list');
-    tasks.forEach((task) => {
-      taskListElement.appendChild(createTaskElement(task));
+  fetch('/display-comments').then(response => response.json()).then((comments) => {
+    const commentListElement = document.getElementById('comment-list');
+    comments.forEach((comment) => {
+      commentListElement.appendChild(createCommentElement(comment));
     })
   });
 }
 
-/** Creates an element that represents a task, including its delete button. */
-function createTaskElement(task) {
-  const taskElement = document.createElement('li');
-  taskElement.className = 'task';
+/** Creates an element that represents a comment. */
+function createCommentElement(comment) {
+  const commentElement = document.createElement('li');
+  commentElement.className = 'comment';
 
-  const titleElement = document.createElement('span');
-  titleElement.innerText = task.comment;
+  const userComment = document.createElement('span');
+  userComment.innerText = comment.comment;
 
-  taskElement.appendChild(titleElement);
-  return taskElement;
+  commentElement.appendChild(userComment);
+  return commentElement;
 }
