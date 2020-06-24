@@ -11485,3 +11485,8 @@ p {
   font-weight: bold;
 }
 /*# sourceMappingURL=style.css.map */
+
+.social-icon {
+  width: 2rem;
+  height: 2rem;
+}
