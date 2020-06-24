@@ -29,11 +29,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet responsible for listing tasks. */
+/** Servlet responsible for listing comments. */
 @WebServlet("/display-comments")
 public class DisplayCommentsServlet extends HttpServlet {
 
-private class Task {
+private class UserComment {
     long id;
     String comment;
     long timestamp;
@@ -43,7 +43,7 @@ private class Task {
     * @param comment The user's comment.
     * @param timestamp The time at which the comment was submitted.
     */
-    private Task(long id, String comment, long timestamp) {
+    private UserComment(long id, String comment, long timestamp) {
         this.id = id;
         this.comment = comment;
         this.timestamp = timestamp;
@@ -52,24 +52,24 @@ private class Task {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("Task").addSort("timestamp", SortDirection.DESCENDING);
+    Query query = new Query("UserComment").addSort("timestamp", SortDirection.DESCENDING);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    List<Task> tasks = new ArrayList<>();
+    List<UserComment> userComments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
       String comment = (String) entity.getProperty("comment");
       long timestamp = (long) entity.getProperty("timestamp");
 
-      Task task = new Task(id, comment, timestamp);
-      tasks.add(task);
+      UserComment userComment = new UserComment(id, comment, timestamp);
+      userComments.add(userComment);
     }
 
     Gson gson = new Gson();
 
     response.setContentType("application/json;");
-    response.getWriter().println(gson.toJson(tasks));
+    response.getWriter().println(gson.toJson(userComments));
   }
 }

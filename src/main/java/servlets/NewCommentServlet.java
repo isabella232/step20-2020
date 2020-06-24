@@ -32,12 +32,12 @@ public class NewCommentServlet extends HttpServlet {
     String comment = request.getParameter("comment-input");
     long timestamp = System.currentTimeMillis();
 
-    Entity taskEntity = new Entity("Task");
-    taskEntity.setProperty("comment", comment);
-    taskEntity.setProperty("timestamp", timestamp);
+    Entity userCommentEntity = new Entity("UserComment");
+    userCommentEntity.setProperty("comment", comment);
+    userCommentEntity.setProperty("timestamp", timestamp);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(taskEntity);
+    datastore.put(userCommentEntity);
 
     response.sendRedirect("/test.html");
   }
