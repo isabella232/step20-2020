@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** Servlet responsible for listing tasks. */
-@WebServlet("/list-tasks")
+@WebServlet("/display-comments")
 public class DisplayCommentsServlet extends HttpServlet {
 
 private class Task {

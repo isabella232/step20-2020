@@ -14,8 +14,8 @@
 
 /** Fetches tasks from the server and adds them to the DOM. */
 function loadTasks() {
-  fetch('/list-tasks').then(response => response.json()).then((tasks) => {
-    const taskListElement = document.getElementById('task-list');
+  fetch('/display-comments').then(response => response.json()).then((tasks) => {
+    const taskListElement = document.getElementById('comment-list');
     tasks.forEach((task) => {
       taskListElement.appendChild(createTaskElement(task));
     })

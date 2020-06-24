@@ -24,12 +24,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** Servlet responsible for creating new tasks. */
-@WebServlet("/new-task")
+@WebServlet("/new-comment")
 public class NewCommentServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String comment = request.getParameter("comment");
+    String comment = request.getParameter("comment-input");
     long timestamp = System.currentTimeMillis();
 
     Entity taskEntity = new Entity("Task");
