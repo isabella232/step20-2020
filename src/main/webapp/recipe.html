@@ -107,13 +107,18 @@ THE SOFTWARE.-->
             <div class="modal-body">
               <ul class="list-inline">
                 <li class="list-inline-item">
+                  <!--When actual recipe link is available, replace link below with formatting generated from https://developers.facebook.com/docs/plugins/share-button. -->
                   <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">
                   <img src="/assets/images/facebook_icon.png" class="social-icon">
                   </a>
                 </li>
-                <li class="list-inline-item"><img src="/assets/images/instagram_icon.png" class="social-icon"></li>
-                <li class="list-inline-item"><img src="/assets/images/twitter_icon.png" class="social-icon"></li>
-                <li class="list-inline-item"><img src="/assets/images/pinterest_icon.png" class="social-icon"></li>
+                <li class="list-inline-item">
+                   <!--When actual recipe link is available, replace link below.-->
+                  <a href="https://twitter.com/intent/tweet" data-size="large" data-text="Check out this recipe on shef!" data-url="https://dev.twitter.com/web/tweet-button">
+                  <img src="/assets/images/twitter_icon.png" class="social-icon">
+                  </a>
+                </li>
+                <li class="list-inline-item"><img src="/assets/images/mail_icon.png" onclick="shareViaGmail()" class="social-icon"></li>
               </ul>
             </div>
             <div class="modal-footer">
