@@ -14,6 +14,8 @@
 
 package com.google.sps.servlets;
 
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -42,5 +44,9 @@ public class NewCommentServlet extends HttpServlet {
     datastore.put(userCommentEntity);
 
     response.sendRedirect("/recipe.html");
+  }
+
+  private String timestampToMMDDYYYY(long timestamp) {
+    return new SimpleDateFormat("MM/dd/yyyy").format(new Date(timestamp));
   }
 }
