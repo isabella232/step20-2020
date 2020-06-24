@@ -15,25 +15,25 @@
 package com.google.sps.data;
  
 /** A user's comment, with corresponding user info. */
-public class UserComment {
+public class TestRecipe {
   long id;
-  String username;
-  String location;
-  String comment;
+  String name;
+  String ingred1;
+  String ingred2;
+  String tag1;
+  String tag2;
   long timestamp;
 
  /**
   * @param id The entity's id.
-  * @param username The user's username.
-  * @param location The user's location.
-  * @param comment The user's comment.
-  * @param timestamp The time at which the comment was submitted.
   */
-  public UserComment(long id, String username, String location, String comment, long timestamp) {
+  public TestRecipe(long id, String name, String ingred1, String ingred2, String tag1, String tag2, long timestamp) {
       this.id = id;
-      this.username = username;
-      this.location = location;
-      this.comment = comment;
+      this.name = name;
+      this.ingred1 = ingred1;
+      this.ingred2 = ingred2;
+      this.tag1 = tag1;
+      this.tag2 = tag2;
       this.timestamp = timestamp;
     }
 }   
