@@ -39,7 +39,7 @@ private class UserComment {
     long timestamp;
 
    /**
-    * @param id The visitor's id.
+    * @param id The entity's id.
     * @param comment The user's comment.
     * @param timestamp The time at which the comment was submitted.
     */
