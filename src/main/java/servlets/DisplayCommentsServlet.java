@@ -14,6 +14,7 @@
 
 package com.google.sps.servlets;
 
+import com.google.sps.data.UserComment;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -29,33 +30,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet responsible for listing comments. */
+/** Servlet responsible for displaying comments. */
 @WebServlet("/display-comments")
 public class DisplayCommentsServlet extends HttpServlet {
-
-/** A user's comment, with corresponding user info. */
-private class UserComment {
-    long id;
-    String username;
-    String location;
-    String comment;
-    long timestamp;
-
-   /**
-    * @param id The entity's id.
-    * @param username The user's username.
-    * @param location The user's location.
-    * @param comment The user's comment.
-    * @param timestamp The time at which the comment was submitted.
-    */
-    private UserComment(long id, String username, String location, String comment, long timestamp) {
-        this.id = id;
-        this.username = username;
-        this.location = location;
-        this.comment = comment;
-        this.timestamp = timestamp;
-    }
-  }   
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
