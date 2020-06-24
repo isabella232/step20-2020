@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /** Fetches tasks from the server and adds them to the DOM. */
-function loadTasks() {
+function loadComments() {
   fetch('/display-comments').then(response => response.json()).then((tasks) => {
     const taskListElement = document.getElementById('comment-list');
     tasks.forEach((task) => {
