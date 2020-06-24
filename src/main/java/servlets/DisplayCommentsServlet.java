@@ -35,16 +35,22 @@ public class DisplayCommentsServlet extends HttpServlet {
 
 private class UserComment {
     long id;
+    String username;
+    String location;
     String comment;
     long timestamp;
 
    /**
-    * @param id The visitor's id.
+    * @param id The entity's id.
+    * @param username The user's username.
+    * @param location The user's location.
     * @param comment The user's comment.
     * @param timestamp The time at which the comment was submitted.
     */
     private UserComment(long id, String comment, long timestamp) {
         this.id = id;
+        this.username = "mcardenas";
+        this.location = "Seattle, WA";
         this.comment = comment;
         this.timestamp = timestamp;
     }

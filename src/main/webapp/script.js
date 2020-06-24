@@ -28,7 +28,7 @@ function createCommentElement(comment) {
   commentElement.className = 'comment';
 
   const userComment = document.createElement('span');
-  userComment.innerText = comment.comment;
+  userComment.innerText = comment.username + ',' + comment.comment;
 
   commentElement.appendChild(userComment);
   return commentElement;
