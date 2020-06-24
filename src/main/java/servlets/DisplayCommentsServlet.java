@@ -47,10 +47,10 @@ private class UserComment {
     * @param comment The user's comment.
     * @param timestamp The time at which the comment was submitted.
     */
-    private UserComment(long id, String comment, long timestamp) {
+    private UserComment(long id, String username, String location, String comment, long timestamp) {
         this.id = id;
-        this.username = "mcardenas";
-        this.location = "Seattle, WA";
+        this.username = username;
+        this.location = location;
         this.comment = comment;
         this.timestamp = timestamp;
     }
@@ -66,10 +66,12 @@ private class UserComment {
     List<UserComment> userComments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
+      String username = (String) entity.getProperty("username");
+      String location = (String) entity.getProperty("location");
       String comment = (String) entity.getProperty("comment");
       long timestamp = (long) entity.getProperty("timestamp");
 
-      UserComment userComment = new UserComment(id, comment, timestamp);
+      UserComment userComment = new UserComment(id, username, location, comment, timestamp);
       userComments.add(userComment);
     }
 
