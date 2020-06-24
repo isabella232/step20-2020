@@ -35,5 +35,5 @@ public class UserComment {
       this.location = location;
       this.comment = comment;
       this.timestamp = timestamp;
-    }
+  }
 }   
