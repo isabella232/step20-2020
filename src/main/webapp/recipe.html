@@ -34,6 +34,10 @@ THE SOFTWARE.-->
   </head>
 
   <body class="page-container" onload="loadComments()">
+    <!--Javascript SDK for sharing on Facebook -->
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v7.0" nonce="bSEBuptV"></script>
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand" href="#">shef</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,7 +106,11 @@ THE SOFTWARE.-->
             </div>
             <div class="modal-body">
               <ul class="list-inline">
-                <li class="list-inline-item"><img src="/assets/images/facebook_icon.png" class="social-icon"></li>
+                <li class="list-inline-item">
+                  <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">
+                  <img src="/assets/images/facebook_icon.png" class="social-icon">
+                  </a>
+                </li>
                 <li class="list-inline-item"><img src="/assets/images/instagram_icon.png" class="social-icon"></li>
                 <li class="list-inline-item"><img src="/assets/images/twitter_icon.png" class="social-icon"></li>
                 <li class="list-inline-item"><img src="/assets/images/pinterest_icon.png" class="social-icon"></li>
