@@ -14,6 +14,7 @@
 
 package com.google.sps.servlets;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import com.google.sps.data.TestRecipe;
@@ -22,6 +23,10 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
+import com.google.appengine.api.datastore.Query.CompositeFilter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
@@ -39,7 +44,12 @@ public class ResultsServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String userQuery = request.getParameter("user-query");
     Query query = new Query("Recipe").addSort("timestamp", SortDirection.DESCENDING);
-    query.setFilter(new Query.FilterPredicate("search-strings", FilterOperator.IN, formatQueryAsList(userQuery)));
+
+    Filter f = new CompositeFilter(CompositeFilterOperator.OR, Arrays.<Filter>asList(
+         new FilterPredicate("search-strings", FilterOperator.IN, formatQueryAsList(userQuery)),
+         new FilterPredicate("search-strings", FilterOperator.IN, formatQueryAsList(userQuery))));
+
+    query.setFilter(f);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
@@ -61,8 +71,9 @@ public class ResultsServlet extends HttpServlet {
   }
 
   public List<String> formatQueryAsList(String query) {
-    List<String> queryList = new ArrayList<String>();
-    queryList.add(query.toUpperCase());
+    query = query.toUpperCase();
+    List<String> queryList = new ArrayList<String>(Arrays.asList(query.split(",")));
+    System.out.println("Re-formatted query: " + queryList);
     return queryList;
   }
 }
