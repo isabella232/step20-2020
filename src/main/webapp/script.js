@@ -41,10 +41,10 @@ function createResultElement(result) {
   const resultElement = document.createElement('li');
   resultElement.className = 'result';
 
-  const resultName = document.createElement('span');
-  resultName.innerText = result.name;
+  const resultId = document.createElement('span');
+  resultId.innerText = result.id;
 
-  resultElement.appendChild(resultName);
+  resultElement.appendChild(resultId);
   return resultElement;
 }
 
