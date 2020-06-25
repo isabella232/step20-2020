@@ -22,6 +22,27 @@ function loadComments() {
   });
 }
 
+function loadResults() {
+    fetch('/results').then(response => response.json()).then((comments) => {
+    const commentListElement = document.getElementById('comment-list');
+    comments.forEach((comment) => {
+      commentListElement.appendChild(createTaskElement(comment));
+    })
+  });
+}
+
+/** Creates an element that represents a task, including its delete button. */
+function createTaskElement(task) {
+  const taskElement = document.createElement('li');
+  taskElement.className = 'task';
+
+  const titleElement = document.createElement('span');
+  titleElement.innerText = task.name;
+
+  taskElement.appendChild(titleElement);
+  return taskElement;
+}
+
 /** Creates an element that represents a comment. */
 function createCommentElement(comment) {
   const commentElement = document.createElement('div');

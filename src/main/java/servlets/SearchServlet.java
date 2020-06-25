@@ -32,8 +32,7 @@ public class SearchServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String query = request.getParameter("query");
-    System.err.println("QUERY: " + query);
 
-    response.sendRedirect("/search-test.html");
+    response.sendRedirect("/search-results-test.html");
   }
 }
