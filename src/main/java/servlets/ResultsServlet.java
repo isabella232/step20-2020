@@ -77,6 +77,7 @@ public class ResultsServlet extends HttpServlet {
   }
 
   public Filter generateFiltersFromQuery(List<String> queryList) {
+    // Nothing shows up if nothing is put into the search box.
     if (queryList.size() < 2) {
       return new FilterPredicate("search-strings", FilterOperator.IN, queryList);
     }
