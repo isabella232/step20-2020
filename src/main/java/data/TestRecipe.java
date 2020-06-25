@@ -13,20 +13,20 @@
 // limitations under the License.
  
 package com.google.sps.data;
- 
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.ArrayList;
+import java.util.List;
  
 /** A recipe, with recipe info used for search. */
 public class TestRecipe {
   long id;
-  Set<String> searchStrings;
+  List<String> searchStrings;
   long timestamp;
  
  /**
   * @param id The entity's id.
   */
-  public TestRecipe(long id, HashSet<String> searchStrings, long timestamp) {
+  public TestRecipe(long id, ArrayList<String> searchStrings, long timestamp) {
     this.id = id;
     this.searchStrings = searchStrings;
     this.timestamp = timestamp;

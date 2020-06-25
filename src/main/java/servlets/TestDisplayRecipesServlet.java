@@ -13,9 +13,9 @@
 // limitations under the License.
  
 package com.google.sps.servlets;
- 
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.ArrayList;
+import java.util.List;
 import com.google.sps.data.TestRecipe;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -25,8 +25,6 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -46,7 +44,7 @@ public class TestDisplayRecipesServlet extends HttpServlet {
     List<TestRecipe> testRecipes = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
-      HashSet<String> searchStrings = (HashSet<String>) entity.getProperty("search-strings");
+      ArrayList<String> searchStrings = (ArrayList<String>) entity.getProperty("search-strings");
       long timestamp = (long) entity.getProperty("timestamp");
  
       TestRecipe testRecipe = new TestRecipe(id, searchStrings, timestamp);

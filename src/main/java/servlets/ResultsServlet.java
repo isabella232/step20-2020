@@ -26,8 +26,6 @@ import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +39,9 @@ public class ResultsServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String userQuery = request.getParameter("user-query");
     Query query = new Query("Recipe").addSort("timestamp", SortDirection.DESCENDING);
-    query.setFilter(new Query.FilterPredicate("name", FilterOperator.EQUAL, userQuery));
+    List<String> userQueryList = new ArrayList<String>();
+    userQueryList.add(userQuery);
+    query.setFilter(new Query.FilterPredicate("search-strings", FilterOperator.IN, userQueryList));
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
@@ -49,12 +49,10 @@ public class ResultsServlet extends HttpServlet {
     List<TestRecipe> testRecipes = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
-      String name = (String) entity.getProperty("name");
-      List<String> ingredients = (ArrayList<String>) entity.getProperty("ingredients");
-      List<String> tags = (ArrayList<String>) entity.getProperty("tags");
+      ArrayList<String> searchStrings = (ArrayList<String>) entity.getProperty("search-strings");
       long timestamp = (long) entity.getProperty("timestamp");
 
-      TestRecipe testRecipe = new TestRecipe(id, name, ingredients, tags, timestamp);
+      TestRecipe testRecipe = new TestRecipe(id, searchStrings, timestamp);
       testRecipes.add(testRecipe);
     }
 
