@@ -22,28 +22,30 @@ function loadComments() {
   });
 }
 
+/** Fetches results from the server and adds them to the DOM. */
 function loadResults(userQuery) {
-    console.log("Fetching results!");
     console.log("Query: " + userQuery);
-    fetch('/results?user-query=' + userQuery).then(response => response.json()).then((comments) => {
-    const commentListElement = document.getElementById('result-list');
-    comments.forEach((comment) => {
-      console.log("Fetching results...")
-      commentListElement.appendChild(createTaskElement(comment));
+    console.log("Fetching results...");
+    fetch('/results?user-query=' + userQuery).then(response => response.json()).then((results) => {
+    const resultListElement = document.getElementById('result-list');
+    results.forEach((result) => {
+      console.log("Result found!");
+      resultListElement.appendChild(createResultElement(result));
     })
   });
+  return false;
 }
 
-/** Creates an element that represents a task, including its delete button. */
-function createTaskElement(task) {
-  const taskElement = document.createElement('li');
-  taskElement.className = 'task';
+/** Creates an element that represents a result. */
+function createResultElement(result) {
+  const resultElement = document.createElement('li');
+  resultElement.className = 'result';
 
-  const titleElement = document.createElement('span');
-  titleElement.innerText = task.name;
+  const resultName = document.createElement('span');
+  resultName.innerText = result.name;
 
-  taskElement.appendChild(titleElement);
-  return taskElement;
+  resultElement.appendChild(resultName);
+  return resultElement;
 }
 
 /** Creates an element that represents a comment. */
