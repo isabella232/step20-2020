@@ -139,7 +139,7 @@ public final class RecipeTest {
         new Step("Melt the cheese"),
         new Step("Put the cheese in the bread")
     );
-    
+
     recipe.removeStep(0);
     Assert.assertEquals(expectedSteps, recipe.getSteps());
   }
