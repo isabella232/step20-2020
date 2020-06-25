@@ -26,7 +26,8 @@ function loadComments() {
 function loadResults(userQuery) {
     console.log("Query: " + userQuery);
     console.log("Fetching results...");
-    fetch('/results?user-query=' + userQuery).then(response => response.json()).then((results) => {
+    // Capitalize user query because recipe info in Datastore is stored capitalized.
+    fetch('/results?user-query=' + userQuery.toUpperCase()).then(response => response.json()).then((results) => {
     const resultListElement = document.getElementById('result-list');
     results.forEach((result) => {
       console.log("Result found!");
