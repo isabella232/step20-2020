@@ -45,11 +45,7 @@ public class ResultsServlet extends HttpServlet {
     String userQuery = request.getParameter("user-query");
     Query query = new Query("Recipe").addSort("timestamp", SortDirection.DESCENDING);
 
-    Filter f = new CompositeFilter(CompositeFilterOperator.OR, Arrays.<Filter>asList(
-         new FilterPredicate("search-strings", FilterOperator.IN, formatQueryAsList(userQuery)),
-         new FilterPredicate("search-strings", FilterOperator.IN, formatQueryAsList(userQuery))));
-
-    query.setFilter(f);
+    query.setFilter(generateFiltersFromQuery(formatQueryAsList(userQuery)));
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
@@ -73,7 +69,24 @@ public class ResultsServlet extends HttpServlet {
   public List<String> formatQueryAsList(String query) {
     query = query.toUpperCase();
     List<String> queryList = new ArrayList<String>(Arrays.asList(query.split(",")));
-    System.out.println("Re-formatted query: " + queryList);
-    return queryList;
+    List<String> formattedQueryList = new ArrayList<String>();
+    for (String singleQuery:queryList) {
+      formattedQueryList.add(singleQuery.trim());
+    }
+    return formattedQueryList;
+  }
+
+  public Filter generateFiltersFromQuery(List<String> queryList) {
+    if (queryList.size() < 2) {
+      return new FilterPredicate("search-strings", FilterOperator.IN, queryList);
+    }
+    List<Filter> filters = new ArrayList<Filter>();
+    for (String query:queryList) {
+      // A collection of values as the search item is required.
+      List<String> queryAsList = new ArrayList<String>();
+      queryAsList.add(query);
+      filters.add(new FilterPredicate("search-strings", FilterOperator.IN, queryAsList));
+    }
+    return new CompositeFilter(CompositeFilterOperator.OR, filters);
   }
 }
