@@ -24,7 +24,6 @@ function loadComments() {
 
 /** Fetches results from the server and adds them to the DOM. */
 function loadResults(userQuery) {
-    console.log("Query: " + userQuery);
     console.log("Fetching results...");
     // Capitalize user query because recipe info in Datastore is stored capitalized.
     fetch('/results?user-query=' + userQuery.toUpperCase()).then(response => response.json()).then((results) => {

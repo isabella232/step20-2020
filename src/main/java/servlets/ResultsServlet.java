@@ -40,7 +40,6 @@ public class ResultsServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String userQuery = request.getParameter("user-query");
-    System.out.println("Hard-coded query received: " + userQuery);
     Query query = new Query("Recipe").addSort("timestamp", SortDirection.DESCENDING);
     query.setFilter(new Query.FilterPredicate("name", FilterOperator.EQUAL, userQuery));
 
@@ -56,7 +55,6 @@ public class ResultsServlet extends HttpServlet {
       long timestamp = (long) entity.getProperty("timestamp");
 
       TestRecipe testRecipe = new TestRecipe(id, name, ingredients, tags, timestamp);
-      System.out.println("Fetched entry under filter: " + id);
       testRecipes.add(testRecipe);
     }
 
