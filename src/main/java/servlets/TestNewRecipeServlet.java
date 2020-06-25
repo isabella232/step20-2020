@@ -14,8 +14,8 @@
  
 package com.google.sps.servlets;
  
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -31,7 +31,7 @@ public class TestNewRecipeServlet extends HttpServlet {
  
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Set<String> searchStrings = new HashSet<String>();
+    List<String> searchStrings = new ArrayList<String>();
     String name = request.getParameter("name-input").toUpperCase();
     String ingred1 = request.getParameter("ingred-input-1").toUpperCase();
     String ingred2 = request.getParameter("ingred-input-2").toUpperCase();
