@@ -14,8 +14,8 @@
 
 package com.google.sps.servlets;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import com.google.sps.data.TestRecipe;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -46,12 +46,10 @@ public class TestDisplayRecipesServlet extends HttpServlet {
     List<TestRecipe> testRecipes = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
-      String name = (String) entity.getProperty("name");
-      List<String> ingredients = (ArrayList<String>) entity.getProperty("ingredients");
-      List<String> tags = (ArrayList<String>) entity.getProperty("tags");
+      HashSet<String> searchStrings = (HashSet<String>) entity.getProperty("search-strings");
       long timestamp = (long) entity.getProperty("timestamp");
 
-      TestRecipe testRecipe = new TestRecipe(id, name, ingredients, tags, timestamp);
+      TestRecipe testRecipe = new TestRecipe(id, searchStrings, timestamp);
       testRecipes.add(testRecipe);
     }
 

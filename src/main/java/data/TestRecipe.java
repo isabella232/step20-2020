@@ -14,25 +14,21 @@
 
 package com.google.sps.data;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
  
-/** A recipe, with corresponding recipe info. */
+/** A recipe, with recipe info used for search. */
 public class TestRecipe {
   long id;
-  String name;
-  List<String> ingredients;
-  List<String> tags;
+  Set<String> searchStrings;
   long timestamp;
 
  /**
   * @param id The entity's id.
   */
-  public TestRecipe(long id, String name, List<String> ingredients, List<String> tags, long timestamp) {
+  public TestRecipe(long id, HashSet<String> searchStrings, long timestamp) {
     this.id = id;
-    this.name = name;
-    this.ingredients = ingredients;
-    this.tags = tags;
+    this.searchStrings = searchStrings;
     this.timestamp = timestamp;
   }
 }   
