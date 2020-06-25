@@ -39,9 +39,7 @@ public class ResultsServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String userQuery = request.getParameter("user-query");
     Query query = new Query("Recipe").addSort("timestamp", SortDirection.DESCENDING);
-    List<String> userQueryList = new ArrayList<String>();
-    userQueryList.add(userQuery);
-    query.setFilter(new Query.FilterPredicate("search-strings", FilterOperator.IN, userQueryList));
+    query.setFilter(new Query.FilterPredicate("search-strings", FilterOperator.IN, formatQueryAsList(userQuery)));
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
@@ -60,5 +58,11 @@ public class ResultsServlet extends HttpServlet {
 
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(testRecipes));
+  }
+
+  public List<String> formatQueryAsList(String query) {
+    List<String> queryList = new ArrayList<String>();
+    queryList.add(query.toUpperCase());
+    return queryList;
   }
 }
