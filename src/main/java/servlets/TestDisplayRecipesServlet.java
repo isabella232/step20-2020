@@ -11,11 +11,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
+ 
 package com.google.sps.servlets;
-
-import java.util.ArrayList;
-import java.util.List;
+ 
+import java.util.HashSet;
+import java.util.Set;
 import com.google.sps.data.TestRecipe;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -31,32 +31,30 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+ 
 /** Servlet responsible for displaying comments. */
 @WebServlet("/display-recipes")
 public class TestDisplayRecipesServlet extends HttpServlet {
-
+ 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query query = new Query("Recipe").addSort("timestamp", SortDirection.DESCENDING);
-
+ 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
-
+ 
     List<TestRecipe> testRecipes = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
-      String name = (String) entity.getProperty("name");
-      List<String> ingredients = (ArrayList<String>) entity.getProperty("ingredients");
-      List<String> tags = (ArrayList<String>) entity.getProperty("tags");
+      HashSet<String> searchStrings = (HashSet<String>) entity.getProperty("search-strings");
       long timestamp = (long) entity.getProperty("timestamp");
-
-      TestRecipe testRecipe = new TestRecipe(id, name, ingredients, tags, timestamp);
+ 
+      TestRecipe testRecipe = new TestRecipe(id, searchStrings, timestamp);
       testRecipes.add(testRecipe);
     }
-
+ 
     Gson gson = new Gson();
-
+ 
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(testRecipes));
   }
