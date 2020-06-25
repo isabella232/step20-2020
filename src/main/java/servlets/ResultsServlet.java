@@ -40,7 +40,8 @@ public class ResultsServlet extends HttpServlet {
     String userQuery = request.getParameter("user-query");
     Query query = new Query("Recipe").addSort("timestamp", SortDirection.DESCENDING);
     List<String> userQueryList = new ArrayList<String>();
-    userQueryList.add(userQuery);
+    // Capitalize user query to account for format (all capitalized) of search-strings in Datastore.
+    userQueryList.add(userQuery.toUpperCase());
     query.setFilter(new Query.FilterPredicate("search-strings", FilterOperator.IN, userQueryList));
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
