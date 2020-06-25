@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+package com.google.sps.data;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,6 +21,8 @@ public class Recipe {
 
   protected String name;
   protected String description;
+  protected List<String> tags;
+  protected List<String> ingredients;
   protected List<Step> steps;
   protected List<SpinOff> spinOffs;
 
@@ -29,9 +33,11 @@ public class Recipe {
     this.spinOffs = original.spinOffs;
   }
   
-  public Recipe(String name, String description, List<Step> steps) {
+  public Recipe(String name, String description, List<String> tags, List<String> ingredients, List<Step> steps) {
     this.name = name;
     this.description = description;
+    this.tags = tags;
+    this.ingredients = ingredients;
     this.steps = steps;
     this.spinOffs = new LinkedList<>();
   }
