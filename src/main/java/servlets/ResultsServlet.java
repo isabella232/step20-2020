@@ -56,7 +56,7 @@ public class ResultsServlet extends HttpServlet {
       long timestamp = (long) entity.getProperty("timestamp");
 
       TestRecipe testRecipe = new TestRecipe(id, name, ingredients, tags, timestamp);
-      System.out.println("Fetched entry under filter: " + name);
+      System.out.println("Fetched entry under filter: " + id);
       testRecipes.add(testRecipe);
     }
 
