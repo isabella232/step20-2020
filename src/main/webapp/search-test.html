@@ -11,9 +11,14 @@
   </head>
  
   <body>
-    <form method="POST" action="/search" class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" name="query" type="search" placeholder="Banana bread, chickpeas, vegetarian, dinner..." aria-label="Search">
-      <button type="submit" class="btn btn-primary">Search</button>
+    <form class="form-group">
+      <input type="text" id="user-query" name="user-query" value=""></textarea>
+      <br/>
+      <button type="submit" class="btn btn-primary" onclick="loadResults(document.getElementById('user-query').value)">Submit</button>
     </form>
+
+    <h2>Results</h2>
+    <ul id="result-list"></ul>
+    <p>Do you see a box above me?</p>
   </body>
 </html>
