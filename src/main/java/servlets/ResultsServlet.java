@@ -40,7 +40,7 @@ public class ResultsServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query query = new Query("Recipe").addSort("timestamp", SortDirection.DESCENDING);
-    query.setFilter(new Query.FilterPredicate("name", FilterOperator.EQUAL, "Avocado Toast"));
+    query.setFilter(new Query.FilterPredicate("name", FilterOperator.EQUAL, "Banana Bread"));
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);

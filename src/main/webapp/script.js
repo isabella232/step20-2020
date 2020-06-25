@@ -23,9 +23,11 @@ function loadComments() {
 }
 
 function loadResults() {
+    console.log("Fetching results!");
     fetch('/results').then(response => response.json()).then((comments) => {
-    const commentListElement = document.getElementById('comment-list');
+    const commentListElement = document.getElementById('result-list');
     comments.forEach((comment) => {
+      console.log("Fetching results...")
       commentListElement.appendChild(createTaskElement(comment));
     })
   });
@@ -33,6 +35,7 @@ function loadResults() {
 
 /** Creates an element that represents a task, including its delete button. */
 function createTaskElement(task) {
+  console.log("NAME: " + task.name);
   const taskElement = document.createElement('li');
   taskElement.className = 'task';
 
