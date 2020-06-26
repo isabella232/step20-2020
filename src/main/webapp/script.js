@@ -22,6 +22,11 @@ function loadComments() {
   });
 }
 
+function redirectToResults(userQuery) {
+  document.location.href = "search-results-test.html?user-query=" + document.location.search;
+  return false;
+}
+
 /** Fetches results from the server and adds them to the DOM. */
 function loadResults(userQuery) {
     console.log("Fetching results...");
