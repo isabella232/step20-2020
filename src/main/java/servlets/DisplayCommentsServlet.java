@@ -48,7 +48,7 @@ public class DisplayCommentsServlet extends HttpServlet {
       String location = (String) entity.getProperty("location");
       String comment = (String) entity.getProperty("comment");
       long timestamp = (long) entity.getProperty("timestamp");
-      String MMDDYYYY = (String) entity.getProperty("MM/DD/YYYY");
+      String MMDDYYYY = (String) entity.getProperty("MMDDYYYY");
 
       UserComment userComment = new UserComment(id, username, location, comment, timestamp, MMDDYYYY);
       userComments.add(userComment);
