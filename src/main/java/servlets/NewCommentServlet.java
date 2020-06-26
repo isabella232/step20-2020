@@ -31,7 +31,7 @@ public class NewCommentServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String comment = secureReformat(request.getParameter("comment-input"));
+    String comment = request.getParameter("comment-input");
     long timestamp = System.currentTimeMillis();
     String MMDDYYYY = timestampToMMDDYYYY(timestamp);
 
@@ -54,14 +54,5 @@ public class NewCommentServlet extends HttpServlet {
   */
   private String timestampToMMDDYYYY(long timestamp) {
     return new SimpleDateFormat("MM/dd/yyyy").format(new Date(timestamp));
-  }
-
- /**
-  * Reformat comments to prevent HTML and script injections.
-  * @param input Comment to reformat.
-  * @return Comment with HTML tags replaced.
-  */
-  private String secureReformat(String input) {
-    return input.replace("<", "&lt;").replace(">", "&gt;");
   }
 }
