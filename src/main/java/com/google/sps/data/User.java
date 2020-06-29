@@ -20,11 +20,11 @@ import java.util.ArrayList;
 public class User {
 
     // Contains the entity id from Datastore.
-    private long id;
+    private String id;
     private String email;
     private String username;
 
-    public User(long id, String email, String username) {
+    public User(String id, String email, String username) {
       this.id = id;
       this.email = email;
       this.username = username;
