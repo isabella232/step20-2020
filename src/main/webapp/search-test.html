@@ -34,6 +34,7 @@ THE SOFTWARE.-->
   </head>
 
   <body class="page-container" onload="loadComments()">
+    <!--TODO: DELETE THE SECTION FOR SDK BELOW IF THERE IS NO SHARING ON YOUR PAGE-->
     <!--Javascript SDK for sharing on Facebook -->
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v7.0" nonce="bSEBuptV"></script>
@@ -73,8 +74,8 @@ THE SOFTWARE.-->
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
-        <input type="text" id="user-query" name="user-query" value=""></textarea>
-        <button type="submit" class="btn btn-primary" onclick="return redirectToResults(document.getElementById('user-query').value);">Submit</button>
+        <input class="form-control mr-sm-2" type="search" id="user-query" name="user-query" placeholder="Lasagna, scallions, vegan, lunch..." aria-label="Search"></textarea>
+        <button type="submit" class="btn btn-primary" onclick="return redirectToResults(document.getElementById('user-query').value);">search</button>
         </form>
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
