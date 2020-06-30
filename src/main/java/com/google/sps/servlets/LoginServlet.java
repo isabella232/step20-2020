@@ -31,8 +31,8 @@ public class LoginServlet extends HttpServlet {
     response.setContentType("application/json");
 
     UserService userService = UserServiceFactory.getUserService();
-    String urlToRedirectTo = "/index.html";
-    String json = "";
+    String urlToRedirectTo = "/signup-test.html";
+    String json;
 
     if(userService.isUserLoggedIn()) {
       String logoutUrl = userService.createLogoutURL(urlToRedirectTo);

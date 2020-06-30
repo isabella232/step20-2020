@@ -16,8 +16,8 @@ function getLoginLink() {
   fetch('/login').then(response => response.json()).then(loginInfo => {
     const loginEl = document.getElementById('login-link');
     if(loginInfo.status) {
-      loginEl.innerHTML = 'You are currently logged in with your Google account. Log out <a href=\"' + loginInfo.url + '\">here</a>.';
       document.getElementById('signup-form').classList.remove('hidden');
+      loginEl.innerHTML = 'You are currently logged in with your Google account. Log out <a href=\"' + loginInfo.url + '\">here</a>.';
     }
     else {
       loginEl.innerHTML = 'Login <a href=\"' + loginInfo.url + '\">here</a> to create your account.';
@@ -25,8 +25,11 @@ function getLoginLink() {
   });
 }
 
-function getUserData(id) {
-  fetch('/user?id=' + id).then(response => response.json()).then(userInfo => {
+function getUserData() {
+  var url = window.location.href;
+  var key = url.split('?')[1];
+
+  fetch('/user?' + key).then(response => response.json()).then(userInfo => {
     document.getElementById('info').innerHTML = 'id = ' + userInfo.id + ', email = ' + userInfo.email + ', username = ' + userInfo.username;
   });
 }

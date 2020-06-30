@@ -41,20 +41,16 @@ public final class UserServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
 
-    // Get the id from the query string.
-    String id = request.getParameter("id");
-
-    if(id.equals("0")) {
-      id = userService.getCurrentUser().getUserId();
-    }
+    // Get the key from the query string.
+    String keyString = request.getParameter("key");
+    Key userKey = KeyFactory.stringToKey(keyString);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Key userKey = KeyFactory.createKey("User", id);
 
     try{
       Entity userEntity = datastore.get(userKey);
       String email = (String) userEntity.getProperty("email");
       String username = (String) userEntity.getProperty("username");
-      User user = new User(id, email, username);
+      User user = new User(userKey.getName(), email, username);
 
       // Convert to JSON and send it as the response.
       Gson gson = new Gson();
@@ -76,8 +72,10 @@ public final class UserServlet extends HttpServlet {
     String id = userService.getCurrentUser().getUserId();
     String username = request.getParameter("username-input");
 
+    Key userKey = KeyFactory.createKey("User", id);
+
     // Create a new User entity with data from the request.
-    Entity userEntity = new Entity("User", id);
+    Entity userEntity = new Entity(userKey);
     userEntity.setProperty("email", email);
     userEntity.setProperty("username", username);
 
@@ -85,6 +83,6 @@ public final class UserServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(userEntity);
 
-    response.sendRedirect("/profile-page.html?id=" + id);
+    response.sendRedirect("/profile-page-test.html?key=" + KeyFactory.keyToString(userKey));
   }
 }
