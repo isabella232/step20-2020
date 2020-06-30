@@ -26,6 +26,8 @@ public class Recipe {
 
   private String name;
   private String description;
+  private List<String> tags;
+  private List<String> ingredients;
   private List<Step> steps;
   private List<SpinOff> spinOffs;
 
