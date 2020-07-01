@@ -41,6 +41,18 @@ function redirectToResults(userQuery) {
   return false;
 }
 
+/** Fetches results from the server and adds them to the DOM. */
+function getResults(param) {
+  var userQuery = getURLParamVal(param);
+  fetch('/results?user-query=' + userQuery.toUpperCase()).then(response => response.json()).then((results) => {
+    const resultListElement = document.getElementById('result-list');
+    results.forEach((result) => {
+      console.log("Result found!");
+      resultListElement.appendChild(createResultElement(result));
+    })
+  });
+}
+
 /** Gets the value of the given parameter from the current URL string. */
 function getURLParamVal(param) {
   // Get the current page URL.
@@ -53,18 +65,6 @@ function getURLParamVal(param) {
       return paramName[1];
     }
   }
-}
-
-/** Fetches results from the server and adds them to the DOM. */
-function getResults(param) {
-  var userQuery = getURLParamVal(param);
-  fetch('/results?user-query=' + userQuery.toUpperCase()).then(response => response.json()).then((results) => {
-    const resultListElement = document.getElementById('result-list');
-    results.forEach((result) => {
-      console.log("Result found!");
-      resultListElement.appendChild(createResultElement(result));
-    })
-  });
 }
 
 /** Creates an element that represents a result. */
