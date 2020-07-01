@@ -37,6 +37,8 @@ public class Recipe {
   public Recipe(Recipe recipe) {
     this.name = recipe.name;
     this.description = recipe.description;
+    this.tags = recipe.tags;
+    this.ingredients = recipe.ingredients;
     this.steps = recipe.steps;
     this.spinOffs = recipe.spinOffs;
   }
@@ -44,9 +46,11 @@ public class Recipe {
   /**
    * Default constructor called when creating a new recipe.
    */
-  public Recipe(String name, String description, List<Step> steps) {
+  public Recipe(String name, String description, List<String> tags, List<String> ingredients, List<Step> steps) {
     this.name = name;
     this.description = description;
+    this.tags = tags;
+    this.ingredients = ingredients;
     this.steps = steps;
     this.spinOffs = new LinkedList<>();
   }
