@@ -17,41 +17,69 @@ import java.util.List;
 import java.util.logging.*;
 import java.util.Iterator;
 
-/**
- * Stores a recipe's data.
- */
+/** Stores a recipe's data. */
 public class Recipe {
 
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
   private String name;
   private String description;
+  private List<String> tags;
+  private List<String> ingredients;
   private List<Step> steps;
   private List<SpinOff> spinOffs;
 
-  /**
-   * Copy constructor called when creating spin-offs.
-   */
+  /** Copy constructor called when creating spin-offs. */
   public Recipe(Recipe recipe) {
     this.name = recipe.name;
     this.description = recipe.description;
+    this.tags = recipe.tags;
+    this.ingredients = recipe.ingredients;
     this.steps = recipe.steps;
     this.spinOffs = recipe.spinOffs;
   }
   
-  /**
-   * Default constructor called when creating a new recipe.
-   */
-  public Recipe(String name, String description, List<Step> steps) {
+  /** Default constructor called when creating a new recipe. */
+  public Recipe(String name, String description, List<String> tags, List<String> ingredients, List<Step> steps) {
     this.name = name;
     this.description = description;
+    this.tags = tags;
+    this.ingredients = ingredients;
     this.steps = steps;
     this.spinOffs = new LinkedList<>();
   }
 
-  /**
-   * Appends a new step to a recipe's list of steps.
-   */
+  /** Gets the recipe's name. */
+  public String getName() {
+    return name;
+  }
+
+  /** Sets the recipe's name. */
+  public void setName(String newName) {
+    name = newName;
+  }
+
+  /** Gets the recipe's description. */
+  public String getDescription() {
+    return description;
+  }
+
+  /** Sets the recipe's description. */
+  public void setDescription(String newDescription) {
+    description = newDescription;
+  }
+
+  /** Gets the recipe's tags. */
+  public List<String> getTags() {
+    return tags;
+  }
+
+  /** Gets the recipe's ingredients. */
+  public List<String> getIngredients() {
+    return ingredients;
+  }
+
+  /** Appends a new step to a recipe's list of steps. */
   public void appendStep(Step newStep) {
     steps.add(newStep);
   }
