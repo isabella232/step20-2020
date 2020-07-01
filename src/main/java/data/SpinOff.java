@@ -12,11 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//Shef image source: https://i.kym-cdn.com/photos/images/newsfeed/001/696/371/637.png
+public class SpinOff extends Recipe {
 
-# Shef
-## Recipe sharing made fun
+  private Recipe original;
 
-Welcome to Shef! Run ```mvn package appengine:run``` to get Sheffin'!
+  public SpinOff(Recipe original) {
+    super(original);
+    this.original = original;
+    original.addSpinOff(this);
+  }
 
-![Shef](https://github.com/googleinterns/step20-2020/blob/UpdateReadme/src/main/webapp/assets/images/shef.png "Shef")
+}
