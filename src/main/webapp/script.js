@@ -22,6 +22,19 @@ function loadComments() {
   });
 }
 
+/** Creates an element that represents a comment. */
+function createCommentElement(comment) {
+  const commentElement = document.createElement('div');
+  commentElement.className = 'small-sep';
+
+  const userComment = document.createElement('span');
+  var userInfoDisplayed = comment.username + " • " + comment.location + " • " + comment.timestamp;
+  userComment.innerHTML += addParagraph(userInfoDisplayed) + addParagraph(comment.comment);
+
+  commentElement.appendChild(userComment);
+  return commentElement;
+}
+
 /** Redirects the user to the result page, with the given parameter for user-query. */
 function redirectToResults(userQuery) {
   document.location.href = "search-results-test.html?user-query=" + userQuery;
@@ -64,19 +77,6 @@ function createResultElement(result) {
 
   resultElement.appendChild(resultId);
   return resultElement;
-}
-
-/** Creates an element that represents a comment. */
-function createCommentElement(comment) {
-  const commentElement = document.createElement('div');
-  commentElement.className = 'small-sep';
-
-  const userComment = document.createElement('span');
-  var userInfoDisplayed = comment.username + " • " + comment.location + " • " + comment.timestamp;
-  userComment.innerHTML += addParagraph(userInfoDisplayed) + addParagraph(comment.comment);
-
-  commentElement.appendChild(userComment);
-  return commentElement;
 }
 
 function addParagraph(content) {
