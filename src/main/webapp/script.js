@@ -44,6 +44,7 @@ function redirectToResults(userQuery) {
 /** Fetches results from the server and adds them to the DOM. */
 function getResults(param) {
   var userQuery = getURLParamVal(param);
+  // Search string is in all caps, so the userQuery should also be in all caps for querying purposes.
   fetch('/results?user-query=' + userQuery.toUpperCase()).then(response => response.json()).then((results) => {
     const resultListElement = document.getElementById('result-list');
     results.forEach((result) => {
