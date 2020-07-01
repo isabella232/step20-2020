@@ -81,7 +81,7 @@ function createResultElement(result) {
 }
 
 function loadOptions() {
-  var optionList = document.getElementById('anrede');
+  var optionList = document.getElementById('allOptions');
   console.log("Fetching options...");
   fetch('/fetch-options').then(response => response.json()).then((options) => {
     options.forEach(function(option) {
