@@ -33,7 +33,7 @@ THE SOFTWARE.-->
     <script src="script.js"></script>
   </head>
 
-  <body class="page-container" onload="loadComments()">
+  <body class="page-container" onload="loadOptions()">
     <!--TODO: DELETE THE SECTION FOR SDK BELOW IF THERE IS NO SHARING ON YOUR PAGE-->
     <!--Javascript SDK for sharing on Facebook -->
     <div id="fb-root"></div>
@@ -74,8 +74,9 @@ THE SOFTWARE.-->
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" id="user-query" name="user-query" placeholder="Lasagna, scallions, vegan, lunch..." aria-label="Search"></textarea>
-        <button type="submit" class="btn btn-primary" onclick="return redirectToResults(document.getElementById('user-query').value);">search</button>
+          <input class="form-control mr-sm-2" type="search" id="user-query" name="user-query" placeholder="Lasagna, scallions, vegan, lunch..." list="allOptions"></textarea>
+          <datalist id="allOptions"></datalist>
+          <button type="submit" class="btn btn-primary" onclick="return redirectToResults(document.getElementById('user-query').value);">search</button>
         </form>
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
