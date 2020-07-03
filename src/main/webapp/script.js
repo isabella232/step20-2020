@@ -16,18 +16,20 @@ class ParameterInput extends HTMLElement {
     this.index = parseInt(this.getAttribute('index'));
     var paramName = this.name.toLowerCase() + this.index;
 
-    this.label.innerText = this.name + " " + (this.index + 1);
+    this.label.innerText = this.name + ' ' + (this.index + 1);
     this.label.for = paramName;
 
     this.textArea.name = paramName;
-    this.textArea.rows = "1";
+    this.textArea.rows = '1';
 
-    this.button.type = "button";
-    this.button.onclick = event => addParameterInput(this.name, this.index + 1);
-    this.button.innerText = "Add " + this.name;
+    this.button.type = 'button';
+    this.button.onclick = event => {
+      var newParameter = createParameterInput(this.name, this.index + 1);
+      insertParameterInput(this, newParameter);
+    };
+    this.button.innerText = 'Add ' + this.name;
 
-    this.field = document.getElementById(this.name + 's');
-    this.field.appendChild(this.container);
+    this.appendChild(this.container);
   }
 
   set text(value) {
@@ -36,14 +38,21 @@ class ParameterInput extends HTMLElement {
 }
 customElements.define('parameter-input', ParameterInput);
 
-function addParameterInput(name, index) {
-  const container = document.getElementById(name + 's');
+function createParameterInput(name, index) {
   var newParameter = document.createElement('parameter-input');
   newParameter.setAttribute('name', name);
   newParameter.setAttribute('index', index);
   newParameter.setAttribute('id', name + index);
-  container.appendChild(newParameter);
   return newParameter;
+}
+
+function insertParameterInput(previous, parameterInput) {
+  previous.insertAdjacentElement('afterend', parameterInput);
+}
+
+function appendParameterInput(fieldName, parameterInput) {
+  const field = document.getElementById(fieldName);
+  field.appendChild(parameterInput);
 }
 
 function getOriginalRecipe() {
@@ -63,15 +72,15 @@ function populateRecipeCreationForm(recipe) {
   populateFormField("Step", recipe.steps);
 }
 
-function populateFormComponent(componentName, data) {
-  var componentNum = 1;
+function populateFormField(fieldName, data) {
   for (var i = 0; i < data.length; i++) {
     var parameter = document.getElementById(fieldName + i);
     if (parameter !== null) {
       parameter.text = data[i];
     } else {
-      var newParameter = addParameterInput(fieldName, i);
+      const newParameter = createParameterInput(fieldName, i);
       newParameter.text = data[i];
+      appendParameterInput(fieldName + 's', newParameter);
     }
   }
 }
