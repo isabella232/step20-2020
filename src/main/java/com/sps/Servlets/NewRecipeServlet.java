@@ -58,7 +58,7 @@ public class NewRecipeServlet extends HttpServlet {
     Entity recipeEntity = null;
     try {
       recipeEntity = datastore.get(KeyFactory.stringToKey(keyString));
-    } catch (EntityNotFoundException e) {
+    } catch (Exception e) {
       e.printStackTrace();
       return;
     }
@@ -76,6 +76,7 @@ public class NewRecipeServlet extends HttpServlet {
    */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    System.out.println(request.getQueryString());
     Collection<String> searchStrings = new HashSet<>();
     String name = request.getParameter("name");
     searchStrings.add(name.toUpperCase());
@@ -103,7 +104,7 @@ public class NewRecipeServlet extends HttpServlet {
    */
   private Collection<EmbeddedEntity> getParameters(HttpServletRequest request, String type, Collection<String> searchStrings) {
     Collection<EmbeddedEntity> parameters = new LinkedList<>();
-    int parameterNum = 1;
+    int parameterNum = 0;
 
     String parameterName = type + parameterNum;
     String parameter = request.getParameter(parameterName);
@@ -140,7 +141,7 @@ public class NewRecipeServlet extends HttpServlet {
     return new Recipe(name, description, tags, ingredients, steps);
   }
 
-  private LinkedList<Object> getDataAsList(Object propertiesObject, String type) {
+  private Collection<Object> getDataAsList(Object propertiesObject, String type) {
     Collection<EmbeddedEntity> properties = (Collection<EmbeddedEntity>) propertiesObject;
     LinkedList<Object> dataAsList = new LinkedList<>();
     for (EmbeddedEntity property : properties) {
