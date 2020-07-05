@@ -14,35 +14,24 @@
 
 package com.google.sps.servlets;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns login status of the user and a url to log in or out. */
-@WebServlet("/login")
-public class LoginServlet extends HttpServlet {
+/** Servlet that returns the Blobstore upload url for profile pictures. */
+@WebServlet("/profile-pic-upload-url")
+public class ProfilePicUploadUrlServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("application/json");
+    BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+    String uploadUrl = blobstoreService.createUploadUrl("/user");
 
-    UserService userService = UserServiceFactory.getUserService();
-    String urlToRedirectTo = "/signup-test.html";
-    String json;
-
-    if(userService.isUserLoggedIn()) {
-      String logoutUrl = userService.createLogoutURL(urlToRedirectTo);
-      json = "{ \"status\": true, \"url\": \"" + logoutUrl + "\" }";
-    }
-    else {
-      String loginUrl = userService.createLoginURL(urlToRedirectTo);
-      json = "{ \"status\": false, \"url\": \"" + loginUrl + "\" }";
-    }
-
-    response.getWriter().println(json);
-    }
+    response.setContentType("text/html");
+    response.getWriter().println(uploadUrl);
   }
+}

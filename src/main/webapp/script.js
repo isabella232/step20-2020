@@ -12,24 +12,86 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-function getLoginLink() {
-  fetch('/login').then(response => response.json()).then(loginInfo => {
-    const loginEl = document.getElementById('login-link');
-    if(loginInfo.status) {
-      document.getElementById('signup-form').classList.remove('hidden');
-      loginEl.innerHTML = 'You are currently logged in with your Google account. Log out <a href=\"' + loginInfo.url + '\">here</a>.';
+// Set the link for the sign-in page
+function getSignInLink() {
+  fetch('/sign-in').then(response => response.json()).then(info => {
+    const linkEl = document.getElementById('link');
+    if(info.status) {
+      linkEl.innerHTML = 'Sign out <a href=\"' + info.url + '\">here</a>.';
     }
     else {
-      loginEl.innerHTML = 'Login <a href=\"' + loginInfo.url + '\">here</a> to create your account.';
+      linkEl.innerHTML = 'Sign in <a href=\"' + info.url + '\">here</a>.';
     }
   });
 }
 
+// Set the sign-up link for the sign-up page
+function getSignUpLink() {
+  fetch('/sign-up').then(response => response.text()).then(link => {
+    const linkEl = document.getElementById('sign-up-link');
+    linkEl.innerHTML = 'Sign up <a href=\"' + link + '\">here</a>.';
+  });
+}
+
+// Get a specific user's data to populate their profile page.
 function getUserData() {
   var url = window.location.href;
   var key = url.split('?')[1];
 
   fetch('/user?' + key).then(response => response.json()).then(userInfo => {
-    document.getElementById('info').innerHTML = 'id = ' + userInfo.id + ', email = ' + userInfo.email + ', username = ' + userInfo.username;
+    document.getElementById('info').innerHTML = 'Email: ' + userInfo.email + '<br> Name: ' + userInfo.username + '<br> Location: ' + userInfo.location + '<br> Bio: ' + userInfo.bio;
+    document.getElementById('profile-pic').src = userInfo.profilePicUrl;
+
+    document.getElementById('username-input').innerHTML = userInfo.username;
+    document.getElementById('location-input').innerHTML = userInfo.location;
+    document.getElementById('bio-input').innerHTML = userInfo.bio;
+
+    const buttonEl = document.getElementById('edit-button');
+    if(!userInfo.isCurrentUser) {
+      buttonEl.classList.add('hidden');
+    }
   });
+}
+
+// Sets the image upload URL in the account creation and profile pages.
+function fetchBlobstoreUrl() {
+  fetch('/profile-pic-upload-url').then(response => response.text()).then(imageUploadUrl => {
+    const signupForm = document.getElementById('user-form');
+    signupForm.action = imageUploadUrl;
+  });
+}
+
+// Enables or disables the editable form in the profile page.
+function toggleProfileEditMode() {
+  const staticEl = document.getElementById('static');
+  const editableEl = document.getElementById('editable');
+  const buttonEl = document.getElementById('edit-button');
+
+  if(staticEl.classList.contains('hidden')) {
+    staticEl.classList.remove('hidden');
+    editableEl.classList.add('hidden');
+    buttonEl.innerHTML = 'Edit Profile';
+  }
+  else {
+    staticEl.classList.add('hidden');
+    editableEl.classList.remove('hidden');
+    buttonEl.innerHTML = 'Back';
+  }
+}
+
+// Creates the list of users on the user-list-test page.
+function getUserProfileLinks() {
+  fetch('/user-list').then(response => response.json()).then(infoList => {
+    const userList = document.getElementById('user-list');
+    infoList.forEach(item => {
+      userList.appendChild(createListElement(item));
+    });
+  });
+}
+
+// Creates an <li> element containing a link to a user's profile page.
+function createListElement(item) {
+  const liElement = document.createElement('li');
+  liElement.innerHTML = '<a href=\"' + item.profilePageUrl + '\">' + item.username + '</a>';
+  return liElement;
 }
