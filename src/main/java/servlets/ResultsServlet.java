@@ -66,25 +66,25 @@ public class ResultsServlet extends HttpServlet {
     response.getWriter().println(gson.toJson(testRecipes));
   }
 
-  public List<String> formatQueryAsList(String query) {
+  public String[] formatQueryAsList(String query) {
     query = query.toUpperCase();
-    List<String> queryList = new ArrayList<String>(Arrays.asList(query.split(",")));
-    List<String> formattedQueryList = new ArrayList<String>();
-    for (String singleQuery:queryList) {
-      formattedQueryList.add(singleQuery.trim());
+    String[] queryList = query.split(",");
+    for (int idx = 0; idx < queryList.length; idx++) {
+      queryList[idx] = queryList[idx].trim();
     }
-    return formattedQueryList;
+    return queryList;
   }
 
-  public Filter generateFiltersFromQuery(List<String> queryList) {
-    // Nothing shows up if nothing is put into the search box.
-    if (queryList.size() < 2) {
-      return new FilterPredicate("search-strings", FilterOperator.IN, queryList);
+  public Filter generateFiltersFromQuery(String[] queryList) {
+    // Note: Nothing shows up if nothing is put into the search box.
+    // Also, the search value must be a Collection.
+    if (queryList.length < 2) {
+      return new FilterPredicate("search-strings", FilterOperator.IN, Arrays.asList(queryList));
     }
     List<Filter> filters = new ArrayList<Filter>();
     for (String query:queryList) {
-      // A collection of values as the search item is required.
       List<String> queryAsList = new ArrayList<String>();
+      System.err.println("query: " + query);
       queryAsList.add(query);
       filters.add(new FilterPredicate("search-strings", FilterOperator.IN, queryAsList));
     }
