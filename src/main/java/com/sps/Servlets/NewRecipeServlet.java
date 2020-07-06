@@ -98,22 +98,24 @@ public class NewRecipeServlet extends HttpServlet {
 
   /**
    * Gets the parameters for fields that have different numbers of parameters from recipe to recipe.
-   * For example, one recipe may have 2 ingredients, while another may have 20.
    * This method ensures that all tags, ingredients, and steps are recorded, no matter how many of each a recipe has.
    */
   private Collection<EmbeddedEntity> getParameters(HttpServletRequest request, String type, Collection<String> searchStrings) {
     Collection<EmbeddedEntity> parameters = new LinkedList<>();
-    int parameterNum = 1;
-
+    int parameterNum = 0;
     String parameterName = type + parameterNum;
     String parameter = request.getParameter(parameterName);
+
+    // In the HTML form, parameters are named as [field name][index], ie step0.
+    // This loop increments the index of the parameter's name, exiting once it reaches an index for which there is no parameter.
     while (parameter != null) {
+      addToSearchStrings(searchStrings, parameter);
       EmbeddedEntity parameterEntity = new EmbeddedEntity();
       parameterEntity.setProperty(type, parameter);
-      addToSearchStrings(searchStrings, parameter);
+      parameters.add(parameterEntity);
+
       parameterName = type + (++parameterNum);
       parameter = request.getParameter(parameterName);
-      parameters.add(parameterEntity);
     }
     return parameters;
   }
@@ -131,6 +133,7 @@ public class NewRecipeServlet extends HttpServlet {
     searchStrings.add(stringToAdd.toUpperCase());
   }
 
+  /** Converts a Datastore entity into a Recipe. */
   private Recipe entityToRecipe(Entity recipeEntity) {
     String name = (String) recipeEntity.getProperty("name");
     String description = (String) recipeEntity.getProperty("description");
@@ -140,9 +143,10 @@ public class NewRecipeServlet extends HttpServlet {
     return new Recipe(name, description, tags, ingredients, steps);
   }
 
-  private LinkedList<Object> getDataAsList(Object propertiesObject, String type) {
+  /** Gets a list of Recipe parameters from a Datastore property. */
+  private Collection<Object> getDataAsList(Object propertiesObject, String type) {
     Collection<EmbeddedEntity> properties = (Collection<EmbeddedEntity>) propertiesObject;
-    LinkedList<Object> dataAsList = new LinkedList<>();
+    Collection<Object> dataAsList = new LinkedList<>();
     for (EmbeddedEntity property : properties) {
       dataAsList.add(property.getProperty(type));
     }
