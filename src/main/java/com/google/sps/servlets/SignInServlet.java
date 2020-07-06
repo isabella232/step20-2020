@@ -32,13 +32,11 @@ public class SignInServlet extends HttpServlet {
     UserService userService = UserServiceFactory.getUserService();
     String json;
 
-    if(userService.isUserLoggedIn()) {
-      // TODO: Redirect to the real sign-in page instead
+    if (userService.isUserLoggedIn()) {
       String signOutUrl = userService.createLogoutURL("/sign-in-test.html");
       json = "{ \"status\": true, \"url\": \"" + signOutUrl + "\" }";
     }
     else {
-      // TODO: Redirect to the home page instead.
       String signInUrl = userService.createLoginURL("/user-list-test.html");
       json = "{ \"status\": false, \"url\": \"" + signInUrl + "\" }";
     }

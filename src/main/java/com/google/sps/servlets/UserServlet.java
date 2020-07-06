@@ -58,8 +58,9 @@ public final class UserServlet extends HttpServlet {
     Key userKey = KeyFactory.stringToKey(keyString);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-    try{
+    try {
       Entity userEntity = datastore.get(userKey);
+      // Since we chose to store the id as a string in Datastore, it is referred to as "name".
       String id = (String) userKey.getName();
       String email = (String) userEntity.getProperty("email");
       String username = (String) userEntity.getProperty("username");
@@ -68,7 +69,7 @@ public final class UserServlet extends HttpServlet {
       String bio = (String) userEntity.getProperty("bio");
       boolean isCurrentUser;
 
-      if(userService.isUserLoggedIn()) {
+      if (userService.isUserLoggedIn()) {
         isCurrentUser = id.equals(userService.getCurrentUser().getUserId());
       }
       else {
@@ -83,12 +84,12 @@ public final class UserServlet extends HttpServlet {
       response.setContentType("application/json");
       response.getWriter().println(gson.toJson(user));
     }
-    catch(EntityNotFoundException e) {
+    catch (EntityNotFoundException e) {
       throw new IOException("Entity not found.");
     }
   }
 
-  // Create or update a user
+  // Create or update a user.
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
@@ -102,12 +103,12 @@ public final class UserServlet extends HttpServlet {
     String bio = request.getParameter("bio-input");
 
     Key userKey = KeyFactory.createKey("User", id);
-        if(profilePictureUrl == null) {
+    if (profilePictureUrl == null) {
       try {
         Entity originalEntity = datastore.get(userKey);
         profilePictureUrl = (String) originalEntity.getProperty("profile-picture-url");
       }
-      catch(EntityNotFoundException e) {
+      catch (EntityNotFoundException e) {
         throw new IOException("No profile picture provided.");
       }
     }

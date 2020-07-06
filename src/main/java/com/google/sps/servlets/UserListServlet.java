@@ -44,20 +44,20 @@ public class UserListServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    // Fill commentEntries arrayList with data from Datastore.
-    ArrayList<User> infoArray = new ArrayList<User>();
+    // Fill userInfo arraylist with data from Datastore.
+    ArrayList<User> userInfo = new ArrayList<User>();
     for (Entity entity : results.asIterable()) {
       Key userKey = entity.getKey();
-      String userName = (String) entity.getProperty("username");
+      String username = (String) entity.getProperty("username");
       String link = "/profile-page-test.html?key=" + KeyFactory.keyToString(userKey);
-      User user = new User(userName, link);
-      infoArray.add(user);
+      User user = new User(username, link);
+      userInfo.add(user);
     }
 
     // Convert to JSON and send it as the response.
     Gson gson = new Gson();
 
     response.setContentType("application/json");
-    response.getWriter().println(gson.toJson(infoArray));
+    response.getWriter().println(gson.toJson(userInfo));
     }
   }

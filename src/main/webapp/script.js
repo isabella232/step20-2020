@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Set the link for the sign-in page
+// Set the link for the sign-in page.
 function getSignInLink() {
   fetch('/sign-in').then(response => response.json()).then(info => {
     const linkEl = document.getElementById('link');
@@ -25,7 +25,7 @@ function getSignInLink() {
   });
 }
 
-// Set the sign-up link for the sign-up page
+// Set the sign-up link for the sign-up page.
 function getSignUpLink() {
   fetch('/sign-up').then(response => response.text()).then(link => {
     const linkEl = document.getElementById('sign-up-link');
