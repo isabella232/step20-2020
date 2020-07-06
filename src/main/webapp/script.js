@@ -74,6 +74,7 @@ class ParameterInput extends HTMLElement {
 
   /** Sets the text in a ParameterInput's text area. */
   set text(value) {
+    console.log('setting to ' + value);
     this.textArea.value = value;
   }
 
@@ -126,7 +127,7 @@ function appendParameterInput(fieldName, parameterInput) {
  * Appends a new ParameterInput.
  * @param {string} fieldName The field to append to.
  */
-function appendParameterInput(fieldName) {
+function appendNewParameterInput(fieldName) {
   const field = document.getElementById(fieldName);
   field.appendChild(createParameterInput(fieldName.slice(0, -1), field.children.length));
 }
@@ -168,7 +169,13 @@ function populateRecipeCreationForm(recipe) {
 /** Populates the ParamterInputs in a field with a parent recipe's data. */
 function populateFormField(fieldName, data) {
   for (var i = 0; i < data.length; i++) {
-    var component = document.getElementById(componentName + componentNum++);
-    component.value = data[i];
+    var parameter = document.getElementById(fieldName + i);
+    if (parameter !== null) {
+      parameter.text = data[i];
+    } else {
+      var newParameter = createParameterInput(fieldName, i);
+      newParameter.text = data[i];
+      appendParameterInput(fieldName + 's', newParameter);
+    }
   }
 }
