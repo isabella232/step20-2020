@@ -38,11 +38,12 @@ public final class RecipeTest {
       new Step("Melt the cheese"),
       new Step("Put the cheese in the bread")
   );
+  private static final long TIMESTAMP = 0;
   private Recipe recipe;
 
   @Before
   public void setup() {
-    recipe = new Recipe(NAME, DESCRIPTION, TAGS, INGREDIENTS, new LinkedList(STEPS));
+    recipe = new Recipe(NAME, DESCRIPTION, new HashSet(TAGS), new HashSet(INGREDIENTS), new LinkedList(STEPS), TIMESTAMP);
   }
 
   @Test
@@ -139,7 +140,7 @@ public final class RecipeTest {
         new Step("Melt the cheese"),
         new Step("Put the cheese in the bread")
     );
-    
+
     recipe.removeStep(0);
     Assert.assertEquals(expectedSteps, recipe.getSteps());
   }
@@ -263,7 +264,7 @@ public final class RecipeTest {
     expected += "\nSteps:\n";
     expected += "\tA step\n";
 
-    Recipe testRecipe = new Recipe("NAME", "DESC", TAGS, INGREDIENTS, Arrays.asList(new Step("A step")));
+    Recipe testRecipe = new Recipe("NAME", "DESC", TAGS, INGREDIENTS, Arrays.asList(new Step("A step")), TIMESTAMP);
     Assert.assertEquals(expected, testRecipe.toString());
   }
 }
