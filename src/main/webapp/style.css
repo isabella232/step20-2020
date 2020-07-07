@@ -10,6 +10,6 @@
   line-height:50px;
 }
 
-#fail-message {
+.error-message {
   color: red;
 }

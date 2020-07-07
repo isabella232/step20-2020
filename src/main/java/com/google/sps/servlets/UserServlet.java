@@ -71,8 +71,7 @@ public final class UserServlet extends HttpServlet {
 
       if (userService.isUserLoggedIn()) {
         isCurrentUser = id.equals(userService.getCurrentUser().getUserId());
-      }
-      else {
+      } else {
         isCurrentUser = false;
       }
 
@@ -83,8 +82,7 @@ public final class UserServlet extends HttpServlet {
 
       response.setContentType("application/json");
       response.getWriter().println(gson.toJson(user));
-    }
-    catch (EntityNotFoundException e) {
+    } catch (EntityNotFoundException e) {
       throw new IOException("Entity not found.");
     }
   }
@@ -107,8 +105,7 @@ public final class UserServlet extends HttpServlet {
       try {
         Entity originalEntity = datastore.get(userKey);
         profilePictureUrl = (String) originalEntity.getProperty("profile-picture-url");
-      }
-      catch (EntityNotFoundException e) {
+      } catch (EntityNotFoundException e) {
         throw new IOException("No profile picture provided.");
       }
     }

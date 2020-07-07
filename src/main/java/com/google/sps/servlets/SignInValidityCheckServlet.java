@@ -30,8 +30,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that stops people from attempting to sign-in 
-  * with a Google account that doesn't have an associated account on this site. */
+/** Servlet that prevents sign-in from a Google account that is not yet associated with an account on Shef. */
 @WebServlet("/sign-in-validity-check")
 public class SignInValidityCheckServlet extends HttpServlet {
 
@@ -43,12 +42,11 @@ public class SignInValidityCheckServlet extends HttpServlet {
 
     if(userService.isUserLoggedIn()) {
       try {
-        // Check if there is an account in datastore associated with the Google account the user just logged in with.
+        // Check if the Google account used for attempted log-in is already an entry in Datastore.
         Key key = KeyFactory.createKey("User", userService.getCurrentUser().getUserId());
         Entity currentUser = datastore.get(key);
         response.sendRedirect("/user-list-test.html");
-      } 
-      catch(EntityNotFoundException e) {
+      } catch(EntityNotFoundException e) {
         // Forcibly log out the user.
         String signOutUrl = userService.createLogoutURL("/sign-in-test.html?status=fail");
         response.sendRedirect(signOutUrl);        
