@@ -37,7 +37,7 @@ public class SignInServlet extends HttpServlet {
       json = "{ \"status\": true, \"url\": \"" + signOutUrl + "\" }";
     }
     else {
-      String signInUrl = userService.createLoginURL("/user-list-test.html");
+      String signInUrl = userService.createLoginURL("/sign-in-validity-check");
       json = "{ \"status\": false, \"url\": \"" + signInUrl + "\" }";
     }
 

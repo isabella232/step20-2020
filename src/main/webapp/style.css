@@ -9,3 +9,7 @@
   border:5px solid black;
   line-height:50px;
 }
+
+#fail-message {
+  color: red;
+}

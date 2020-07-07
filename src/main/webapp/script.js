@@ -95,3 +95,14 @@ function createListElement(item) {
   liElement.innerHTML = '<a href=\"' + item.profilePageUrl + '\">' + item.username + '</a>';
   return liElement;
 }
+
+// Show fail message if appropriate.
+function signInFailMessage() {
+  var url = window.location.href;
+  var status = url.split('=')[1];
+
+  if(status === 'fail') {
+    const messageEl = document.getElementById('fail-message');
+    messageEl.classList.remove('hidden');
+  }
+}
