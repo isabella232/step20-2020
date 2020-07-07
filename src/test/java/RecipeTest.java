@@ -217,7 +217,7 @@ public final class RecipeTest {
   }
 
   @Test
-  public void removeNonexistantTag() {
+  public void removeNonexistentTag() {
     Set<String> expected = new HashSet<>(Arrays.asList("grilledcheese", "quick"));
     recipe.removeTag("chicken");
     Assert.assertEquals(expected, recipe.getTags());
@@ -238,7 +238,7 @@ public final class RecipeTest {
   }
 
   @Test
-  public void removeNonexistantIngredient() {
+  public void removeNonexistentIngredient() {
     Set<String> expected = new HashSet<>(Arrays.asList("bread", "cheese", "butter"));
     recipe.removeIngredient("chicken");
     Assert.assertEquals(expected, recipe.getIngredients());
