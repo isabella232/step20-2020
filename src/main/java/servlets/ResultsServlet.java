@@ -88,6 +88,7 @@ public class ResultsServlet extends HttpServlet {
       queryAsList.add(query);
       filters.add(new FilterPredicate("search-strings", FilterOperator.IN, queryAsList));
     }
-    return new CompositeFilter(CompositeFilterOperator.OR, filters);
+    // Results will contain ALL keywords searched for, as opposed to one or a subset of them.
+    return new CompositeFilter(CompositeFilterOperator.AND, filters);
   }
 }
