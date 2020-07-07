@@ -12,22 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps.data;
- 
-/** A user's comment, with corresponding user info. */
-public class UserComment {
-  long id;
-  String comment;
-  long timestamp;
+package shef.data;
 
- /**
-  * @param id The entity's id.
-  * @param comment The user's comment.
-  * @param timestamp The time at which the comment was submitted.
-  */
-  public UserComment(long id, String comment, long timestamp) {
-      this.id = id;
-      this.comment = comment;
-      this.timestamp = timestamp;
+public class Step {
+
+  private String instruction;
+
+  public Step(String instruction) {
+    this.instruction = instruction;
   }
-}   
+
+  public String getInstruction() {
+    return instruction;
+  }
+
+  @Override
+  public String toString() {
+    return instruction;
+  }
+
+}
