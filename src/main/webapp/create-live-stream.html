@@ -9,19 +9,20 @@
 	</head>
  
 	<body>
-		<h4>1.</h4>
-		<form id="live-stream-link-input">
-			<label for="live-stream-link">Link to your live stream:</label>
-			<input type="url" id="live-stream-link" name="live-stream-link">
-		</form>
-		<h4>2.</h4>
-		<div class="form-group">
-			<label for="recipe-selection-input">Recipe associated with live stream:</label>
-			<select multiple class="form-control" id="recipe-selection-input" onChange="storeLivestreamInfo(this);">
-				<option>Recipe 1</option>
-				<option>Recipe 2</option>
-				<option>Recipe 3</option>
-			</select>
-		</div>
+    <form method="POST" action="/new-live-stream" class="form-group">
+      <h4>1.</h4>
+      <div class="form-group">
+        <label for="recipe-selection">Recipe associated with live stream:</label>
+        <select multiple class="form-control" id="recipe-selection-input" name="recipe-selection">
+          <option>Recipe 1</option>
+          <option>Recipe 2</option>
+          <option>Recipe 3</option>
+        </select>
+      </div>
+      <h4>2.</h4>
+      <label for="live-stream-link">Link to your live stream:</label>
+      <input type="url" id="live-stream-link" name="live-stream-link">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
 	</body>
 </html>
