@@ -23,6 +23,7 @@ public class LiveStream {
   String link;
   Date startTime;
   Date endTime;
+  long duration;
 
  /**
   * @param userId Unique id of the associated user (poster).
@@ -30,8 +31,20 @@ public class LiveStream {
   * @param link Link to the live stream.
   */
   public LiveStream(long userId, long recipeKey, String link) {
-      this.userId = userId;
-      this.recipeKey = recipeKey;
-      this.link = link;
+    this.userId = userId;
+    this.recipeKey = recipeKey;
+    this.link = link;
+  }
+
+  public setStartTime(Date startTime) {
+    this.startTime = startTime;
+  }
+
+  public setEndTime(Date endTime) {
+    this.endTime = endTime;
+  }
+
+  public setDuration(long duration) {
+    this.duration = duration;
   }
 }   
