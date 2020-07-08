@@ -19,12 +19,12 @@ import java.util.ArrayList;
 /** Class representing a user. */
 public class User {
 
-    // Contains the entity id from Datastore.
-    private long id;
+    // String representation of the key from Datastore.
+    private String id;
     private String email;
     private String username;
 
-    public User(long id, String email, String username) {
+    public User(String id, String email, String username) {
       this.id = id;
       this.email = email;
       this.username = username;
