@@ -36,15 +36,15 @@ public class LiveStream {
     this.link = link;
   }
 
-  public setStartTime(Date startTime) {
+  public void setStartTime(Date startTime) {
     this.startTime = startTime;
   }
 
-  public setEndTime(Date endTime) {
+  public void setEndTime(Date endTime) {
     this.endTime = endTime;
   }
 
-  public setDuration(long duration) {
+  public void setDuration(long duration) {
     this.duration = duration;
   }
 }   
