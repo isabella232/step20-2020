@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="css/style.css"/>
+    <script src="script.js"></script>
+    <title>shef</title>
+  </head>
+
+  <body>
+    <h4>1.</h4>
+    <form id="live-stream-link-input">
+      <label for="live-stream-link">Link to your live stream:</label>
+      <input type="url" id="live-stream-link" name="live-stream-link">
+    </form>
+    <h4>2.</h4>
+    <div class="form-group">
+      <label for="recipe-selection-input">Recipe associated with live stream:</label>
+      <select multiple class="form-control" id="recipe-selection-input" onChange="storeInfo(this);">
+        <option>Recipe 1</option>
+        <option>Recipe 2</option>
+        <option>Recipe 3</option>
+      </select>
+    </div>
+  </body>
+</html>
