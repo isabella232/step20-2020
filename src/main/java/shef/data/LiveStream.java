@@ -13,21 +13,23 @@
 // limitations under the License.
 
 package shef.data;
+
+import java.util.Date;
  
 /** A YouTube live stream.*/
 public class LiveStream {
   long userId;
   long recipeKey;
   String link;
-  Datetime startTime;
-  Datetime endTime;
+  Date startTime;
+  Date endTime;
 
  /**
   * @param userId Unique id of the associated user (poster).
   * @param recipeKey Unique key of the associated recipe.
   * @param link Link to the live stream.
   */
-  public UserComment(long userId, long recipeKey, String link) {
+  public LiveStream(long userId, long recipeKey, String link) {
       this.userId = userId;
       this.recipeKey = recipeKey;
       this.link = link;
