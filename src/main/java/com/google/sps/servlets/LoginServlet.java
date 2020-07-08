@@ -37,8 +37,7 @@ public class LoginServlet extends HttpServlet {
     if(userService.isUserLoggedIn()) {
       String logoutUrl = userService.createLogoutURL(urlToRedirectTo);
       json = "{ \"status\": true, \"url\": \"" + logoutUrl + "\" }";
-    }
-    else {
+    } else {
       String loginUrl = userService.createLoginURL(urlToRedirectTo);
       json = "{ \"status\": false, \"url\": \"" + loginUrl + "\" }";
     }

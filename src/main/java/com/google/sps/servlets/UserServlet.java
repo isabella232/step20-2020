@@ -57,8 +57,7 @@ public final class UserServlet extends HttpServlet {
 
       response.setContentType("application/json");
       response.getWriter().println(gson.toJson(user));
-    }
-    catch(EntityNotFoundException e) {
+    } catch(EntityNotFoundException e) {
       throw new IOException("Entity not found.");
     }
   }
@@ -73,7 +72,6 @@ public final class UserServlet extends HttpServlet {
     String username = request.getParameter("username-input");
 
     Key userKey = KeyFactory.createKey("User", id);
-
     // Create a new User entity with data from the request.
     Entity userEntity = new Entity(userKey);
     userEntity.setProperty("email", email);

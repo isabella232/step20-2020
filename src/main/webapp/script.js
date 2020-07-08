@@ -17,10 +17,9 @@ function getLoginLink() {
     const loginEl = document.getElementById('login-link');
     if(loginInfo.status) {
       document.getElementById('signup-form').classList.remove('hidden');
-      loginEl.innerHTML = 'You are currently logged in with your Google account. Log out <a href=\"' + loginInfo.url + '\">here</a>.';
-    }
-    else {
-      loginEl.innerHTML = 'Login <a href=\"' + loginInfo.url + '\">here</a> to create your account.';
+      loginEl.innerHTML = 'You are currently logged in with your Google account. <a href=\"' + loginInfo.url + '\">Log out</a>.';
+    } else {
+      loginEl.innerHTML = '<a href=\"' + loginInfo.url + '\">Login</a> to create your account.';
     }
   });
 }
