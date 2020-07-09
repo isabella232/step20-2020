@@ -45,16 +45,4 @@ public class NewLiveStreamServlet extends HttpServlet {
 
     response.sendRedirect("/create-live-stream.html");
   }
-
-  /** Gets the unique YouTube video ID from the video's URL.
-      Note: accounts for a generic format. Will not work for
-      shortened URLs without a '=' character. */
-  public void idFromUrl(String url) {
-    return url.split("v=")[1];
-  }
-
-  /** Gets the startTime and endTime of the YouTube video with the given ID. */
-  public void getVideoInfo() {
-
-  }
 }
