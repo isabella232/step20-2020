@@ -33,10 +33,10 @@ public class Recipe {
   public Recipe(Recipe recipe) {
     this.name = recipe.name;
     this.description = recipe.description;
-    this.tags = recipe.tags;
-    this.ingredients = recipe.ingredients;
-    this.steps = recipe.steps;
-    this.spinOffs = recipe.spinOffs;
+    this.tags = new HashSet<String>(recipe.tags);
+    this.ingredients = new HashSet<String>(recipe.ingredients);
+    this.steps = new LinkedList<Step>(recipe.steps);
+    this.spinOffs = new LinkedList<>();
   }
   
   /** Default constructor called when creating a new recipe. */
