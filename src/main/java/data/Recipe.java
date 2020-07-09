@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+package com.google.sps.data;
+
+import java.util.Set;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.*;
@@ -21,11 +25,11 @@ import java.util.Iterator;
 public class Recipe {
 
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
+  
   private String name;
   private String description;
-  private List<String> tags;
-  private List<String> ingredients;
+  private Set<String> tags;
+  private Set<String> ingredients;
   private List<Step> steps;
   private List<SpinOff> spinOffs;
 
@@ -36,10 +40,12 @@ public class Recipe {
     this.tags = new HashSet<String>(recipe.tags);
     this.ingredients = new HashSet<String>(recipe.ingredients);
     this.steps = new LinkedList<Step>(recipe.steps);
-    this.spinOffs = new LinkedList<>();
+    this.spinOffs = new LinkedList<SpinOff>();
   }
   
-  /** Default constructor called when creating a new recipe. */
+  /**
+   * Default constructor called when creating a new recipe.
+   */
   public Recipe(String name, String description, List<String> tags, List<String> ingredients, List<Step> steps) {
     this.name = name;
     this.description = description;
