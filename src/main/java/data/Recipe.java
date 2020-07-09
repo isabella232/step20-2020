@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+package com.google.sps.data;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.*;
@@ -23,14 +25,14 @@ import java.util.Iterator;
 public class Recipe {
 
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
+  
   private String name;
   private String description;
   private List<String> tags;
   private List<String> ingredients;
   private List<Step> steps;
   private List<SpinOff> spinOffs;
-
+ 
   /**
    * Copy constructor called when creating spin-offs.
    */
