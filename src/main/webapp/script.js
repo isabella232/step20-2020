@@ -17,10 +17,10 @@ function getSignInLink() {
   fetch('/sign-in').then(response => response.json()).then(info => {
     const linkEl = document.getElementById('link');
     if(info.status) {
-      linkEl.innerHTML = 'Sign out <a href=\"' + info.url + '\">here</a>.';
+      linkEl.innerHTML = '<a href=\"' + info.url + '\">Sign out</a>.';
     }
     else {
-      linkEl.innerHTML = 'Sign in <a href=\"' + info.url + '\">here</a>.';
+      linkEl.innerHTML = '<a href=\"' + info.url + '\">Sign in</a>.';
     }
   });
 }

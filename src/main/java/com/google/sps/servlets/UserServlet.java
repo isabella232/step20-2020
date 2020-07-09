@@ -71,8 +71,7 @@ public final class UserServlet extends HttpServlet {
 
       if (userService.isUserLoggedIn()) {
         isCurrentUser = id.equals(userService.getCurrentUser().getUserId());
-      }
-      else {
+      } else {
         isCurrentUser = false;
       }
 
@@ -83,8 +82,7 @@ public final class UserServlet extends HttpServlet {
 
       response.setContentType("application/json");
       response.getWriter().println(gson.toJson(user));
-    }
-    catch (EntityNotFoundException e) {
+    } catch(EntityNotFoundException e) {
       throw new IOException("Entity not found.");
     }
   }
@@ -103,6 +101,7 @@ public final class UserServlet extends HttpServlet {
     String bio = request.getParameter("bio-input");
 
     Key userKey = KeyFactory.createKey("User", id);
+
     if (profilePictureUrl == null) {
       try {
         Entity originalEntity = datastore.get(userKey);
