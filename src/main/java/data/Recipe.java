@@ -41,6 +41,8 @@ public class Recipe {
     this.tags = recipe.tags;
     this.ingredients = recipe.ingredients;
     this.description = recipe.description;
+    this.tags = recipe.tags;
+    this.ingredients = recipe.ingredients;
     this.steps = recipe.steps;
     this.spinOffs = recipe.spinOffs;
   }
@@ -51,6 +53,8 @@ public class Recipe {
     this.tags = tags;
     this.ingredients = ingredients;
     this.description = description;
+    this.tags = tags;
+    this.ingredients = ingredients;
     this.steps = steps;
     this.spinOffs = new HashSet<>();
   }

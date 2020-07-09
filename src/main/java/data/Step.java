@@ -29,4 +29,9 @@ public class Step {
     return instruction;
   }
 
+  @Override
+  public boolean equals(Object other) {
+    return other instanceof Step && instruction.equals(((Step) other).getInstruction());
+  }
+
 }
