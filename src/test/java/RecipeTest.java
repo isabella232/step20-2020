@@ -246,7 +246,10 @@ public final class RecipeTest {
   @Test
   public void removeSpinOff() {
     Set<SpinOff> expected = new HashSet<SpinOff>();
-    recipe.removeSpinOff(SPINOFF);
+    
+    //The SpinOff constructor automatically adds the SpinOff to the recipe's list.
+    SpinOff spinOff = new SpinOff(recipe);
+    recipe.removeSpinOff(spinOff);
     Assert.assertEquals(expected, recipe.getSpinOffs());
   }
 
