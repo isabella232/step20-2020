@@ -35,8 +35,6 @@ public final class RecipeTest {
       new Step("Melt the cheese"),
       new Step("Put the cheese in the bread")
   );
-  private static final Recipe spinOff = new Recipe("Spicy grilled cheese", "it's hot", TAGS, INGREDIENTS, STEPS);
-  private static final SpinOff SPINOFF = new SpinOff(spinOff);
   private Recipe recipe;
 
   @Before
@@ -246,8 +244,9 @@ public final class RecipeTest {
 
   @Test
   public void addSpinOff() {
-    Set<SpinOff> expected = new HashSet<>(Arrays.asList(SPINOFF));
-    recipe.addSpinOff(SPINOFF);
+    SpinOff spinOff = new SpinOff(recipe);
+    Set<SpinOff> expected = new HashSet<>(Arrays.asList(spinOff));
+    recipe.addSpinOff(spinOff);
     Assert.assertEquals(expected, recipe.getSpinOffs());
   }
 
