@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+package com.google.sps.data;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -25,7 +27,7 @@ import java.util.Iterator;
 public class Recipe {
 
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
+  
   private String name;
   private String description;
   private Set<String> tags;

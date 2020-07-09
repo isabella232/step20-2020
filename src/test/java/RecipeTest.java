@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Arrays;
+import java.util.HashSet;
+import com.google.sps.data.Recipe;
+import com.google.sps.data.Step;
 
 @RunWith(JUnit4.class)
 public final class RecipeTest {
@@ -136,7 +139,7 @@ public final class RecipeTest {
         new Step("Melt the cheese"),
         new Step("Put the cheese in the bread")
     );
-
+    
     recipe.removeStep(0);
     Assert.assertEquals(expectedSteps, recipe.getSteps());
   }
