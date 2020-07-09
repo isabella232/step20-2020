@@ -101,6 +101,7 @@ public final class UserServlet extends HttpServlet {
     String bio = request.getParameter("bio-input");
 
     Key userKey = KeyFactory.createKey("User", id);
+
     if (profilePictureUrl == null) {
       try {
         Entity originalEntity = datastore.get(userKey);
