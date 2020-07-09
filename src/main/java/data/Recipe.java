@@ -39,6 +39,8 @@ public class Recipe {
   public Recipe(Recipe recipe) {
     this.name = recipe.name;
     this.description = recipe.description;
+    this.tags = recipe.tags;
+    this.ingredients = recipe.ingredients;
     this.steps = recipe.steps;
     this.spinOffs = recipe.spinOffs;
   }
