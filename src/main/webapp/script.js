@@ -105,6 +105,7 @@ function signInFailMessage() {
     const messageEl = document.getElementById('fail-message');
     messageEl.classList.remove('hidden');
   }
+}
 
 /** Fetches tasks from the server and adds them to the DOM. */
 function loadComments() {
