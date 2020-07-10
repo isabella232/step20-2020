@@ -25,17 +25,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet responsible for creating new comments. */
+/** Servlet responsible for creating new livestreams. */
 @WebServlet("/new-live-stream")
 public class NewLiveStreamServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // getUserInfo
     String recipeKey = request.getParameter("recipe-selection");
     String link = request.getParameter("live-stream-link");
 
-    // getVideoInfo
     Entity liveStreamEntity = new Entity("LiveStream");
     liveStreamEntity.setProperty("recipe-key", recipeKey);
     liveStreamEntity.setProperty("link", link);
