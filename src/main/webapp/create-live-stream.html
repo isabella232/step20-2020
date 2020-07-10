@@ -9,6 +9,8 @@
   </head>
  
   <body>
+    <button onclick="authenticate().then(loadClient)">Authorize</button>
+
     <form method="POST" action="/new-live-stream" class="form-group">
       <h4>1.</h4>
       <div class="form-group">
@@ -22,7 +24,8 @@
       <h4>2.</h4>
       <label for="live-stream-link">Link to your live stream:</label>
       <input type="url" id="live-stream-link" name="live-stream-link">
-      <button type="submit" class="btn btn-primary" onclick="return storeLiveStreamInfo();">Submit</button>
     </form>
+
+    <button onclick="execute(getId())">Submit</button>
   </body>
 </html>
