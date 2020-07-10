@@ -8,11 +8,8 @@ function getOriginalRecipe() {
 }
 
 function populateRecipeCreationForm(recipe) {
-  var name = document.getElementById("name");
-  name.value = recipe.name;
-
-  var description = document.getElementById("description");
-  description.value = recipe.description;
+  document.getElementById("name").value = recipe.name;
+  document.getElementById("description").value = recipe.description;
 
   populateFormComponent("tag", recipe.tags);
   populateFormComponent("ingredient", recipe.ingredients);
