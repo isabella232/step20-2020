@@ -12,11 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//Shef image source: https://i.kym-cdn.com/photos/images/newsfeed/001/696/371/637.png
+package shef.data;
+ 
+/** A user's comment, with corresponding user info. */
+public class UserComment {
+  long id;
+  String comment;
+  long timestamp;
 
-# Shef
-## Recipe sharing made fun
-
-Welcome to Shef! Run ```mvn package appengine:run``` to get Sheffin'!
-
-![Shef](https://github.com/googleinterns/step20-2020/blob/UpdateReadme/src/main/webapp/assets/images/shef.png "Shef")
+ /**
+  * @param id The entity's id.
+  * @param comment The user's comment.
+  * @param timestamp The time at which the comment was submitted.
+  */
+  public UserComment(long id, String comment, long timestamp) {
+      this.id = id;
+      this.comment = comment;
+      this.timestamp = timestamp;
+  }
+}   
