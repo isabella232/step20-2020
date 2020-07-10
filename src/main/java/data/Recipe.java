@@ -14,6 +14,8 @@
 
 package com.google.sps.data;
 
+import java.util.Set;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -21,9 +23,7 @@ import java.util.HashSet;
 import java.util.logging.*;
 import java.util.Iterator;
 
-/**
- * Stores a recipe's data.
- */
+/** Stores a recipe's data. */
 public class Recipe {
 
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -43,10 +43,10 @@ public class Recipe {
     this.tags = recipe.tags;
     this.ingredients = recipe.ingredients;
     this.description = recipe.description;
-    this.tags = recipe.tags;
-    this.ingredients = recipe.ingredients;
-    this.steps = recipe.steps;
-    this.spinOffs = recipe.spinOffs;
+    this.tags = new HashSet<String>(recipe.tags);
+    this.ingredients = new HashSet<String>(recipe.ingredients);
+    this.steps = new LinkedList<Step>(recipe.steps);
+    this.spinOffs = new LinkedList<SpinOff>();
   }
 
   /** Default constructor called when creating a new recipe. */
