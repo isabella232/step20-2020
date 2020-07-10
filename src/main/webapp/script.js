@@ -94,6 +94,7 @@ function createListElement(item) {
   const liElement = document.createElement('li');
   liElement.innerHTML = '<a href=\"' + item.profilePageUrl + '\">' + item.username + '</a>';
   return liElement;
+}
 
 /** Fetches tasks from the server and adds them to the DOM. */
 function loadComments() {
@@ -115,5 +116,4 @@ function createCommentElement(comment) {
 
   commentElement.appendChild(userComment);
   return commentElement;
-
 }
