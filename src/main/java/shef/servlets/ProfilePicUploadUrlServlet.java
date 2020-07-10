@@ -12,35 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps.servlets;
+package shef.servlets;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns a sign-in or sign-out URL. */
-@WebServlet("/sign-in")
-public class SignInServlet extends HttpServlet {
+/** Servlet that returns the Blobstore upload url for profile pictures. */
+@WebServlet("/profile-pic-upload-url")
+public class ProfilePicUploadUrlServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+    String uploadUrl = blobstoreService.createUploadUrl("/user");
 
-    UserService userService = UserServiceFactory.getUserService();
-    String json;
-
-    if (userService.isUserLoggedIn()) {
-      String signOutUrl = userService.createLogoutURL("/sign-in-test.html");
-      json = "{ \"status\": true, \"url\": \"" + signOutUrl + "\" }";
-    } else {
-      String signInUrl = userService.createLoginURL("/user-list-test.html");
-      json = "{ \"status\": false, \"url\": \"" + signInUrl + "\" }";
-    }
-
-    response.setContentType("application/json");
-    response.getWriter().println(json);
+    response.setContentType("text/html");
+    response.getWriter().println(uploadUrl);
   }
 }
