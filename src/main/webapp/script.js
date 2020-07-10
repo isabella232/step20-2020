@@ -59,7 +59,6 @@ var gapi = window.gapi = window.gapi || {};
 gapi._bs = new Date().getTime();
 (function() {
     /*
-
      Copyright The Closure Library Authors.
      SPDX-License-Identifier: Apache-2.0
     */
@@ -738,7 +737,7 @@ function execute(videoId) {
     ]
   })
       .then(function(response) {
-              // Handle the results here (response.result has the parsed body).
+              // Handle results here (response.result has the parsed body).
               console.log("Response", response);
             },
             function(err) { console.error("Execute error", err); });
