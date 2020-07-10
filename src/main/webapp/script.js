@@ -33,3 +33,18 @@ function createCommentElement(comment) {
   commentElement.appendChild(userComment);
   return commentElement;
 }
+
+function storeLiveStreamInfo() {
+  const liveStreamLink = document.getElementById('live-stream-link').value;
+  const liveStreamId = getIdFromUrl(liveStreamLink);
+  const recipeSelection = document.getElementById('recipe-selection-input');
+  const recipeKey = recipeSelection.options[recipeSelection.selectedIndex].text;
+  return false;
+}
+
+/** Get the ID of a YouTube video from its URL.
+    Will work only for a URL of a certain format
+    (i.e. youtube.com/watch?v=). */
+function getIdFromUrl(url) {
+  return url.substring(url.lastIndexOf('=') + 1);
+}
