@@ -12,11 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//Shef image source: https://i.kym-cdn.com/photos/images/newsfeed/001/696/371/637.png
+package shef.data;
 
-# Shef
-## Recipe sharing made fun
+import java.util.ArrayList;
 
-Welcome to Shef! Run ```mvn package appengine:run``` to get Sheffin'!
+/** Class representing a user. */
+public class User {
 
-![Shef](https://github.com/googleinterns/step20-2020/blob/UpdateReadme/src/main/webapp/assets/images/shef.png "Shef")
+    // String representation of the key from Datastore.
+    private String id;
+    private String email;
+    private String username;
+
+    public User(String id, String email, String username) {
+      this.id = id;
+      this.email = email;
+      this.username = username;
+    }
+}

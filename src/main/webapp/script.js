@@ -32,3 +32,25 @@ function getUserData() {
     document.getElementById('info').innerHTML = 'id = ' + userInfo.id + ', email = ' + userInfo.email + ', username = ' + userInfo.username;
   });
 }
+
+/** Fetches tasks from the server and adds them to the DOM. */
+function loadComments() {
+  fetch('/display-comments').then(response => response.json()).then((comments) => {
+    const commentListElement = document.getElementById('comment-list');
+    comments.forEach((comment) => {
+      commentListElement.appendChild(createCommentElement(comment));
+    })
+  });
+}
+
+/** Creates an element that represents a comment. */
+function createCommentElement(comment) {
+  const commentElement = document.createElement('li');
+  commentElement.className = 'comment';
+
+  const userComment = document.createElement('span');
+  userComment.innerText = comment.comment;
+
+  commentElement.appendChild(userComment);
+  return commentElement;
+}

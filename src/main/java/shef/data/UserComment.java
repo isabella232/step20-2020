@@ -12,21 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps.data;
+package shef.data;
+ 
+/** A user's comment, with corresponding user info. */
+public class UserComment {
+  long id;
+  String comment;
+  long timestamp;
 
-import java.util.ArrayList;
-
-/** Class representing a user. */
-public class User {
-
-    // String representation of the key from Datastore.
-    private String id;
-    private String email;
-    private String username;
-
-    public User(String id, String email, String username) {
+ /**
+  * @param id The entity's id.
+  * @param comment The user's comment.
+  * @param timestamp The time at which the comment was submitted.
+  */
+  public UserComment(long id, String comment, long timestamp) {
       this.id = id;
-      this.email = email;
-      this.username = username;
-    }
-}
+      this.comment = comment;
+      this.timestamp = timestamp;
+  }
+}   
