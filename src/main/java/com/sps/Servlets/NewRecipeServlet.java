@@ -35,6 +35,7 @@ import java.util.LinkedList;
 import com.google.sps.data.Recipe;
 import com.google.sps.data.Step;
 
+/** POST adds new recipes to Datastore, and GET returns a Recipe to the client to create a spin-off from. */
 @WebServlet("/new-recipe")
 public class NewRecipeServlet extends HttpServlet {
 
