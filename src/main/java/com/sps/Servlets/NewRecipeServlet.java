@@ -64,7 +64,8 @@ public class NewRecipeServlet extends HttpServlet {
     }
     Recipe original = entityToRecipe(recipeEntity);
     response.setContentType("application/json;");
-    response.getWriter().println(convertToJsonUsingGson(original));  
+    Gson gson = new Gson();
+    response.getWriter().println(gson.toJson(original););  
   }
 
   @Override
@@ -137,11 +138,5 @@ public class NewRecipeServlet extends HttpServlet {
       dataAsList.add(property.getProperty(type));
     }
     return dataAsList;
-  }
-
-  private String convertToJsonUsingGson(Recipe recipe) {
-    Gson gson = new Gson();
-    String json = gson.toJson(recipe);
-    return json;
   }
 }
