@@ -18,8 +18,7 @@ function getSignInLink() {
     const linkEl = document.getElementById('link');
     if(info.status) {
       linkEl.innerHTML = '<a href=\"' + info.url + '\">Sign out</a>.';
-    }
-    else {
+    } else {
       linkEl.innerHTML = '<a href=\"' + info.url + '\">Sign in</a>.';
     }
   });
