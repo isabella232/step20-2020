@@ -68,6 +68,12 @@ public class NewRecipeServlet extends HttpServlet {
     response.getWriter().println(gson.toJson(original););  
   }
 
+  /**
+   * Posts a new recipe or spin-off to Datastore.
+   * Each POST request contains a recipe name, description, and lists of tags, ingredients, and steps.
+   * Because the number of tags, ingredients, and steps can vary from recipe to recipe,
+   * the method getParameters() is used to ensure that all of each are retrieved for each new recipe.
+   */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Collection<String> searchStrings = new HashSet<>();
@@ -114,6 +120,9 @@ public class NewRecipeServlet extends HttpServlet {
 
   /**
    * Adds a formatted search string to the set of search strings.
+   * Search strings include a recipe's name, tags, and ingredients, all in upper-case.
+   * @param searchStrings The set of search strings to add to, or null if the string shouldn't be added.
+   * @param stringToAdd The string to be added.
    */
   private void addToSearchStrings(Collection<String> searchStrings, String stringToAdd) {
     if (searchStrings == null) {
