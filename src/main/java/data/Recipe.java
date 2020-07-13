@@ -40,8 +40,6 @@ public class Recipe {
    */
   public Recipe(Recipe recipe) {
     this.name = recipe.name;
-    this.tags = recipe.tags;
-    this.ingredients = recipe.ingredients;
     this.description = recipe.description;
     this.tags = new HashSet<String>(recipe.tags);
     this.ingredients = new HashSet<String>(recipe.ingredients);
@@ -52,8 +50,6 @@ public class Recipe {
   /** Default constructor called when creating a new recipe. */
   public Recipe(String name, String description, Set<String> tags, Set<String> ingredients, List<Step> steps) {
     this.name = name;
-    this.tags = tags;
-    this.ingredients = ingredients;
     this.description = description;
     this.tags = tags;
     this.ingredients = ingredients;
