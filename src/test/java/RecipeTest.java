@@ -19,6 +19,8 @@ import org.junit.Before;
 import org.junit.Test;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Arrays;
 import java.util.HashSet;
 import com.google.sps.data.Recipe;
@@ -29,8 +31,8 @@ public final class RecipeTest {
 
   private static final String NAME = "Grilled Cheese";
   private static final String DESCRIPTION = "It's literally just melted cheese on bread";
-  private static final List<String> TAGS = new LinkedList<>();
-  private static final List<String> INGREDIENTS = new LinkedList<>();
+  private static final Set<String> TAGS = new HashSet<>(Arrays.asList("grilledcheese", "quick"));
+  private static final Set<String> INGREDIENTS = new HashSet<>(Arrays.asList("bread", "cheese", "butter"));
   private static final List<Step> STEPS = Arrays.asList(
       new Step("Toast the bread for 2 minutes"),
       new Step("Melt the cheese"),
@@ -192,6 +194,66 @@ public final class RecipeTest {
   @Test(expected = IndexOutOfBoundsException.class)
   public void removeStepFailureTooLow() {
     recipe.removeStep(-10);
+  }
+
+  @Test
+  public void addTag() {
+    Set<String> expected = new HashSet<>(Arrays.asList("grilledcheese", "quick", "cheese"));
+    recipe.addTag("cheese");
+    Assert.assertEquals(expected, recipe.getTags());
+  }
+
+  @Test
+  public void removeTag() {
+    Set<String> expected = new HashSet<>(Arrays.asList("grilledcheese"));
+    recipe.removeTag("quick");
+    Assert.assertEquals(expected, recipe.getTags());
+  }
+
+  @Test
+  public void removeNonexistentTag() {
+    Set<String> expected = new HashSet<>(Arrays.asList("grilledcheese", "quick"));
+    recipe.removeTag("chicken");
+    Assert.assertEquals(expected, recipe.getTags());
+  }
+
+  @Test
+  public void addIngredient() {
+    Set<String> expected = new HashSet<>(Arrays.asList("bread", "cheese", "butter", "oil"));
+    recipe.addIngredient("oil");
+    Assert.assertEquals(expected, recipe.getIngredients());
+  }
+
+  @Test
+  public void removeIngredient() {
+    Set<String> expected = new HashSet<>(Arrays.asList("cheese", "butter"));
+    recipe.removeIngredient("bread");
+    Assert.assertEquals(expected, recipe.getIngredients());
+  }
+
+  @Test
+  public void removeNonexistentIngredient() {
+    Set<String> expected = new HashSet<>(Arrays.asList("bread", "cheese", "butter"));
+    recipe.removeIngredient("chicken");
+    Assert.assertEquals(expected, recipe.getIngredients());
+  }
+
+  @Test
+  public void addSpinOff() {
+    SpinOff spinOff = new SpinOff(recipe);
+    Set<SpinOff> expected = new HashSet<>(Arrays.asList(spinOff));
+    recipe.addSpinOff(spinOff);
+    Assert.assertEquals(expected, recipe.getSpinOffs());
+  }
+
+  @Test
+  public void removeSpinOff() {
+    Set<SpinOff> expected = new HashSet<SpinOff>();
+    
+    //The SpinOff constructor automatically adds the SpinOff to the recipe's list.
+    SpinOff spinOff = new SpinOff(recipe);
+    recipe.removeSpinOff(spinOff);
+    Assert.assertEquals(expected, recipe.getSpinOffs());
   }
 
   @Test 

@@ -18,6 +18,8 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.logging.*;
 import java.util.Iterator;
 
@@ -31,9 +33,11 @@ public class Recipe {
   private Set<String> tags;
   private Set<String> ingredients;
   private List<Step> steps;
-  private List<SpinOff> spinOffs;
+  private Set<SpinOff> spinOffs;
 
-  /** Copy constructor called when creating spin-offs. */
+  /**
+   * Copy constructor called when creating spin-offs.
+   */
   public Recipe(Recipe recipe) {
     this.name = recipe.name;
     this.description = recipe.description;
@@ -42,17 +46,15 @@ public class Recipe {
     this.steps = new LinkedList<Step>(recipe.steps);
     this.spinOffs = new LinkedList<SpinOff>();
   }
-  
-  /**
-   * Default constructor called when creating a new recipe.
-   */
-  public Recipe(String name, String description, List<String> tags, List<String> ingredients, List<Step> steps) {
+
+  /** Default constructor called when creating a new recipe. */
+  public Recipe(String name, String description, Set<String> tags, Set<String> ingredients, List<Step> steps) {
     this.name = name;
     this.description = description;
     this.tags = tags;
     this.ingredients = ingredients;
     this.steps = steps;
-    this.spinOffs = new LinkedList<>();
+    this.spinOffs = new HashSet<>();
   }
 
   /** Gets the recipe's name. */
@@ -76,13 +78,48 @@ public class Recipe {
   }
 
   /** Gets the recipe's tags. */
-  public List<String> getTags() {
+  public Set<String> getTags() {
     return tags;
   }
 
   /** Gets the recipe's ingredients. */
-  public List<String> getIngredients() {
+  public Set<String> getIngredients() {
     return ingredients;
+  }
+
+  /** Gets the recipe's spin-offs. */
+  public Set<SpinOff> getSpinOffs() {
+    return spinOffs;
+  }
+
+  /** Adds a tag to the recipe. */
+  public void addTag(String tag) {
+    tags.add(tag);
+  }
+
+  /** Adds an ingredient to the recipe. */
+  public void addIngredient(String ingredient) {
+    ingredients.add(ingredient);
+  }
+
+  /** Adds a spin-off to the recipe. */
+  public void addSpinOff(SpinOff spinOff) {
+    spinOffs.add(spinOff);
+  }
+
+  /** Removes a tag from the recipe. */
+  public void removeTag(String tag) {
+    tags.remove(tag);
+  }
+
+  /** Removes an ingredient from the recipe. */
+  public void removeIngredient(String ingredient) {
+    ingredients.remove(ingredient);
+  }
+
+  /** Removes a spin-off from the recipe. */
+  public void removeSpinOff(SpinOff spinOff) {
+    spinOffs.remove(spinOff);
   }
 
   /** Appends a new step to a recipe's list of steps. */
@@ -157,11 +194,6 @@ public class Recipe {
   @Override
   public boolean equals(Object other) {
     return other instanceof Recipe && equals(this, (Recipe) other);
-  }
-
-  /** Adds a spin-off to the recipe's list of spin-offs. */
-  protected void addSpinOff(SpinOff spinOff) {
-    spinOffs.add(spinOff);
   }
 
   /**
