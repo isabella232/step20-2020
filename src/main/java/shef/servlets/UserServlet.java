@@ -72,11 +72,7 @@ public final class UserServlet extends HttpServlet {
       String location = (String) userEntity.getProperty("location");
       String imageUrl = (String) userEntity.getProperty("profile-picture-url");
       String bio = (String) userEntity.getProperty("bio");
-      boolean isCurrentUser;
-
-      // ID is referred to as "Name" in Datastore.
-      String id = (String) userKey.getName();
-      isCurrentUser = id.equals(userService.getCurrentUser().getUserId());
+      boolean isCurrentUser = id.equals(userService.getCurrentUser().getUserId());
 
       User user = new User(keyString, email, username, location, imageUrl, bio, isCurrentUser);
 
