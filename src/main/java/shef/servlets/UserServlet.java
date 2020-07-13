@@ -65,6 +65,8 @@ public final class UserServlet extends HttpServlet {
 
     try {
       Entity userEntity = datastore.get(userKey);
+      // Since we chose to store the id as a string in Datastore, it is referred to as "name".
+      String id = (String) userKey.getName();
       String email = (String) userEntity.getProperty("email");
       String username = (String) userEntity.getProperty("username");
       String location = (String) userEntity.getProperty("location");
