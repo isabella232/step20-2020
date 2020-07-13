@@ -12,43 +12,52 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Set the link for the sign-in page.
+// Set the sign-in link for the sign-in page.
 function getSignInLink() {
   fetch('/sign-in').then(response => response.json()).then(info => {
-    const linkEl = document.getElementById('link');
-    if(info.status) {
-      linkEl.innerHTML = '<a href=\"' + info.url + '\">Sign out</a>.';
-    }
-    else {
-      linkEl.innerHTML = '<a href=\"' + info.url + '\">Sign in</a>.';
-    }
+    const linkEl = document.getElementById('sign-in-button');
+    linkEl.href = info.url;
   });
+}
+
+// Show sign-in fail message if appropriate.
+function signInFailMessage() {
+  var url = window.location.href;
+  var status = url.split('=')[1];
+  console.log('status: ' + status);
+
+  if(status === 'fail') {
+    document.getElementById('fail-message').classList.remove('d-none');
+    document.getElementById('normal-title').classList.add('d-none');
+    document.getElementById('normal-message').classList.add('d-none');
+  }
 }
 
 // Set the sign-up link for the sign-up page.
 function getSignUpLink() {
   fetch('/sign-up').then(response => response.text()).then(link => {
-    const linkEl = document.getElementById('sign-up-link');
-    linkEl.innerHTML = 'Sign up <a href=\"' + link + '\">here</a>.';
+    const linkEl = document.getElementById('sign-up-button');
+    linkEl.href = link;
   });
 }
 
 // Get a specific user's data to populate their profile page.
-function getUserData() {
+function getProfilePageData() {
   var url = window.location.href;
   var key = url.split('?')[1];
 
   fetch('/user?' + key).then(response => response.json()).then(userInfo => {
-    document.getElementById('info').innerHTML = 'Email: ' + userInfo.email + '<br> Name: ' + userInfo.username + '<br> Location: ' + userInfo.location + '<br> Bio: ' + userInfo.bio;
-    document.getElementById('profile-pic').src = userInfo.profilePicUrl;
+    document.getElementById('profile-picture').src = userInfo.profilePictureUrl;
+    document.getElementById('username').innerHTML = userInfo.username;
+    document.getElementById('location').innerHTML = userInfo.location;
+    document.getElementById('bio').innerHTML = userInfo.bio;
 
     document.getElementById('username-input').innerHTML = userInfo.username;
     document.getElementById('location-input').innerHTML = userInfo.location;
     document.getElementById('bio-input').innerHTML = userInfo.bio;
 
-    const buttonEl = document.getElementById('edit-button');
     if(!userInfo.isCurrentUser) {
-      buttonEl.classList.add('hidden');
+      document.getElementById('edit-button').classList.add('d-none');
     }
   });
 }
@@ -63,47 +72,19 @@ function fetchBlobstoreUrl() {
 
 // Enables or disables the editable form in the profile page.
 function toggleProfileEditMode() {
-  const staticEl = document.getElementById('static');
-  const editableEl = document.getElementById('editable');
+  const staticEl = document.getElementById('static-user-info');
+  const editableEl = document.getElementById('user-form');
   const buttonEl = document.getElementById('edit-button');
 
-  if(staticEl.classList.contains('hidden')) {
-    staticEl.classList.remove('hidden');
-    editableEl.classList.add('hidden');
+  if(staticEl.classList.contains('d-none')) {
+    staticEl.classList.remove('d-none');
+    editableEl.classList.add('d-none');
     buttonEl.innerHTML = 'Edit Profile';
   }
   else {
-    staticEl.classList.add('hidden');
-    editableEl.classList.remove('hidden');
+    staticEl.classList.add('d-none');
+    editableEl.classList.remove('d-none');
     buttonEl.innerHTML = 'Back';
-  }
-}
-
-// Creates the list of users on the user-list-test page.
-function getUserProfileLinks() {
-  fetch('/user-list').then(response => response.json()).then(infoList => {
-    const userList = document.getElementById('user-list');
-    infoList.forEach(item => {
-      userList.appendChild(createListElement(item));
-    });
-  });
-}
-
-// Creates an <li> element containing a link to a user's profile page.
-function createListElement(item) {
-  const liElement = document.createElement('li');
-  liElement.innerHTML = '<a href=\"' + item.profilePageUrl + '\">' + item.username + '</a>';
-  return liElement;
-}
-
-// Show fail message if appropriate.
-function signInFailMessage() {
-  var url = window.location.href;
-  var status = url.split('=')[1];
-
-  if(status === 'fail') {
-    const messageEl = document.getElementById('fail-message');
-    messageEl.classList.remove('hidden');
   }
 }
 
@@ -127,4 +108,24 @@ function createCommentElement(comment) {
 
   commentElement.appendChild(userComment);
   return commentElement;
+}
+
+// Sets up the navbar for any page.
+function navBarSetup() {
+  fetch('/sign-in').then(response => response.json()).then(info => {
+    console.log('Signed in: ' + info.status);
+    if(info.status) {
+      document.getElementById('navbar-dropdown').classList.remove('d-none');
+      document.getElementById('sign-in-button').classList.add('d-none');
+      document.getElementById('sign-out-link').href = info.url;
+      getProfilePicture();
+    }
+  });
+}
+
+// Gets the profile picture for the navbar
+function getProfilePicture() {
+  fetch('/user').then(response => response.json()).then(userInfo => {
+    document.getElementById('profile-picture').src = userInfo.profilePictureUrl;
+  });
 }

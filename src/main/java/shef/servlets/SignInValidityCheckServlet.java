@@ -45,10 +45,10 @@ public class SignInValidityCheckServlet extends HttpServlet {
         // Check if the Google account used for attempted log-in is already an entry in Datastore.
         Key key = KeyFactory.createKey("User", userService.getCurrentUser().getUserId());
         Entity currentUser = datastore.get(key);
-        response.sendRedirect("/user-list-test.html");
+        response.sendRedirect("/index.html");
       } catch(EntityNotFoundException e) {
         // Forcibly log out the user.
-        String signOutUrl = userService.createLogoutURL("/sign-in-test.html?status=fail");
+        String signOutUrl = userService.createLogoutURL("/signin-0.html?status=fail");
         response.sendRedirect(signOutUrl);        
       }
     }

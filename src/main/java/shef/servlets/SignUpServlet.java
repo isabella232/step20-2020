@@ -30,7 +30,7 @@ public class SignUpServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
     UserService userService = UserServiceFactory.getUserService();
-    String urlToRedirectTo = "/account-creation-test.html";
+    String urlToRedirectTo = "/account-creation.html";
     String signUpUrl = userService.createLoginURL(urlToRedirectTo);
 
     response.setContentType("text/html");
