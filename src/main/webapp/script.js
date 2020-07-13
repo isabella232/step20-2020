@@ -34,7 +34,6 @@ class ParameterInput extends HTMLElement {
     this.textArea.name = paramName;
 
     this.button.onclick = event => {
-      console.log('new parameter will have index ' + (this.index+1));
       var newParameter = createParameterInput(this.name, this.index + 1);
       insertParameterInput(this, newParameter);
     }
@@ -71,7 +70,6 @@ function createParameterInput(name, index) {
   newParameter.setAttribute('name', name);
   newParameter.setAttribute('index', index);
   newParameter.setAttribute('id', name + index);
-  console.log(newParameter.position);
   return newParameter;
 }
 
@@ -90,11 +88,6 @@ function updateIndeces(fieldName, startIndex) {
   for (var i = startIndex; i < parameters.length; i++) {
     parameters[i].position = i;
     parameters[i].setIndexAttributes();
-  }
-  for (var i = 0; i < parameters.length; i++) {
-    console.log('parameter label: ' + parameters[i].label.innerText);
-    console.log('parameter textarea name: ' + parameters[i].textArea.name);
-    console.log('parameter id: ' + parameters[i].id);
   }
 }
 
@@ -116,7 +109,6 @@ function populateRecipeCreationForm(recipe) {
 }
 
 function populateFormField(fieldName, data) {
-  console.log(data);
   for (var i = 0; i < data.length; i++) {
     var parameter = document.getElementById(fieldName + i);
     if (parameter !== null) {
