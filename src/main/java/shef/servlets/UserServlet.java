@@ -72,13 +72,9 @@ public final class UserServlet extends HttpServlet {
       String bio = (String) userEntity.getProperty("bio");
       boolean isCurrentUser;
 
-      if (userService.isUserLoggedIn()) {
-        // ID is referred to as "Name" in Datastore.
-        String id = (String) userKey.getName();
-        isCurrentUser = id.equals(userService.getCurrentUser().getUserId());
-      } else {
-        isCurrentUser = false;
-      }
+      // ID is referred to as "Name" in Datastore.
+      String id = (String) userKey.getName();
+      isCurrentUser = id.equals(userService.getCurrentUser().getUserId());
 
       User user = new User(keyString, email, username, location, imageUrl, bio, isCurrentUser);
 
@@ -104,43 +100,31 @@ public final class UserServlet extends HttpServlet {
     String location = request.getParameter("location-input");
     String profilePictureUrl = getUploadedFileUrl(request, "profile-pic-upload");
     String bio = request.getParameter("bio-input");
+    String[] parameters = { email, username, location, profilePictureUrl, bio };
+    String[] names = { "email", "username", "location", "profile-picture-url", "bio" };
 
     Key userKey = KeyFactory.createKey("User", id);
     String keyString = KeyFactory.keyToString(userKey);
 
     try {
-      // If updating an existing user, just update the changed fields.
       Entity user = datastore.get(userKey);
-      if(email != null) {
-        user.setProperty("email", email);
+      // If updating an existing user, just update the changed fields.
+      for(int i = 0; i < parameters.length; i++) {
+        if(parameters[i] != null) {
+          user.setProperty(names[i], parameters[i]);
+        }
       }
-      if(username != null) {
-        user.setProperty("username", username);
-      }
-      if(location != null) {
-        user.setProperty("location", location);
-      }
-      if(profilePictureUrl != null) {
-        user.setProperty("profile-picture-url", profilePictureUrl);
-      }
-      if(bio != null) {
-        user.setProperty("bio", bio);
-      }
-
       // Store the User entity in Datastore.
       datastore.put(user);
       response.sendRedirect("/profile-page.html?key=" + keyString);
     } catch (EntityNotFoundException e) {
       // Create a new User entity with data from the request.
-      Entity userEntity = new Entity(userKey);
-      userEntity.setProperty("email", email);
-      userEntity.setProperty("username", username);
-      userEntity.setProperty("location", location);
-      userEntity.setProperty("profile-picture-url", profilePictureUrl);
-      userEntity.setProperty("bio", bio);
-
+      Entity user = new Entity(userKey);
+      for(int i = 0; i < parameters.length; i++) {
+        user.setProperty(names[i], parameters[i]);
+      }
       // Store the User entity in Datastore.
-      datastore.put(userEntity);
+      datastore.put(user);
       response.sendRedirect("/account-creation-finish.html?key=" + keyString); 
     }
   }

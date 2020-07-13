@@ -24,7 +24,6 @@ function getSignInLink() {
 function signInFailMessage() {
   var url = window.location.href;
   var status = url.split('=')[1];
-  console.log('status: ' + status);
 
   if(status === 'fail') {
     document.getElementById('fail-message').classList.remove('d-none');
@@ -113,7 +112,6 @@ function createCommentElement(comment) {
 // Sets up the navbar for any page.
 function navBarSetup() {
   fetch('/sign-in').then(response => response.json()).then(info => {
-    console.log('Signed in: ' + info.status);
     if(info.status) {
       document.getElementById('navbar-dropdown').classList.remove('d-none');
       document.getElementById('sign-in-button').classList.add('d-none');
