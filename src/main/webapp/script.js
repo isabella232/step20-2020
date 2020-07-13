@@ -18,8 +18,7 @@ function getSignInLink() {
     const linkEl = document.getElementById('link');
     if(info.status) {
       linkEl.innerHTML = '<a href=\"' + info.url + '\">Sign out</a>.';
-    }
-    else {
+    } else {
       linkEl.innerHTML = '<a href=\"' + info.url + '\">Sign in</a>.';
     }
   });
@@ -94,6 +93,17 @@ function createListElement(item) {
   const liElement = document.createElement('li');
   liElement.innerHTML = '<a href=\"' + item.profilePageUrl + '\">' + item.username + '</a>';
   return liElement;
+}
+
+// Show fail message if appropriate.
+function signInFailMessage() {
+  var url = window.location.href;
+  var status = url.split('=')[1];
+
+  if(status === 'fail') {
+    const messageEl = document.getElementById('fail-message');
+    messageEl.classList.remove('hidden');
+  }
 }
 
 /** Fetches tasks from the server and adds them to the DOM. */
