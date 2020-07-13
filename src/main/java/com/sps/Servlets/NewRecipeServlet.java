@@ -63,7 +63,7 @@ public class NewRecipeServlet extends HttpServlet {
     Recipe original = entityToRecipe(recipeEntity);
     response.setContentType("application/json;");
     Gson gson = new Gson();
-    response.getWriter().println(gson.toJson(original););  
+    response.getWriter().println(gson.toJson(original));  
   }
 
   /**
