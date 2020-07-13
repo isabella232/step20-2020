@@ -35,6 +35,7 @@ import java.util.LinkedList;
 import com.google.sps.data.Recipe;
 import com.google.sps.data.Step;
 
+/** POST adds new recipes to Datastore, and GET returns a Recipe to the client to create a spin-off from. */
 @WebServlet("/new-recipe")
 public class NewRecipeServlet extends HttpServlet {
 
@@ -63,9 +64,16 @@ public class NewRecipeServlet extends HttpServlet {
     }
     Recipe original = entityToRecipe(recipeEntity);
     response.setContentType("application/json;");
-    response.getWriter().println(convertToJsonUsingGson(original));  
+    Gson gson = new Gson();
+    response.getWriter().println(gson.toJson(original););  
   }
 
+  /**
+   * Posts a new recipe or spin-off to Datastore.
+   * Each POST request contains a recipe name, description, and lists of tags, ingredients, and steps.
+   * Because the number of tags, ingredients, and steps can vary from recipe to recipe,
+   * the method getParameters() is used to ensure that all of each are retrieved for each new recipe.
+   */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Collection<String> searchStrings = new HashSet<>();
@@ -112,6 +120,9 @@ public class NewRecipeServlet extends HttpServlet {
 
   /**
    * Adds a formatted search string to the set of search strings.
+   * Search strings include a recipe's name, tags, and ingredients, all in upper-case.
+   * @param searchStrings The set of search strings to add to, or null if the string shouldn't be added.
+   * @param stringToAdd The string to be added.
    */
   private void addToSearchStrings(Collection<String> searchStrings, String stringToAdd) {
     if (searchStrings == null) {
@@ -136,11 +147,5 @@ public class NewRecipeServlet extends HttpServlet {
       dataAsList.add(property.getProperty(type));
     }
     return dataAsList;
-  }
-
-  private String convertToJsonUsingGson(Recipe recipe) {
-    Gson gson = new Gson();
-    String json = gson.toJson(recipe);
-    return json;
   }
 }
