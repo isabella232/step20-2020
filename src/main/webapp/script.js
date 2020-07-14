@@ -6,12 +6,14 @@ class ParameterInput extends HTMLElement {
     super();
     this.label = document.createElement('label');
     this.textArea = document.createElement('textarea');
-    this.button = document.createElement('button');
+    this.addButton = document.createElement('button');
+    this.deleteButton = document.createElement('button');
     this.container = document.createElement('div');
 
     this.container.appendChild(this.label);
     this.container.appendChild(this.textArea);
-    this.container.appendChild(this.button);
+    this.container.appendChild(this.addButton);
+    this.container.appendChild(this.deleteButton);
   }
 
   /** Once the attributes for the ParameterInput exist, set its values accordingly. */
@@ -21,8 +23,10 @@ class ParameterInput extends HTMLElement {
     this.parent = this.name + 's';
 
     this.textArea.rows = '1';
-    this.button.type = 'button';
-    this.button.innerText = 'Add ' + this.name;
+    this.addButton.type = 'button';
+    this.addButton.innerText = 'Add ' + this.name;
+    this.deleteButton.type = 'button';
+    this.deleteButton.innerText = 'Delete ' + this.name;
     this.setIndexAttributes();
 
     this.appendChild(this.container);
@@ -146,9 +150,9 @@ function updateIndeces(fieldName, startIndex) {
 
 /** Gets a parent recipe's data from Datastore. */
 function getOriginalRecipe() {
-  const key = document.getElementById("key").value;
+  const key = document.getElementById('key').value;
   if (key) {
-    fetch("/new-recipe?key=" + key).then(response => response.json()).then((recipe) => {
+    fetch('/new-recipe?key=' + key).then(response => response.json()).then((recipe) => {
       populateRecipeCreationForm(recipe);
     });
   }
@@ -156,12 +160,12 @@ function getOriginalRecipe() {
 
 /** Populates the fields of the recipe editor with a parent recipe's data. */
 function populateRecipeCreationForm(recipe) {
-  document.getElementById("name").value = recipe.name;
-  document.getElementById("description").value = recipe.description;
+  document.getElementById('name').value = recipe.name;
+  document.getElementById('description').value = recipe.description;
 
-  populateFormField("tag", recipe.tags);
-  populateFormField("ingredient", recipe.ingredients);
-  populateFormField("step", recipe.steps);
+  populateFormField('Tag', recipe.tags);
+  populateFormField('Ingredient', recipe.ingredients);
+  populateFormField('Step', recipe.steps);
 }
 
 

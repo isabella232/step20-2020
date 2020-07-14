@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.LinkedHashSet;
 import com.google.sps.data.Recipe;
 import com.google.sps.data.Step;
 
@@ -65,7 +66,7 @@ public class NewRecipeServlet extends HttpServlet {
     Recipe original = entityToRecipe(recipeEntity);
     response.setContentType("application/json;");
     Gson gson = new Gson();
-    response.getWriter().println(gson.toJson(original););  
+    response.getWriter().println(gson.toJson(original));  
   }
 
   /**
@@ -140,8 +141,8 @@ public class NewRecipeServlet extends HttpServlet {
   private Recipe entityToRecipe(Entity recipeEntity) {
     String name = (String) recipeEntity.getProperty("name");
     String description = (String) recipeEntity.getProperty("description");
-    LinkedList<String> tags = (LinkedList<String>) (LinkedList<?>) getDataAsList(recipeEntity.getProperty("tags"), TAG);
-    LinkedList<String> ingredients = (LinkedList<String>) (LinkedList<?>) getDataAsList(recipeEntity.getProperty("ingredients"), INGREDIENT);
+    LinkedHashSet<String> tags = new LinkedHashSet<>((LinkedList<String>) (LinkedList<?>) getDataAsList(recipeEntity.getProperty("tags"), TAG));
+    LinkedHashSet<String> ingredients = new LinkedHashSet<>((LinkedList<String>) (LinkedList<?>) getDataAsList(recipeEntity.getProperty("ingredients"), INGREDIENT));
     LinkedList<Step> steps = (LinkedList<Step>) (LinkedList<?>) getDataAsList(recipeEntity.getProperty("steps"), STEP);
     long timestamp = (long) recipeEntity.getProperty("timestamp");
     return new Recipe(name, description, tags, ingredients, steps, timestamp);

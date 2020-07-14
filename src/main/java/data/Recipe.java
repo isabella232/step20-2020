@@ -47,7 +47,7 @@ public class Recipe {
     this.tags = new HashSet<String>(recipe.tags);
     this.ingredients = new HashSet<String>(recipe.ingredients);
     this.steps = new LinkedList<Step>(recipe.steps);
-    this.spinOffs = new LinkedList<SpinOff>();
+    this.spinOffs = new HashSet<SpinOff>();
   }
 
   /** Default constructor called when creating a new recipe. */
