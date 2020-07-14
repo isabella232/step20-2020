@@ -42,7 +42,7 @@ public final class RecipeTest {
 
   @Before
   public void setup() {
-    recipe = new Recipe(NAME, DESCRIPTION, TAGS, INGREDIENTS, new LinkedList(STEPS));
+    recipe = new Recipe(NAME, DESCRIPTION, new HashSet(TAGS), new HashSet(INGREDIENTS), new LinkedList(STEPS));
   }
 
   @Test
