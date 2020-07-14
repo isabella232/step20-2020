@@ -44,10 +44,13 @@ public class DisplayCommentsServlet extends HttpServlet {
     List<UserComment> userComments = new LinkedList<>();
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
+      String username = (String) entity.getProperty("username");
+      String location = (String) entity.getProperty("location");
       String comment = (String) entity.getProperty("comment");
       long timestamp = (long) entity.getProperty("timestamp");
+      String MMDDYYYY = (String) entity.getProperty("MMDDYYYY");
 
-      UserComment userComment = new UserComment(id, comment, timestamp);
+      UserComment userComment = new UserComment(id, username, location, secureReformat(comment), timestamp, MMDDYYYY);
       userComments.add(userComment);
     }
 
@@ -55,5 +58,14 @@ public class DisplayCommentsServlet extends HttpServlet {
 
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(userComments));
+  }
+
+ /**
+  * Reformat comments to prevent HTML and script injections.
+  * @param input Comment to reformat.
+  * @return Comment with HTML tags replaced.
+  */
+  private String secureReformat(String input) {
+    return input.replace("<", "&lt;").replace(">", "&gt;");
   }
 }

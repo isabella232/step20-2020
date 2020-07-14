@@ -24,12 +24,17 @@ function loadComments() {
 
 /** Creates an element that represents a comment. */
 function createCommentElement(comment) {
-  const commentElement = document.createElement('li');
-  commentElement.className = 'comment';
+  const commentElement = document.createElement('div');
+  commentElement.className = 'small-sep';
 
   const userComment = document.createElement('span');
-  userComment.innerText = comment.comment;
+  var userInfoDisplayed = comment.username + " • " + comment.location + " • " + comment.MMDDYYYY;
+  userComment.innerHTML += addParagraph(userInfoDisplayed) + addParagraph(comment.comment);
 
   commentElement.appendChild(userComment);
   return commentElement;
+}
+
+function addParagraph(content) {
+  return "<p>" + content + "</p>";
 }
