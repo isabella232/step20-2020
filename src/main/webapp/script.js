@@ -28,7 +28,7 @@ function createCommentElement(comment) {
   commentElement.className = 'small-sep';
 
   const userComment = document.createElement('span');
-  var userInfoDisplayed = comment.username + " • " + comment.location + " • " + comment.timestamp;
+  var userInfoDisplayed = comment.username + " • " + comment.location + " • " + comment.MMDDYYYY;
   userComment.innerHTML += addParagraph(userInfoDisplayed) + addParagraph(comment.comment);
 
   commentElement.appendChild(userComment);
