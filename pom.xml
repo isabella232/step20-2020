@@ -17,7 +17,6 @@
   </properties>
 
   <dependencies>
-
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
@@ -36,7 +35,6 @@
         <artifactId>appengine-api-1.0-sdk</artifactId>
         <version>1.9.59</version>
     </dependency>
-
   </dependencies>
 
   <build>
