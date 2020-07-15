@@ -129,25 +129,25 @@ THE SOFTWARE.-->
             <div class="col-sm-4 col-md-3 col-lg-3 text-center">
               <div id="static-user-info"> 
                 <img id="profile-picture" class="w-50 h-50 rounded-circle"></img>
-                <h1 id="username"></h1>
-                <h3 id="location"></h3>
+                <h1 id="username-display"></h1>
+                <h3 id="location-display"></h3>
                 <div class="small-sep">
-                  <p id="bio"></p>
+                  <p id="bio-display"></p>
                 </div>
               </div>
               <button id="edit-button" class="btn btn-secondary" onclick="toggleProfileEditMode()">Edit Profile</button>
               <form id="user-form" class="d-none" method="POST" enctype="multipart/form-data">
-                <label for="username-input">User Name:</label>
-                <textarea id="username-input" name="username-input" rows="1" cols="25"></textarea>
+                <label for="username">User Name:</label>
+                <textarea id="username" name="username" rows="1" cols="25"></textarea>
                 <br>
-                <label for="location-input">Location:</label>
-                <textarea id="location-input" name="location-input" rows="1" cols="25"></textarea>
+                <label for="location">Location:</label>
+                <textarea id="location" name="location" rows="1" cols="25"></textarea>
                 <br>
-                <label for="profile-pic-upload">Upload an Profile Picture:</label>
-                <input id="profile-pic-upload" type="file" name="profile-pic-upload"></input>
+                <label for="profile-pic-url">Upload an Profile Picture:</label>
+                <input id="profile-pic-url" type="file" name="profile-pic-url"></input>
                 <br>
-                <label for="bio-input">Enter a Short Description:</label>
-                <textarea id="bio-input" name="bio-input" rows="1" cols="25"></textarea>
+                <label for="bio">Enter a Short Description:</label>
+                <textarea id="bio" name="bio" rows="1" cols="25"></textarea>
                 <input type="submit" />
               </form>
               <div class="med-sep">

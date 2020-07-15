@@ -46,14 +46,14 @@ function getProfilePageData() {
   var key = url.split('?')[1];
 
   fetch('/user?' + key).then(response => response.json()).then(userInfo => {
-    document.getElementById('profile-picture').src = userInfo.profilePictureUrl;
+    document.getElementById('profile-picture').src = userInfo.profilePicUrl;
+    document.getElementById('username-display').innerHTML = userInfo.username;
+    document.getElementById('location-display').innerHTML = userInfo.location;
+    document.getElementById('bio-display').innerHTML = userInfo.bio;
+
     document.getElementById('username').innerHTML = userInfo.username;
     document.getElementById('location').innerHTML = userInfo.location;
     document.getElementById('bio').innerHTML = userInfo.bio;
-
-    document.getElementById('username-input').innerHTML = userInfo.username;
-    document.getElementById('location-input').innerHTML = userInfo.location;
-    document.getElementById('bio-input').innerHTML = userInfo.bio;
 
     if(!userInfo.isCurrentUser) {
       document.getElementById('edit-button').classList.add('d-none');
@@ -124,6 +124,6 @@ function navBarSetup() {
 // Gets the profile picture for the navbar
 function getProfilePicture() {
   fetch('/user').then(response => response.json()).then(userInfo => {
-    document.getElementById('profile-picture').src = userInfo.profilePictureUrl;
+    document.getElementById('profile-picture').src = userInfo.profilePicUrl;
   });
 }

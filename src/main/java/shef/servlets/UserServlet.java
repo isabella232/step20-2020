@@ -18,6 +18,8 @@ import shef.data.User;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.Iterator;
 import java.net.MalformedURLException;
 import java.net.URL;
 import javax.servlet.annotation.WebServlet;
@@ -70,7 +72,7 @@ public final class UserServlet extends HttpServlet {
       String email = (String) userEntity.getProperty("email");
       String username = (String) userEntity.getProperty("username");
       String location = (String) userEntity.getProperty("location");
-      String imageUrl = (String) userEntity.getProperty("profile-picture-url");
+      String imageUrl = (String) userEntity.getProperty("profile-pic-url");
       String bio = (String) userEntity.getProperty("bio");
       boolean isCurrentUser = id.equals(userService.getCurrentUser().getUserId());
 
@@ -91,15 +93,16 @@ public final class UserServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
+      
+    // These properties don't come from the request, so we get them here.
     String id = userService.getCurrentUser().getUserId();
     String email = userService.getCurrentUser().getEmail();
-    String username = request.getParameter("username-input");
-    String location = request.getParameter("location-input");
-    String profilePictureUrl = getUploadedFileUrl(request, "profile-pic-upload");
-    String bio = request.getParameter("bio-input");
-    String[] parameters = { email, username, location, profilePictureUrl, bio };
-    String[] names = { "email", "username", "location", "profile-picture-url", "bio" };
+    String profilePicUrl = getUploadedFileUrl(request, "profile-pic-url");
+
+    // Get the properties from the request.
+    Map<String, String[]> parameterMap = request.getParameterMap();
+    Set entrySet = parameterMap.entrySet();
+    Iterator it = entrySet.iterator();
 
     Key userKey = KeyFactory.createKey("User", id);
     String keyString = KeyFactory.keyToString(userKey);
@@ -107,23 +110,44 @@ public final class UserServlet extends HttpServlet {
     try {
       Entity user = datastore.get(userKey);
       // If updating an existing user, just update the changed fields.
-      for(int i = 0; i < parameters.length; i++) {
-        if(parameters[i] != null) {
-          user.setProperty(names[i], parameters[i]);
+      while(it.hasNext()) {
+        Map.Entry<String,String[]> entry = (Map.Entry<String,String[]>) it.next();
+        String key = entry.getKey();
+        String[] value = entry.getValue();
+
+        if(value != null) {
+          user.setProperty(key, value[0]);
         }
       }
+
+      // These properties don't come from the request, so we add them here.
+      user.setProperty("email", email);
+      if(profilePicUrl != null) {
+        user.setProperty("profile-pic-url", profilePicUrl);
+      }
+
       // Store the User entity in Datastore.
       datastore.put(user);
       response.sendRedirect("/profile-page.html?key=" + keyString);
     } catch (EntityNotFoundException e) {
       // Create a new User entity with data from the request.
       Entity user = new Entity(userKey);
-      for(int i = 0; i < parameters.length; i++) {
-        user.setProperty(names[i], parameters[i]);
+      while(it.hasNext()) {
+        Map.Entry<String,String[]> entry = (Map.Entry<String,String[]>) it.next();
+        String key = entry.getKey();
+        String[] value = entry.getValue();
+        user.setProperty(key, value[0]);
       }
+
+      // These properties don't come from the request, so we add them here.
+      user.setProperty("email", email);
+      if(profilePicUrl != null) {
+        user.setProperty("profile-pic-url", profilePicUrl);
+      }
+
       // Store the User entity in Datastore.
       datastore.put(user);
-      response.sendRedirect("/account-creation-finish.html?key=" + keyString); 
+      response.sendRedirect("/account-creation-finish.html");
     }
   }
 

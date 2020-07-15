@@ -24,17 +24,17 @@ public class User {
     private String email;
     private String username;
     private String location;
-    private String profilePictureUrl;
+    private String profilePicUrl;
     private String bio;
     private String profilePageUrl;
     private boolean isCurrentUser;
 
-    public User(String key, String email, String username, String location, String profilePictureUrl, String bio, boolean isCurrentUser) {
+    public User(String key, String email, String username, String location, String profilePicUrl, String bio, boolean isCurrentUser) {
       this.key = key;
       this.email = email;
       this.username = username;
       this.location = location;
-      this.profilePictureUrl = profilePictureUrl;
+      this.profilePicUrl = profilePicUrl;
       this.bio = bio;
       this.isCurrentUser = isCurrentUser;
     }
