@@ -18,8 +18,6 @@ import shef.data.User;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.Iterator;
 import java.net.MalformedURLException;
 import java.net.URL;
 import javax.servlet.annotation.WebServlet;
@@ -102,31 +100,28 @@ public final class UserServlet extends HttpServlet {
 
     // Get properties from the request.
     Map<String, String[]> parameterMap = request.getParameterMap();
-    Set entrySet = parameterMap.entrySet();
-    Iterator it = entrySet.iterator();
 
     Key userKey = KeyFactory.createKey("User", id);
     String keyString = KeyFactory.keyToString(userKey);
     Entity user;
-    String redirectUrl;
+    String redirectUrl = "/profile-page.html?key=" + keyString;
 
     try {
       // Get existing user with the key.
       user = datastore.get(userKey);
-      redirectUrl = "/profile-page.html?key=" + keyString;
     } catch (EntityNotFoundException e) {
       // Create a new User entity with data from the request.
       user = new Entity(userKey);
       redirectUrl = "/account-creation-finish.html";
     }
 
-    // These properties don't come from the request, so we add them here.
+    // These properties don't come from the request, so we add to the map here.
     user.setProperty("email", email);
     if(profilePicUrl != null) {
       user.setProperty("profile-pic-url", profilePicUrl);
     }
 
-    Entity finalUser = user.clone();
+    final Entity finalUser = user;
 
     // Set properties from the request.
     parameterMap.forEach((key,value)-> {
@@ -135,6 +130,7 @@ public final class UserServlet extends HttpServlet {
       }
     });
 
+    // Store the user in Datastore.
     datastore.put(finalUser);
     response.sendRedirect(redirectUrl);
   }
