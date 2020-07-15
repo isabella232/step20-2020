@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/** Fetches tasks from the server and adds them to the DOM. */
+/** Fetches comments from the server and adds them to the DOM. */
 function loadComments() {
   fetch('/display-comments').then(response => response.json()).then((comments) => {
     const commentListElement = document.getElementById('comment-list');
@@ -37,4 +37,10 @@ function createCommentElement(comment) {
 
 function addParagraph(content) {
   return "<p>" + content + "</p>";
+}
+
+function shareViaGmail() {
+  let msgbody = "Yum!";
+  let url = 'https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=&su=Check+out+this+recipe!&body='+msgbody+'&ui=2&tf=1&pli=1';
+  window.open(url, 'sharer', 'toolbar=0,status=0,width=648,height=395');
 }
