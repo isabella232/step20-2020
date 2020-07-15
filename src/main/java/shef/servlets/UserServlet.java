@@ -121,7 +121,7 @@ public final class UserServlet extends HttpServlet {
       user.setProperty("profile-pic-url", profilePicUrl);
     }
 
-    final Entity finalUser = user;
+    final Entity finalUser = user.clone();
 
     // Set properties from the request.
     parameterMap.forEach((key,value)-> {
