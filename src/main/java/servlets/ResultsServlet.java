@@ -14,6 +14,7 @@
 
 package com.google.sps.servlets;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,6 +24,10 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
+import com.google.appengine.api.datastore.Query.CompositeFilter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
@@ -40,10 +45,7 @@ public class ResultsServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String userQuery = request.getParameter("user-query");
     Query query = new Query("Recipe").addSort("timestamp", SortDirection.DESCENDING);
-    List<String> userQueryList = new ArrayList<String>();
-    // Capitalize user query to account for format (all capitalized) of search-strings in Datastore.
-    userQueryList.add(userQuery.toUpperCase());
-    query.setFilter(new Query.FilterPredicate("search-strings", FilterOperator.IN, userQueryList));
+    query.setFilter(generateFiltersFromQuery(formatQueryAsList(userQuery)));
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
@@ -62,5 +64,31 @@ public class ResultsServlet extends HttpServlet {
 
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(testRecipes));
+  }
+
+  public String[] formatQueryAsList(String query) {
+    // Replace commas (user inputted separators) with whitespace.
+    // This way, we can split on whitespace instead of on commas,
+    // The latter of which requires queries to be trimmed.
+    // The search-strings we are querying are in all caps - 
+    // in order to match results, query must also be in all upper case.
+    query = query.replace(",", "").toUpperCase();
+    return (String[]) query.split("\\s+");
+  }
+
+  public Filter generateFiltersFromQuery(String[] queryList) {
+    // Note: Nothing shows up if nothing is put into the search box.
+    // Also, the search value must be a Collection.
+    // CompositeFilter fails if there are less than 2 filter items.
+    if (queryList.length < 2) {
+      return new FilterPredicate("search-strings", FilterOperator.IN, Arrays.asList(queryList));
+    }
+    List<Filter> filters = new ArrayList<Filter>();
+    for (String query:queryList) {
+      List<String> queryAsList = new ArrayList<String>();
+      queryAsList.add(query);
+      filters.add(new FilterPredicate("search-strings", FilterOperator.IN, queryAsList));
+    }
+    return new CompositeFilter(CompositeFilterOperator.OR, filters);
   }
 }
