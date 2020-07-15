@@ -11,29 +11,24 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-package com.google.sps.data;
  
-/** A user's comment, with corresponding user info. */
-public class UserComment {
-  long id;
-  String username;
-  String location;
-  String comment;
-  long timestamp;
+package com.google.sps.data;
 
+import java.util.ArrayList;
+import java.util.List;
+ 
+/** A recipe, with recipe info used for search. */
+public class TestRecipe {
+  long id;
+  List<String> searchStrings;
+  long timestamp;
+ 
  /**
   * @param id The entity's id.
-  * @param username The user's username.
-  * @param location The user's location.
-  * @param comment The user's comment.
-  * @param timestamp The time at which the comment was submitted.
   */
-  public UserComment(long id, String username, String location, String comment, long timestamp) {
-      this.id = id;
-      this.username = username;
-      this.location = location;
-      this.comment = comment;
-      this.timestamp = timestamp;
-    }
+  public TestRecipe(long id, ArrayList<String> searchStrings, long timestamp) {
+    this.id = id;
+    this.searchStrings = searchStrings;
+    this.timestamp = timestamp;
+  }
 }   

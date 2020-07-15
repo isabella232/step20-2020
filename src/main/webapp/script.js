@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/** Fetches tasks from the server and adds them to the DOM. */
+/** Fetches comments from the server and adds them to the DOM. */
 function loadComments() {
   fetch('/display-comments').then(response => response.json()).then((comments) => {
     const commentListElement = document.getElementById('comment-list');
@@ -20,6 +20,32 @@ function loadComments() {
       commentListElement.appendChild(createCommentElement(comment));
     })
   });
+}
+
+/** Fetches results from the server and adds them to the DOM. */
+function loadResults(userQuery) {
+    console.log("Fetching results...");
+    // Capitalize user query because recipe info in Datastore is stored capitalized.
+    fetch('/results?user-query=' + userQuery.toUpperCase()).then(response => response.json()).then((results) => {
+    const resultListElement = document.getElementById('result-list');
+    results.forEach((result) => {
+      console.log("Result found!");
+      resultListElement.appendChild(createResultElement(result));
+    })
+  });
+  return false;
+}
+
+/** Creates an element that represents a result. */
+function createResultElement(result) {
+  const resultElement = document.createElement('li');
+  resultElement.className = 'result';
+
+  const resultId = document.createElement('span');
+  resultId.innerText = result.id;
+
+  resultElement.appendChild(resultId);
+  return resultElement;
 }
 
 /** Creates an element that represents a comment. */
