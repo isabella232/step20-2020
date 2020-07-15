@@ -16,6 +16,7 @@ package com.google.sps.servlets;
 
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import com.google.sps.data.TestRecipe;
 import com.google.appengine.api.datastore.DatastoreService;
@@ -36,7 +37,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet responsible for creating new comments. */
+/** Servlet responsible for returning search results. */
 @WebServlet("/results")
 public class ResultsServlet extends HttpServlet {
 
@@ -44,13 +45,12 @@ public class ResultsServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String userQuery = request.getParameter("user-query");
     Query query = new Query("Recipe").addSort("timestamp", SortDirection.DESCENDING);
-
     query.setFilter(generateFiltersFromQuery(formatQueryAsList(userQuery)));
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    List<TestRecipe> testRecipes = new ArrayList<>();
+    List<TestRecipe> testRecipes = new LinkedList<>();
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
       ArrayList<String> searchStrings = (ArrayList<String>) entity.getProperty("search-strings");
