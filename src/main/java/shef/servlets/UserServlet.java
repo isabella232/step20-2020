@@ -67,13 +67,14 @@ public final class UserServlet extends HttpServlet {
 
     try {
       Entity userEntity = datastore.get(userKey);
-      // Since we chose to store the id as a string in Datastore, it is referred to as "name".
-      String id = (String) userKey.getName();
       String email = (String) userEntity.getProperty("email");
       String username = (String) userEntity.getProperty("username");
       String location = (String) userEntity.getProperty("location");
       String imageUrl = (String) userEntity.getProperty("profile-pic-url");
       String bio = (String) userEntity.getProperty("bio");
+
+      // Since we chose to store the id as a string in Datastore, it is referred to as "name".
+      String id = (String) userKey.getName();
       boolean isCurrentUser = id.equals(userService.getCurrentUser().getUserId());
 
       User user = new User(keyString, email, username, location, imageUrl, bio, isCurrentUser);
@@ -94,61 +95,48 @@ public final class UserServlet extends HttpServlet {
     UserService userService = UserServiceFactory.getUserService();
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       
-    // These properties don't come from the request, so we get them here.
+    // Get properties that don't come from the request.
     String id = userService.getCurrentUser().getUserId();
     String email = userService.getCurrentUser().getEmail();
     String profilePicUrl = getUploadedFileUrl(request, "profile-pic-url");
 
-    // Get the properties from the request.
+    // Get properties from the request.
     Map<String, String[]> parameterMap = request.getParameterMap();
     Set entrySet = parameterMap.entrySet();
     Iterator it = entrySet.iterator();
 
     Key userKey = KeyFactory.createKey("User", id);
     String keyString = KeyFactory.keyToString(userKey);
+    Entity user;
+    String redirectUrl;
 
     try {
-      Entity user = datastore.get(userKey);
-      // If updating an existing user, just update the changed fields.
-      while(it.hasNext()) {
-        Map.Entry<String,String[]> entry = (Map.Entry<String,String[]>) it.next();
-        String key = entry.getKey();
-        String[] value = entry.getValue();
-
-        if(value != null) {
-          user.setProperty(key, value[0]);
-        }
-      }
-
-      // These properties don't come from the request, so we add them here.
-      user.setProperty("email", email);
-      if(profilePicUrl != null) {
-        user.setProperty("profile-pic-url", profilePicUrl);
-      }
-
-      // Store the User entity in Datastore.
-      datastore.put(user);
-      response.sendRedirect("/profile-page.html?key=" + keyString);
+      // Get existing user with the key.
+      user = datastore.get(userKey);
+      redirectUrl = "/profile-page.html?key=" + keyString;
     } catch (EntityNotFoundException e) {
       // Create a new User entity with data from the request.
-      Entity user = new Entity(userKey);
-      while(it.hasNext()) {
-        Map.Entry<String,String[]> entry = (Map.Entry<String,String[]>) it.next();
-        String key = entry.getKey();
-        String[] value = entry.getValue();
-        user.setProperty(key, value[0]);
-      }
-
-      // These properties don't come from the request, so we add them here.
-      user.setProperty("email", email);
-      if(profilePicUrl != null) {
-        user.setProperty("profile-pic-url", profilePicUrl);
-      }
-
-      // Store the User entity in Datastore.
-      datastore.put(user);
-      response.sendRedirect("/account-creation-finish.html");
+      user = new Entity(userKey);
+      redirectUrl = "/account-creation-finish.html";
     }
+
+    // These properties don't come from the request, so we add them here.
+    user.setProperty("email", email);
+    if(profilePicUrl != null) {
+      user.setProperty("profile-pic-url", profilePicUrl);
+    }
+
+    Entity finalUser = user.clone();
+
+    // Set properties from the request.
+    parameterMap.forEach((key,value)-> {
+      if(value != null) {
+        finalUser.setProperty(key, value[0]);
+      }
+    });
+
+    datastore.put(finalUser);
+    response.sendRedirect(redirectUrl);
   }
 
   // Returns a URL that points to the uploaded file, or null if the user didn't upload a file.

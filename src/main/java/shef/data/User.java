@@ -19,7 +19,7 @@ import java.util.ArrayList;
 /** Class representing a user. */
 public class User {
 
-    // Websafe unique identifier of the User
+    // Websafe unique identifier of the User.
     private String key;
     private String email;
     private String username;
