@@ -67,24 +67,26 @@ public class ResultsServlet extends HttpServlet {
   }
 
   public String[] formatQueryAsList(String query) {
-    query = query.toUpperCase();
-    String[] queryList = query.split(",");
-    for (int idx = 0; idx < queryList.length; idx++) {
-      queryList[idx] = queryList[idx].trim();
-    }
-    return queryList;
+    // Replace commas (user inputted separators) with whitespace.
+    // This way, we can split on whitespace instead of on commas,
+    // The latter of which requires queries to be trimmed.
+    // The search-strings we are querying are in all caps - 
+    // in order to match results, query must also be in all upper case.
+    query = query.replace(",", "").toUpperCase();
+    return (String[]) query.split("\\s+");
   }
 
   public Filter generateFiltersFromQuery(String[] queryList) {
     // Note: Nothing shows up if nothing is put into the search box.
     // Also, the search value must be a Collection.
+
+    // CompositeFilterOperator fails if there are less than 2 filter items.
     if (queryList.length < 2) {
       return new FilterPredicate("search-strings", FilterOperator.IN, Arrays.asList(queryList));
     }
     List<Filter> filters = new ArrayList<Filter>();
     for (String query:queryList) {
       List<String> queryAsList = new ArrayList<String>();
-      System.err.println("query: " + query);
       queryAsList.add(query);
       filters.add(new FilterPredicate("search-strings", FilterOperator.IN, queryAsList));
     }
