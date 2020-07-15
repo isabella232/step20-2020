@@ -52,30 +52,30 @@ public final class UserServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     // Get the key from the query string.
     String keyString = request.getParameter("key");
-    Key userKey = KeyFactory.stringToKey(keyString);
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Key userKey;
+    if(keyString == null && userService.isUserLoggedIn()) {
+      userKey = KeyFactory.createKey("User", userService.getCurrentUser().getUserId());
+    } else {
+      userKey = KeyFactory.stringToKey(keyString);
+    }
 
     try {
       Entity userEntity = datastore.get(userKey);
-      // Since we chose to store the id as a string in Datastore, it is referred to as "name".
-      String id = (String) userKey.getName();
       String email = (String) userEntity.getProperty("email");
       String username = (String) userEntity.getProperty("username");
       String location = (String) userEntity.getProperty("location");
-      String imageUrl = (String) userEntity.getProperty("profile-picture-url");
+      String imageUrl = (String) userEntity.getProperty("profile-pic-url");
       String bio = (String) userEntity.getProperty("bio");
-      boolean isCurrentUser;
 
-      if (userService.isUserLoggedIn()) {
-        isCurrentUser = id.equals(userService.getCurrentUser().getUserId());
-      } else {
-        isCurrentUser = false;
-      }
+      // Since we chose to store the id as a string in Datastore, it is referred to as "name".
+      String id = (String) userKey.getName();
+      boolean isCurrentUser = id.equals(userService.getCurrentUser().getUserId());
 
-      User user = new User(id, email, username, location, imageUrl, bio, isCurrentUser);
+      User user = new User(keyString, email, username, location, imageUrl, bio, isCurrentUser);
 
       // Convert to JSON and send it as the response.
       Gson gson = new Gson();
@@ -92,36 +92,47 @@ public final class UserServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
+      
+    // Get properties that don't come from the request.
     String id = userService.getCurrentUser().getUserId();
     String email = userService.getCurrentUser().getEmail();
-    String username = request.getParameter("username-input");
-    String location = request.getParameter("location-input");
-    String profilePictureUrl = getUploadedFileUrl(request, "profile-pic-upload");
-    String bio = request.getParameter("bio-input");
+    String profilePicUrl = getUploadedFileUrl(request, "profile-pic-url");
+
+    // Get properties from the request.
+    Map<String, String[]> parameterMap = request.getParameterMap();
 
     Key userKey = KeyFactory.createKey("User", id);
+    String keyString = KeyFactory.keyToString(userKey);
+    Entity user;
+    String redirectUrl = "/profile-page.html?key=" + keyString;
 
-    if (profilePictureUrl == null) {
-      try {
-        Entity originalEntity = datastore.get(userKey);
-        profilePictureUrl = (String) originalEntity.getProperty("profile-picture-url");
-      } catch (EntityNotFoundException e) {
-        throw new IOException("No profile picture provided.");
-      }
+    try {
+      // Get existing user with the key.
+      user = datastore.get(userKey);
+    } catch (EntityNotFoundException e) {
+      // Create a new User entity with data from the request.
+      user = new Entity(userKey);
+      redirectUrl = "/account-creation-finish.html";
     }
 
-    // Create a new User entity with data from the request.
-    Entity userEntity = new Entity(userKey);
-    userEntity.setProperty("email", email);
-    userEntity.setProperty("username", username);
-    userEntity.setProperty("location", location);
-    userEntity.setProperty("profile-picture-url", profilePictureUrl);
-    userEntity.setProperty("bio", bio);
+    // These properties don't come from the request, so we add to the map here.
+    user.setProperty("email", email);
+    if(profilePicUrl != null) {
+      user.setProperty("profile-pic-url", profilePicUrl);
+    }
 
-    // Store the User entity in Datastore.
-    datastore.put(userEntity);
-    response.sendRedirect("/user-list-test.html");
+    final Entity finalUser = user.clone();
+
+    // Set properties from the request.
+    parameterMap.forEach((key,value)-> {
+      if(value != null) {
+        finalUser.setProperty(key, value[0]);
+      }
+    });
+
+    // Store the user in Datastore.
+    datastore.put(finalUser);
+    response.sendRedirect(redirectUrl);
   }
 
   // Returns a URL that points to the uploaded file, or null if the user didn't upload a file.

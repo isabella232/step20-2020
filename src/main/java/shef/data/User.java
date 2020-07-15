@@ -19,8 +19,8 @@ import java.util.ArrayList;
 /** Class representing a user. */
 public class User {
 
-    // String representation of the id from Datastore.
-    private String id;
+    // Websafe unique identifier of the User.
+    private String key;
     private String email;
     private String username;
     private String location;
@@ -29,18 +29,13 @@ public class User {
     private String profilePageUrl;
     private boolean isCurrentUser;
 
-    public User(String id, String email, String username, String location, String profilePicUrl, String bio, boolean isCurrentUser) {
-      this.id = id;
+    public User(String key, String email, String username, String location, String profilePicUrl, String bio, boolean isCurrentUser) {
+      this.key = key;
       this.email = email;
       this.username = username;
       this.location = location;
       this.profilePicUrl = profilePicUrl;
       this.bio = bio;
       this.isCurrentUser = isCurrentUser;
-    }
-
-    public User(String username, String profilePageUrl) {
-      this.username = username;
-      this.profilePageUrl = profilePageUrl;
     }
 }
