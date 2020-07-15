@@ -79,8 +79,7 @@ public class ResultsServlet extends HttpServlet {
   public Filter generateFiltersFromQuery(String[] queryList) {
     // Note: Nothing shows up if nothing is put into the search box.
     // Also, the search value must be a Collection.
-
-    // CompositeFilterOperator fails if there are less than 2 filter items.
+    // CompositeFilter fails if there are less than 2 filter items.
     if (queryList.length < 2) {
       return new FilterPredicate("search-strings", FilterOperator.IN, Arrays.asList(queryList));
     }
