@@ -57,7 +57,7 @@ class ParameterInput extends HTMLElement {
       const fieldName = this.field;
       const startIndex = this.index;
       this.remove();
-      updateIndeces(fieldName, startIndex);
+      updateIndices(fieldName, startIndex);
     }
   }
 
@@ -113,7 +113,7 @@ function createParameterInput(name, index) {
  */
 function insertParameterInput(previous, parameterInput) {
   previous.insertAdjacentElement('afterend', parameterInput);
-  updateIndeces(parameterInput.field, parameterInput.position + 1);
+  updateIndices(parameterInput.field, parameterInput.position + 1);
 }
 
 /** 
@@ -136,11 +136,11 @@ function appendNewParameterInput(fieldName) {
 }
 
 /**
- * Updates the indeces of ParameterInputs after an insertion or deletion.
+ * Updates the indices of ParameterInputs after an insertion or deletion.
  * @param {string} fieldName The field with the ParameterInputs to update.
  * @param {number} startIndex The index of the first ParameterInput to update.
  */
-function updateIndeces(fieldName, startIndex) {
+function updateIndices(fieldName, startIndex) {
   var parameters = document.getElementById(fieldName).children;
   for (var i = startIndex; i < parameters.length; i++) {
     parameters[i].position = i;
