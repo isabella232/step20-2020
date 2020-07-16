@@ -92,7 +92,6 @@ function createResultElement(result) {
     to get autofill suggestions past the first keyword entered. */
 function loadOptions() {
   var optionList = document.getElementById('allOptions');
-  console.log("Fetching options...");
   fetch('/fetch-options').then(response => response.json()).then((options) => {
     options.forEach(function(option) {
       var singleOption = document.createElement('option');
