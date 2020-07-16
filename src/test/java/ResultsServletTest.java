@@ -96,12 +96,25 @@ public class ResultsServletTest {
       and 2) The following test ensures the same logic holds while using
       the existing mocked Datastore service (testDatastore). */
   @Test
-  public void doGetContentTest() throws Exception {
-    List<String> queryList = new ArrayList<String>();
-    queryList.add("EGG");
-    Filter containsEgg = new FilterPredicate("search-strings", FilterOperator.IN, queryList);
+  public void doGetContentTest_singleKeyword() throws Exception {
+    List<String> eggQuery = new ArrayList<String>();
+    eggQuery.add("EGG");
+    Filter containsEgg = new FilterPredicate("search-strings", FilterOperator.IN, eggQuery);
 
     Assert.assertEquals(2, testDatastore.prepare(new Query("Recipe").setFilter(containsEgg)).countEntities(withLimit(10)));
+  }
+
+  @Test
+  public void doGetContentTest_multipleKeywords() throws Exception {
+    List<String> eggQuery = new ArrayList<String>();
+    eggQuery.add("EGG");
+    List<String> butterQuery = new ArrayList<String>();
+    butterQuery.add("BUTTER");
+    Filter containsEggAndButter = new CompositeFilter(CompositeFilterOperator.AND, Arrays.<Filter>asList(
+                                      new FilterPredicate("search-strings", FilterOperator.IN, eggQuery),
+                                      new FilterPredicate("search-strings", FilterOperator.IN, butterQuery)));
+
+    Assert.assertEquals(1, testDatastore.prepare(new Query("Recipe").setFilter(containsEggAndButter)).countEntities(withLimit(10)));
   }
 
   @Test
@@ -133,7 +146,7 @@ public class ResultsServletTest {
   }
 
   @Test
-  public void generateFiltersFromQueryTest_oneKeyword() {
+  public void generateFiltersFromQueryTest_singleKeyword() {
     List<String> queryList = new ArrayList<String>();
     queryList.add("BREAD");
     Filter expectedFilter = new FilterPredicate("search-strings", FilterOperator.IN, queryList);
