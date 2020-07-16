@@ -66,7 +66,7 @@ public class ResultsServlet extends HttpServlet {
     response.getWriter().println(gson.toJson(testRecipes));
   }
 
-  public List<String> formatQueryAsList(String query) {
+  public static List<String> formatQueryAsList(String query) {
     query = query.toUpperCase();
     List<String> queryList = new ArrayList<String>(Arrays.asList(query.split(",")));
     List<String> formattedQueryList = new ArrayList<String>();
@@ -76,7 +76,7 @@ public class ResultsServlet extends HttpServlet {
     return formattedQueryList;
   }
 
-  public Filter generateFiltersFromQuery(List<String> queryList) {
+  public static Filter generateFiltersFromQuery(List<String> queryList) {
     // Nothing shows up if nothing is put into the search box.
     if (queryList.size() < 2) {
       return new FilterPredicate("search-strings", FilterOperator.IN, queryList);

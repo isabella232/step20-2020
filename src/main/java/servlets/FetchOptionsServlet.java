@@ -61,7 +61,7 @@ public class FetchOptionsServlet extends HttpServlet {
       string in the given array is already capitalized, since this is the case
       for search strings, in which all Strings are fully upper-cased, and
       this servlet is being used to fetch those search strings. */
-  public ArrayList<String> titleCaseItems(ArrayList<String> arr) {
+  public static ArrayList<String> titleCaseItems(ArrayList<String> arr) {
     ArrayList<String> arrTitleCase = new ArrayList<String>();
     for (String str:arr) {
       arrTitleCase.add(str.substring(0, 1) + str.substring(1).toLowerCase());
