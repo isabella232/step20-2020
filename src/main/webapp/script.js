@@ -87,7 +87,7 @@ function toggleProfileEditMode() {
   }
 }
 
-/** Fetches tasks from the server and adds them to the DOM. */
+/** Fetches comments from the server and adds them to the DOM. */
 function loadComments() {
   fetch('/display-comments').then(response => response.json()).then((comments) => {
     const commentListElement = document.getElementById('comment-list');
@@ -99,11 +99,12 @@ function loadComments() {
 
 /** Creates an element that represents a comment. */
 function createCommentElement(comment) {
-  const commentElement = document.createElement('li');
-  commentElement.className = 'comment';
+  const commentElement = document.createElement('div');
+  commentElement.className = 'small-sep';
 
   const userComment = document.createElement('span');
-  userComment.innerText = comment.comment;
+  var userInfoDisplayed = comment.username + " • " + comment.location + " • " + comment.MMDDYYYY;
+  userComment.innerHTML += addParagraph(userInfoDisplayed) + addParagraph(comment.comment);
 
   commentElement.appendChild(userComment);
   return commentElement;
@@ -126,4 +127,14 @@ function getProfilePicture() {
   fetch('/user').then(response => response.json()).then(userInfo => {
     document.getElementById('profile-picture').src = userInfo.profilePicUrl;
   });
+}
+
+function addParagraph(content) {
+  return "<p>" + content + "</p>";
+}
+
+function shareViaGmail() {
+  let msgbody = "Yum!";
+  let url = 'https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=&su=Check+out+this+recipe!&body='+msgbody+'&ui=2&tf=1&pli=1';
+  window.open(url, 'sharer', 'toolbar=0,status=0,width=648,height=395');
 }
