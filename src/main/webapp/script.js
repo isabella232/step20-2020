@@ -107,11 +107,9 @@ function loadOptions() {
 
 const searchSep = ','; // Character used to separate keywords.
 function loadAutofill() {
-  console.log("DOMCONTENTLOADED!");
   for (const input of document.getElementsByTagName("input")) {
     if (input.list instanceof HTMLDataListElement) {
       const options = Array.from(input.list.options).map(opt => opt.value);
-      console.log("OPTIONS VALUES: " + options);
       let keywordCount = input.value.split(searchSep).length;
       input.addEventListener("input", () => {
       const currkeywordCount = input.value.split(searchSep).length;
