@@ -91,6 +91,18 @@ function loadOptions() {
       optionList.appendChild(singleOption);
     })
   });
+
+/** Creates an element that represents a comment. */
+function createCommentElement(comment) {
+  const commentElement = document.createElement('div');
+  commentElement.className = 'small-sep';
+
+  const userComment = document.createElement('span');
+  var userInfoDisplayed = comment.username + " • " + comment.location + " • " + comment.timestamp;
+  userComment.innerHTML += addParagraph(userInfoDisplayed) + addParagraph(comment.comment);
+
+  commentElement.appendChild(userComment);
+  return commentElement;
 }
 
 function addParagraph(content) {
