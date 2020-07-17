@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 import com.google.sps.data.TestRecipe;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -57,15 +58,9 @@ public class FetchOptionsServlet extends HttpServlet {
   }
 
   /** Title cases all strings in the given array, returning a new array
-      with the modified strings. Assumes that the first character of every
-      string in the given array is already capitalized, since this is the case
-      for search strings, in which all Strings are fully upper-cased, and
-      this servlet is being used to fetch those search strings. */
+      with the modified strings. */
   public static ArrayList<String> titleCaseItems(ArrayList<String> arr) {
-    ArrayList<String> arrTitleCase = new ArrayList<String>();
-    for (String str:arr) {
-      arrTitleCase.add(str.substring(0, 1) + str.substring(1).toLowerCase());
-    }
-    return arrTitleCase;
+    List<String> titleCaseList = arr.stream().map(str -> str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase()).collect(Collectors.toList());
+    return new ArrayList<String>(titleCaseList); 
   }
 }

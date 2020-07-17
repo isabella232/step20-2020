@@ -119,39 +119,33 @@ public class ResultsServletTest {
 
   @Test
   public void formatQueryAsListTest_multipleKeywords() {
-    List<String> expectedList = new ArrayList<String>();
-    expectedList.add("EGG");
-    expectedList.add("FLOUR");
-    expectedList.add("BREAD");
-    expectedList.add("BUTTER");
+    String[] expectedArr = {"EGG", "FLOUR", "BREAD", "BUTTER"};
 
     // formatQueryAsList should be able to correctly separate keywords
     // despite capitalization and whitespace quirks, so long as the keywords
     // are separated in some way by commas.
     String query = "EGG, Flour,bread,BUtter";
-    List<String> actualList = ResultsServlet.formatQueryAsList(query);
+    String[] actualArr = ResultsServlet.formatQueryAsList(query);
 
-    Assert.assertEquals(expectedList, actualList);
+    Assert.assertEquals(expectedArr, actualArr);
   }
 
   @Test
   public void generateFiltersFromQueryTest_noKeywords() {
-    List<String> queryList = new ArrayList<String>();
-    queryList.add("");
-    Filter expectedFilter = new FilterPredicate("search-strings", FilterOperator.IN, queryList);
+    String[] queryArr = {""};
+    Filter expectedFilter = new FilterPredicate("search-strings", FilterOperator.IN, Arrays.asList(queryArr));
 
-    Filter actualFilter = ResultsServlet.generateFiltersFromQuery(queryList);
+    Filter actualFilter = ResultsServlet.generateFiltersFromQuery(queryArr);
 
     Assert.assertEquals(expectedFilter, actualFilter);
   }
 
   @Test
   public void generateFiltersFromQueryTest_singleKeyword() {
-    List<String> queryList = new ArrayList<String>();
-    queryList.add("BREAD");
-    Filter expectedFilter = new FilterPredicate("search-strings", FilterOperator.IN, queryList);
+    String[] queryArr = {"BREAD"};
+    Filter expectedFilter = new FilterPredicate("search-strings", FilterOperator.IN, Arrays.asList(queryArr));
 
-    Filter actualFilter = ResultsServlet.generateFiltersFromQuery(queryList);
+    Filter actualFilter = ResultsServlet.generateFiltersFromQuery(queryArr);
     
     Assert.assertEquals(expectedFilter, actualFilter);
   }
@@ -169,11 +163,8 @@ public class ResultsServletTest {
                                 new FilterPredicate("search-strings", FilterOperator.IN, eggQuery),
                                 new FilterPredicate("search-strings", FilterOperator.IN, butterQuery)));
 
-    List<String> queryList = new ArrayList<String>();
-    queryList.add("BREAD");
-    queryList.add("EGGS");
-    queryList.add("BUTTER");
-    Filter actualFilter = ResultsServlet.generateFiltersFromQuery(queryList);
+    String[] queryArr = {"BREAD", "EGGS", "BUTTER"};
+    Filter actualFilter = ResultsServlet.generateFiltersFromQuery(queryArr);
 
     Assert.assertEquals(expectedFilter, actualFilter);
   }
