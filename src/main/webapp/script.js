@@ -68,7 +68,7 @@ function getURLParamVal(param) {
   }
 }
 
-/** Creates an element that represents a result. */
+/** Creates an element to display a result. */
 function createResultElement(result) {
   const resultElement = document.createElement('li');
   resultElement.className = 'result';
@@ -82,17 +82,16 @@ function createResultElement(result) {
 
 function loadOptions() {
   var optionList = document.getElementById('allOptions');
-  console.log("Fetching options...");
   fetch('/fetch-options').then(response => response.json()).then((options) => {
     options.forEach(function(option) {
-      console.log("Found option: " + option);
       var singleOption = document.createElement('option');
       singleOption.value = option;
       optionList.appendChild(singleOption);
     })
   });
+}
 
-/** Creates an element that represents a comment. */
+/** Creates an element to display a comment. */
 function createCommentElement(comment) {
   const commentElement = document.createElement('div');
   commentElement.className = 'small-sep';
