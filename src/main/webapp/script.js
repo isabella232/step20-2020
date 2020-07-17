@@ -46,7 +46,7 @@ function getProfilePageData() {
   var key = url.split('?')[1];
 
   fetch('/user?' + key).then(response => response.json()).then(userInfo => {
-    document.getElementById('profile-picture').src = userInfo.profilePicUrl;
+    document.getElementById('profile-pic-display').src = '/blob?blob-key=' +  userInfo.profilePicKey;
     document.getElementById('username-display').innerHTML = userInfo.username;
     document.getElementById('location-display').innerHTML = userInfo.location;
     document.getElementById('bio-display').innerHTML = userInfo.bio;
@@ -125,7 +125,7 @@ function navBarSetup() {
 // Gets the profile picture for the navbar
 function getProfilePicture() {
   fetch('/user').then(response => response.json()).then(userInfo => {
-    document.getElementById('profile-picture').src = userInfo.profilePicUrl;
+    document.getElementById('profile-pic-nav').src = '/blob?blob-key=' +  userInfo.profilePicKey;
   });
 }
 
