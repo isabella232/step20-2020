@@ -60,7 +60,8 @@ public class FetchOptionsServlet extends HttpServlet {
   /** Title cases all strings in the given array, returning a new array
       with the modified strings. */
   public static ArrayList<String> titleCaseItems(ArrayList<String> arr) {
-    List<String> titleCaseList = arr.stream().map(str -> str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase()).collect(Collectors.toList());
+    List<String> titleCaseList = arr.stream().map(str -> str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase())
+                                            .collect(Collectors.toList());
     return new ArrayList<String>(titleCaseList); 
   }
 }
