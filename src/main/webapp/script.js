@@ -82,10 +82,8 @@ function createResultElement(result) {
 
 function loadOptions() {
   var optionList = document.getElementById('allOptions');
-  console.log("Fetching options...");
   fetch('/fetch-options').then(response => response.json()).then((options) => {
     options.forEach(function(option) {
-      console.log("Found option: " + option);
       var singleOption = document.createElement('option');
       singleOption.value = option;
       optionList.appendChild(singleOption);
