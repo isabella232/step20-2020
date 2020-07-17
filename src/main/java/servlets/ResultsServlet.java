@@ -44,7 +44,6 @@ public class ResultsServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String userQuery = request.getParameter("user-query");
     Query query = new Query("Recipe").addSort("timestamp", SortDirection.DESCENDING);
-
     query.setFilter(generateFiltersFromQuery(formatQueryAsList(userQuery)));
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -59,9 +58,11 @@ public class ResultsServlet extends HttpServlet {
       TestRecipe testRecipe = new TestRecipe(id, searchStrings, timestamp);
       testRecipes.add(testRecipe);
     }
-
+    
     Gson gson = new Gson();
-
+    
+    // Max-age: Keep the response cached for 10 minutes.
+    response.setHeader("Cache-Control", "max-age=600"); // HTTP 1.1.
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(testRecipes));
   }
