@@ -32,14 +32,12 @@ public class NewCommentServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String comment = request.getParameter("comment-input");
-    long timestamp = System.currentTimeMillis();
     String MMDDYYYY = timestampToMMDDYYYY(timestamp);
 
     Entity userCommentEntity = new Entity("UserComment");
     userCommentEntity.setProperty("username", "mcardenas");
     userCommentEntity.setProperty("location", "Seattle, WA");
     userCommentEntity.setProperty("comment", comment);
-    userCommentEntity.setProperty("timestamp", timestamp);
     userCommentEntity.setProperty("MMDDYYYY", MMDDYYYY);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
