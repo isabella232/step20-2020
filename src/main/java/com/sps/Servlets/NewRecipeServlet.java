@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -41,6 +43,7 @@ import com.google.sps.data.Step;
 public class NewRecipeServlet extends HttpServlet {
 
   private DatastoreService datastore;
+  private UserService userService;
   private final String TAG = "tag";
   private final String INGREDIENT = "ingredient";
   private final String STEP = "step";
@@ -48,6 +51,7 @@ public class NewRecipeServlet extends HttpServlet {
   @Override
   public void init() {
     datastore = DatastoreServiceFactory.getDatastoreService();
+    userService = UserServiceFactory.getUserService();
   }
 
   /*
@@ -94,6 +98,7 @@ public class NewRecipeServlet extends HttpServlet {
     recipe.setProperty("steps", steps);
     recipe.setProperty("search-strings", new ArrayList<String>(searchStrings));
     recipe.setProperty("timestamp", timestamp);
+    recipe.setProperty("user", userService.getCurrentUser().getUserId());
     datastore.put(recipe);
 
     response.sendRedirect("/edit-recipe.html");
