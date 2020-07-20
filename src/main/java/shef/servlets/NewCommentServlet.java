@@ -18,7 +18,11 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,14 +35,25 @@ public class NewCommentServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    Entity userCommentEntity = new Entity("UserComment");
+
+    // Check if the user is logged in.
+    // If so, they must have an account. So, get the user's key,
+    // as a string. If not, leave the key-string property blank.
+    UserService userService = UserServiceFactory.getUserService();
+    if (userService.isUserLoggedIn()) {
+      String id = userService.getCurrentUser().getUserId();
+      Key userKey = KeyFactory.createKey("User", id);
+      String keyString = KeyFactory.keyToString(userKey);
+      userCommentEntity.setProperty("key-string", keyString);
+    }
+
     String comment = request.getParameter("comment-input");
+    userCommentEntity.setProperty("comment", comment);
+
     long timestamp = System.currentTimeMillis();
     String MMDDYYYY = timestampToMMDDYYYY(timestamp);
-
-    Entity userCommentEntity = new Entity("UserComment");
-    userCommentEntity.setProperty("username", "mcardenas");
-    userCommentEntity.setProperty("location", "Seattle, WA");
-    userCommentEntity.setProperty("comment", comment);
+    userCommentEntity.setProperty("timestamp", timestamp);
     userCommentEntity.setProperty("MMDDYYYY", MMDDYYYY);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();

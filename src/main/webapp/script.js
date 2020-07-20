@@ -103,11 +103,19 @@ function createCommentElement(comment) {
   commentElement.className = 'small-sep';
 
   const userComment = document.createElement('span');
-  var userInfoDisplayed = comment.username + " • " + comment.location + " • " + comment.MMDDYYYY;
+  // Username hyperlinks to the profile of the user who left the comment.
+  // If there is no associated user (i.e. anon commenter), will just link to an invalid page.
+  // TODO: Make the invalid page.
+  const userProfile = hyperlinkText(comment.username, "/profile-page.html?key=" + comment.userKeyString);
+  var userInfoDisplayed = userProfile + " • " + comment.location + " • " + comment.MMDDYYYY;
   userComment.innerHTML += addParagraph(userInfoDisplayed) + addParagraph(comment.comment);
 
   commentElement.appendChild(userComment);
   return commentElement;
+}
+
+function hyperlinkText(text, link) {
+  return "<a href=" + link + ">" + text + "</a>";
 }
 
 // Sets up the navbar for any page.

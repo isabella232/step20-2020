@@ -21,6 +21,14 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -36,24 +44,40 @@ public class DisplayCommentsServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    System.out.println("INSIDE OF DISPLAYCOMMENTSSERVLET");
     Query query = new Query("UserComment").addSort("timestamp", SortDirection.DESCENDING);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
+    String keyString;
+    String username;
+    String location;
     List<UserComment> userComments = new LinkedList<>();
     for (Entity entity : results.asIterable()) {
-      String username = (String) entity.getProperty("username");
-      String location = (String) entity.getProperty("location");
       String comment = (String) entity.getProperty("comment");
       String MMDDYYYY = (String) entity.getProperty("MMDDYYYY");
-
-      UserComment userComment = new UserComment(username, location, secureReformat(comment), MMDDYYYY);
+      keyString = (String) entity.getProperty("key-string"); // Key corresponding to the user, as a string.
+      System.out.println("KEYSTRINGCHECK: " + keyString);
+      if (keyString == null) { // If the user is not logged in, the key-string entry is blank.
+        username = "Anon";
+        location = "Unknown";
+      } else {
+          try {
+        // Get info from user corresponding to the key.
+        Key userKey = KeyFactory.stringToKey(keyString);
+        Entity user = datastore.get(userKey);
+        username = (String) user.getProperty("username");
+        location = (String) user.getProperty("location");
+        } catch (EntityNotFoundException e) {
+          throw new IOException("Entity not found.");
+        }
+      }
+      UserComment userComment = new UserComment(keyString, username, location, secureReformat(comment), MMDDYYYY);
       userComments.add(userComment);
     }
 
     Gson gson = new Gson();
-
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(userComments));
   }

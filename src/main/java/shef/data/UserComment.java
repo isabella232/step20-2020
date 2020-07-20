@@ -16,18 +16,22 @@ package shef.data;
  
 /** A user's comment, with corresponding user info. */
 public class UserComment {
+  // TODO: String recipeKeyString
+  String userKeyString;
   String username;
   String location;
   String comment;
   String MMDDYYYY;
 
  /**
+  * @param userKeyString The user's key, as a string.
   * @param username The user's username.
   * @param location The user's location.
   * @param comment The user's comment.
   * @param MMDDYYYY The time in MM/DD/YYYY at which the comment was submitted.
   */
-  public UserComment(String username, String location, String comment, String MMDDYYYY) {
+  public UserComment(String userKeyString, String username, String location, String comment, String MMDDYYYY) {
+      this.userKeyString = userKeyString;
       this.username = username;
       this.location = location;
       this.comment = comment;
