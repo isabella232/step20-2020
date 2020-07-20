@@ -43,14 +43,12 @@ public class DisplayCommentsServlet extends HttpServlet {
 
     List<UserComment> userComments = new LinkedList<>();
     for (Entity entity : results.asIterable()) {
-      long id = entity.getKey().getId();
       String username = (String) entity.getProperty("username");
       String location = (String) entity.getProperty("location");
       String comment = (String) entity.getProperty("comment");
-      long timestamp = (long) entity.getProperty("timestamp");
       String MMDDYYYY = (String) entity.getProperty("MMDDYYYY");
 
-      UserComment userComment = new UserComment(id, username, location, secureReformat(comment), timestamp, MMDDYYYY);
+      UserComment userComment = new UserComment(username, location, secureReformat(comment), MMDDYYYY);
       userComments.add(userComment);
     }
 

@@ -32,6 +32,7 @@ public class NewCommentServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String comment = request.getParameter("comment-input");
+    long timestamp = System.currentTimeMillis();
     String MMDDYYYY = timestampToMMDDYYYY(timestamp);
 
     Entity userCommentEntity = new Entity("UserComment");
@@ -50,7 +51,7 @@ public class NewCommentServlet extends HttpServlet {
   * @param timestamp Time in milliseconds.
   * @return Input timestamp in MM/DD/YYYY format.
   */
-  private String timestampToMMDDYYYY(long timestamp) {
+  public static String timestampToMMDDYYYY(long timestamp) {
     return new SimpleDateFormat("MM/dd/yyyy").format(new Date(timestamp));
   }
 }
