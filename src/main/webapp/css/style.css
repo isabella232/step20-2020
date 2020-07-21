@@ -11484,4 +11484,9 @@ p {
 .display-4 {
   font-weight: bold;
 }
+
+.share-icon {
+  width: 2rem;
+  height: 2rem;
+}
 /*# sourceMappingURL=style.css.map */
