@@ -32,6 +32,7 @@ import com.google.gson.Gson;
 import java.util.Collection;
 import java.util.List;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.LinkedHashSet;
@@ -54,15 +55,21 @@ public class NewRecipeServlet extends HttpServlet {
     userService = UserServiceFactory.getUserService();
   }
 
-  /** When a spin-off is created, this GET request gets the original recipe's data. */
+  /*
+   * When a spin-off is created, this GET method gets the original recipe's data.
+   * stringToKey() may throw an IllegalArgumentException if keyString is not a parsable string.
+   * datastore.get() may throw an EntityNotFoundException if no entity exists for the given key.
+   * Both exceptions result in the same behavior: no response from the servlet.
+   */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String keyString = request.getParameter("key");
     Entity recipeEntity = null;
     try {
       recipeEntity = datastore.get(KeyFactory.stringToKey(keyString));
-    } catch (EntityNotFoundException e) {
+    } catch (Exception e) {
       e.printStackTrace();
+      response.setStatus(response.SC_NO_CONTENT);
       return;
     }
     Recipe original = entityToRecipe(recipeEntity);

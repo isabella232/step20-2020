@@ -1,7 +1,5 @@
 /** @class A custom element that represents a parameter input. */
 class ParameterInput extends HTMLElement {
-
-  /** Creates DOM for a ParameterInput. */
   constructor() {
     super();
     this.label = document.createElement('label');
@@ -40,10 +38,8 @@ class ParameterInput extends HTMLElement {
   setIndexAttributes() {
     var paramName = this.name.toLowerCase() + this.index;
     this.id = this.name + this.index;
-
     this.label.innerText = this.name + ' ' + (this.index + 1);
     this.label.for = paramName;
-
     this.textArea.name = paramName;
 
     // Inserts a new ParameterInput below the one clicked.
@@ -162,14 +158,11 @@ function getOriginalRecipe() {
 function populateRecipeCreationForm(recipe) {
   document.getElementById('name').value = recipe.name;
   document.getElementById('description').value = recipe.description;
-
   populateFormField('Tag', recipe.tags);
   populateFormField('Ingredient', recipe.ingredients);
   populateFormField('Step', recipe.steps);
 }
 
-
-/** Populates the ParamterInputs in a field with a parent recipe's data. */
 function populateFormField(fieldName, data) {
   for (var i = 0; i < data.length; i++) {
     var parameter = document.getElementById(fieldName + i);
