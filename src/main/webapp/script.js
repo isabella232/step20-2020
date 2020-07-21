@@ -1,41 +1,95 @@
-class ParameterField extends HTMLElement {
+class ParameterInput extends HTMLElement {
   constructor() {
     super();
+    this.label = document.createElement('label');
+    this.textArea = document.createElement('textarea');
+    this.button = document.createElement('button');
+    this.container = document.createElement('div');
 
-    const shadow = this.attachShadow({mode: 'open'});
-    const label = document.createElement('label');
-    const textArea = document.createElement('textarea');
-    const button = document.createElement('button');
-
-    label.className = 'parameter-label';
-    textArea.className = 'parameter-textarea';
-    button.className = 'parameter-button';
-
-    shadow.appendChild(label);
-    shadow.appendChild(textArea);
-    shadow.appendChild(button);
+    this.container.appendChild(this.label);
+    this.container.appendChild(this.textArea);
+    this.container.appendChild(this.button);
   }
 
   connectedCallback() {
-    var name = this.getAttribute('name');
-    var index = this.getAttribute('index');
-    var paramName = name.toLowerCase() + index;
+    this.name = this.getAttribute('name');
+    this.index = parseInt(this.getAttribute('index'));
+    this.parent = this.name + 's';
 
-    var label = this.shadowRoot.querySelector('.parameter-label');
-    label.innerText = name + " " + index;
-    label.for = paramName;
+    this.textArea.rows = '1';
+    this.button.type = 'button';
+    this.button.innerText = 'Add ' + this.name;
+    this.setIndexAttributes();
 
-    var textArea = this.shadowRoot.querySelector('.parameter-textarea');
-    textArea.id = paramName;
-    textArea.name = paramName;
-    textArea.rows = "1";
+    this.appendChild(this.container);
+  }
 
-    var button = this.shadowRoot.querySelector('.parameter-button');
-    button.onclick = "addParameterField(" + name + ", " + (index + 1) + ")";
-    button.innerText = "Add " + name;
+  setIndexAttributes() {
+    var paramName = this.name.toLowerCase() + this.index;
+    this.id = this.name + this.index;
+
+    this.label.innerText = this.name + ' ' + (this.index + 1);
+    this.label.for = paramName;
+
+    this.textArea.name = paramName;
+
+    this.button.onclick = event => {
+      var newParameter = createParameterInput(this.name, this.index + 1);
+      insertParameterInput(this, newParameter);
+    }
+  }
+
+  get text() {
+    return this.textArea.value;
+  }
+
+  get position() {
+    return this.index;
+  }
+
+  get field() {
+    return this.parent;
+  }
+
+  set text(value) {
+    this.textArea.value = value;
+  }
+
+  set position(value)  {
+    this.index = parseInt(value);
+  }
+
+  set field(value) {
+    this.parent = value;
   }
 }
-customElements.define('parameter-field', ParameterField);
+customElements.define('parameter-input', ParameterInput);
+
+function createParameterInput(name, index) {
+  var newParameter = document.createElement('parameter-input');
+  newParameter.setAttribute('name', name);
+  newParameter.setAttribute('index', index);
+  newParameter.setAttribute('id', name + index);
+  return newParameter;
+}
+
+function insertParameterInput(previous, parameterInput) {
+  previous.insertAdjacentElement('afterend', parameterInput);
+  updateIndeces(parameterInput.field, parameterInput.position + 1);
+}
+
+function appendParameterInput(fieldName, parameterInput) {
+  const field = document.getElementById(fieldName);
+  field.appendChild(parameterInput);
+}
+
+function updateIndeces(fieldName, startIndex) {
+  var parameters = document.getElementById(fieldName).children;
+  for (var i = startIndex; i < parameters.length; i++) {
+    parameters[i].position = i;
+    parameters[i].setIndexAttributes();
+  }
+}
 
 function getOriginalRecipe() {
   const key = document.getElementById("key").value;
@@ -49,16 +103,20 @@ function getOriginalRecipe() {
 function populateRecipeCreationForm(recipe) {
   document.getElementById("name").value = recipe.name;
   document.getElementById("description").value = recipe.description;
-
-  populateFormComponent("tag", recipe.tags);
-  populateFormComponent("ingredient", recipe.ingredients);
-  populateFormComponent("step", recipe.steps);
+  populateFormField("Tag", recipe.tags);
+  populateFormField("Ingredient", recipe.ingredients);
+  populateFormField("Step", recipe.steps);
 }
 
-function populateFormComponent(componentName, data) {
-  var componentNum = 1;
+function populateFormField(fieldName, data) {
   for (var i = 0; i < data.length; i++) {
-    var component = document.getElementById(componentName + componentNum++);
-    component.value = data[i];
+    var parameter = document.getElementById(fieldName + i);
+    if (parameter !== null) {
+      parameter.text = data[i];
+    } else {
+      const newParameter = createParameterInput(fieldName, i);
+      newParameter.text = data[i];
+      appendParameterInput(fieldName + 's', newParameter);
+    }
   }
 }

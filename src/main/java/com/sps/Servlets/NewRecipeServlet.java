@@ -30,6 +30,7 @@ import com.google.gson.Gson;
 import java.util.Collection;
 import java.util.List;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import com.google.sps.data.Recipe;
@@ -49,15 +50,21 @@ public class NewRecipeServlet extends HttpServlet {
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
-  /** When a spin-off is created, this GET request gets the original recipe's data. */
+  /*
+   * When a spin-off is created, this GET method gets the original recipe's data.
+   * stringToKey() may throw an IllegalArgumentException if keyString is not a parsable string.
+   * datastore.get() may throw an EntityNotFoundException if no entity exists for the given key.
+   * Both exceptions result in the same behavior: no response from the servlet.
+   */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String keyString = request.getParameter("key");
     Entity recipeEntity = null;
     try {
       recipeEntity = datastore.get(KeyFactory.stringToKey(keyString));
-    } catch (EntityNotFoundException e) {
+    } catch (Exception e) {
       e.printStackTrace();
+      response.setStatus(response.SC_NO_CONTENT);
       return;
     }
     Recipe original = entityToRecipe(recipeEntity);
@@ -101,7 +108,7 @@ public class NewRecipeServlet extends HttpServlet {
    */
   private Collection<EmbeddedEntity> getParameters(HttpServletRequest request, String type, Collection<String> searchStrings) {
     Collection<EmbeddedEntity> parameters = new LinkedList<>();
-    int parameterNum = 1;
+    int parameterNum = 0;
 
     String parameterName = type + parameterNum;
     String parameter = request.getParameter(parameterName);
@@ -132,16 +139,13 @@ public class NewRecipeServlet extends HttpServlet {
   private Recipe entityToRecipe(Entity recipeEntity) {
     String name = (String) recipeEntity.getProperty("name");
     String description = (String) recipeEntity.getProperty("description");
-    HashSet<String> tags = new HashSet<>((LinkedList<String>) (LinkedList<?>) getDataAsList(recipeEntity.getProperty("tags"), TAG));
-    HashSet<String> ingredients = new HashSet<>((LinkedList<String>) (LinkedList<?>) getDataAsList(recipeEntity.getProperty("ingredients"), INGREDIENT));
+    LinkedHashSet<String> tags = new LinkedHashSet<>((LinkedList<String>) (LinkedList<?>) getDataAsList(recipeEntity.getProperty("tags"), TAG));
+    LinkedHashSet<String> ingredients = new LinkedHashSet<>((LinkedList<String>) (LinkedList<?>) getDataAsList(recipeEntity.getProperty("ingredients"), INGREDIENT));
     LinkedList<Step> steps = (LinkedList<Step>) (LinkedList<?>) getDataAsList(recipeEntity.getProperty("steps"), STEP);
     return new Recipe(name, description, tags, ingredients, steps);
   }
 
   private Collection<Object> getDataAsList(Object propertiesObject, String type) {
-    if (!(propertiesObject instanceof EmbeddedEntity)) {
-      return null;
-    }
     Collection<EmbeddedEntity> properties = (Collection<EmbeddedEntity>) propertiesObject;
     Collection<Object> dataAsList = new LinkedList<>();
     for (EmbeddedEntity property : properties) {
