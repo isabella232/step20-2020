@@ -91,7 +91,6 @@ function updateIndeces(fieldName, startIndex) {
   }
 }
 
-
 function getOriginalRecipe() {
   const key = document.getElementById("key").value;
   if (key) {
