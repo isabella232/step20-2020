@@ -54,9 +54,7 @@ public class NewRecipeServlet extends HttpServlet {
     userService = UserServiceFactory.getUserService();
   }
 
-  /*
-   * When a spin-off is created, this GET method gets the original recipe's data.
-   */
+  /** When a spin-off is created, this GET request gets the original recipe's data. */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String keyString = request.getParameter("key");
