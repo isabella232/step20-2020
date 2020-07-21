@@ -103,7 +103,11 @@ public class NewRecipeServlet extends HttpServlet {
     recipe.setProperty("steps", steps);
     recipe.setProperty("search-strings", new ArrayList<String>(searchStrings));
     recipe.setProperty("timestamp", timestamp);
-    recipe.setProperty("user", userService.getCurrentUser().getUserId());
+    // Temporary if statement, can be removed once user service is fully integrated with recipe creation.
+    // Without this if statement for the time being, the servlet crashes.
+    if (userService != null && userService.getCurrentUser() != null) {
+      recipe.setProperty("user", userService.getCurrentUser().getUserId());
+    }
     datastore.put(recipe);
 
     response.sendRedirect("/edit-recipe.html");
