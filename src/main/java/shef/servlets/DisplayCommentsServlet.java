@@ -49,21 +49,21 @@ public class DisplayCommentsServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    String keyString;
+    String userKeyString;
     String username;
     String location;
     List<UserComment> userComments = new LinkedList<>();
     for (Entity entity : results.asIterable()) {
       String comment = (String) entity.getProperty("comment");
       String MMDDYYYY = (String) entity.getProperty("MMDDYYYY");
-      keyString = (String) entity.getProperty("key-string"); // Key corresponding to the user, as a string.
-      if (keyString == null) { // If the user is not logged in, the key-string entry is blank.
+      userKeyString = (String) entity.getProperty("user-key-string"); // Key corresponding to the user, as a string.
+      if (userKeyString == null) { // If the user is not logged in, the key-string entry is blank.
         username = "Anon";
         location = "Unknown";
       } else {
         try {
           // Get info from user corresponding to the key.
-          Key userKey = KeyFactory.stringToKey(keyString);
+          Key userKey = KeyFactory.stringToKey(userKeyString);
           Entity user = datastore.get(userKey);
           username = (String) user.getProperty("username");
           location = (String) user.getProperty("location");
@@ -71,7 +71,7 @@ public class DisplayCommentsServlet extends HttpServlet {
           throw new IOException("Entity not found.");
         }
       }
-      UserComment userComment = new UserComment(keyString, username, location, secureReformat(comment), MMDDYYYY);
+      UserComment userComment = new UserComment(userKeyString, username, location, secureReformat(comment), MMDDYYYY);
       userComments.add(userComment);
     }
 

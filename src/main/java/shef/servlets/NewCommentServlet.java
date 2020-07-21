@@ -45,7 +45,7 @@ public class NewCommentServlet extends HttpServlet {
       String id = userService.getCurrentUser().getUserId();
       Key userKey = KeyFactory.createKey("User", id);
       String userKeyString = KeyFactory.keyToString(userKey);
-      userCommentEntity.setProperty("key-string", userKeyString);
+      userCommentEntity.setProperty("user-key-string", userKeyString);
     }
 
     String comment = request.getParameter("comment-input");
