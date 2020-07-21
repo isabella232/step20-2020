@@ -105,7 +105,7 @@ function createCommentElement(comment) {
   const userComment = document.createElement('span');
   // If there is no associated user (i.e. anon commenter), the userProfile is not hyperlinked,
   // because it does not exist.
-  const userProfile = "Anon";
+  let userProfile = "Anon";
   if (comment.username !== "Anon" || comment.location !== "Unknown") {
     // Username hyperlinks to the profile of the user who left the comment.
     userProfile = hyperlinkText(comment.username, "/profile-page.html?key=" + comment.userKeyString);
