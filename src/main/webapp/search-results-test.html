@@ -10,11 +10,8 @@
     <script src="script.js"></script>
   </head>
  
-  <body>
-    <form class="form-group">
-      <input type="text" id="user-query" name="user-query" value=""></textarea>
-      <br/>
-      <button type="submit" class="btn btn-primary" onclick="return redirectToResults(document.getElementById('user-query').value);">Submit</button>
-    </form>
+  <body onload="getResults('user-query');">
+    <h2>Results</h2>
+    <ul id="result-list"></ul>
   </body>
 </html>
