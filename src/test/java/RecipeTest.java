@@ -24,6 +24,7 @@ import java.util.Set;
 import java.util.Arrays;
 import java.util.HashSet;
 import com.google.sps.data.Recipe;
+import com.google.sps.data.SpinOff;
 import com.google.sps.data.Step;
 
 @RunWith(JUnit4.class)
@@ -38,6 +39,8 @@ public final class RecipeTest {
       new Step("Melt the cheese"),
       new Step("Put the cheese in the bread")
   );
+  private static final Recipe spinOff = new Recipe("Spicy grilled cheese", "it's hot", TAGS, INGREDIENTS, STEPS);
+  private static final SpinOff SPINOFF = new SpinOff(spinOff);
   private Recipe recipe;
 
   @Before
@@ -139,7 +142,7 @@ public final class RecipeTest {
         new Step("Melt the cheese"),
         new Step("Put the cheese in the bread")
     );
-    
+
     recipe.removeStep(0);
     Assert.assertEquals(expectedSteps, recipe.getSteps());
   }

@@ -70,7 +70,7 @@ public class NewRecipeServlet extends HttpServlet {
     Recipe original = entityToRecipe(recipeEntity);
     response.setContentType("application/json;");
     Gson gson = new Gson();
-    response.getWriter().println(gson.toJson(original););  
+    response.getWriter().println(gson.toJson(original));  
   }
 
   /**
@@ -147,7 +147,7 @@ public class NewRecipeServlet extends HttpServlet {
 
   private Collection<Object> getDataAsList(Object propertiesObject, String type) {
     Collection<EmbeddedEntity> properties = (Collection<EmbeddedEntity>) propertiesObject;
-    LinkedList<Object> dataAsList = new LinkedList<>();
+    Collection<Object> dataAsList = new LinkedList<>();
     for (EmbeddedEntity property : properties) {
       dataAsList.add(property.getProperty(type));
     }
