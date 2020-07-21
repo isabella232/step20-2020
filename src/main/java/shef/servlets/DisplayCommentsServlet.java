@@ -44,7 +44,6 @@ public class DisplayCommentsServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    System.out.println("INSIDE OF DISPLAYCOMMENTSSERVLET");
     Query query = new Query("UserComment").addSort("timestamp", SortDirection.DESCENDING);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -58,17 +57,16 @@ public class DisplayCommentsServlet extends HttpServlet {
       String comment = (String) entity.getProperty("comment");
       String MMDDYYYY = (String) entity.getProperty("MMDDYYYY");
       keyString = (String) entity.getProperty("key-string"); // Key corresponding to the user, as a string.
-      System.out.println("KEYSTRINGCHECK: " + keyString);
       if (keyString == null) { // If the user is not logged in, the key-string entry is blank.
         username = "Anon";
         location = "Unknown";
       } else {
-          try {
-        // Get info from user corresponding to the key.
-        Key userKey = KeyFactory.stringToKey(keyString);
-        Entity user = datastore.get(userKey);
-        username = (String) user.getProperty("username");
-        location = (String) user.getProperty("location");
+        try {
+          // Get info from user corresponding to the key.
+          Key userKey = KeyFactory.stringToKey(keyString);
+          Entity user = datastore.get(userKey);
+          username = (String) user.getProperty("username");
+          location = (String) user.getProperty("location");
         } catch (EntityNotFoundException e) {
           throw new IOException("Entity not found.");
         }
