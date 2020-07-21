@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -33,6 +35,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.LinkedHashSet;
 import com.google.sps.data.Recipe;
 import com.google.sps.data.Step;
 
@@ -41,6 +44,7 @@ import com.google.sps.data.Step;
 public class NewRecipeServlet extends HttpServlet {
 
   private DatastoreService datastore;
+  private UserService userService;
   private final String TAG = "tag";
   private final String INGREDIENT = "ingredient";
   private final String STEP = "step";
@@ -48,6 +52,7 @@ public class NewRecipeServlet extends HttpServlet {
   @Override
   public void init() {
     datastore = DatastoreServiceFactory.getDatastoreService();
+    userService = UserServiceFactory.getUserService();
   }
 
   /*
@@ -88,6 +93,7 @@ public class NewRecipeServlet extends HttpServlet {
     Collection<EmbeddedEntity> tags = getParameters(request, TAG, searchStrings);
     Collection<EmbeddedEntity> ingredients = getParameters(request, INGREDIENT, searchStrings);
     Collection<EmbeddedEntity> steps = getParameters(request, STEP, null);
+    long timestamp = System.currentTimeMillis();
 
     Entity recipe = new Entity("Recipe");
     recipe.setProperty("name", name);
@@ -96,6 +102,8 @@ public class NewRecipeServlet extends HttpServlet {
     recipe.setProperty("ingredients", ingredients);
     recipe.setProperty("steps", steps);
     recipe.setProperty("search-strings", new ArrayList<String>(searchStrings));
+    recipe.setProperty("timestamp", timestamp);
+    recipe.setProperty("user", userService.getCurrentUser().getUserId());
     datastore.put(recipe);
 
     response.sendRedirect("/edit-recipe.html");
@@ -103,22 +111,25 @@ public class NewRecipeServlet extends HttpServlet {
 
   /**
    * Gets the parameters for fields that have different numbers of parameters from recipe to recipe.
-   * For example, one recipe may have 2 ingredients, while another may have 20.
    * This method ensures that all tags, ingredients, and steps are recorded, no matter how many of each a recipe has.
+   * @return A Collection of EmbeddedEntities, where each EmbeddedEntity holds one parameter.
    */
-  private Collection<EmbeddedEntity> getParameters(HttpServletRequest request, String type, Collection<String> searchStrings) {
+  private Collection<EmbeddedEntity> getParameters(HttpServletRequest request, String field, Collection<String> searchStrings) {
     Collection<EmbeddedEntity> parameters = new LinkedList<>();
     int parameterNum = 0;
-
-    String parameterName = type + parameterNum;
+    String parameterName = field + parameterNum;
     String parameter = request.getParameter(parameterName);
+
+    // In the HTML form, parameters are named as [field name][index], ie step0.
+    // This loop increments the index of the parameter's name, exiting once it reaches an index for which there is no parameter.
     while (parameter != null) {
-      EmbeddedEntity parameterEntity = new EmbeddedEntity();
-      parameterEntity.setProperty(type, parameter);
       addToSearchStrings(searchStrings, parameter);
-      parameterName = type + (++parameterNum);
-      parameter = request.getParameter(parameterName);
+      EmbeddedEntity parameterEntity = new EmbeddedEntity();
+      parameterEntity.setProperty(field, parameter);
       parameters.add(parameterEntity);
+
+      parameterName = field + (++parameterNum);
+      parameter = request.getParameter(parameterName);
     }
     return parameters;
   }
@@ -136,20 +147,23 @@ public class NewRecipeServlet extends HttpServlet {
     searchStrings.add(stringToAdd.toUpperCase());
   }
 
+  /** Converts a Datastore entity into a Recipe. */
   private Recipe entityToRecipe(Entity recipeEntity) {
     String name = (String) recipeEntity.getProperty("name");
     String description = (String) recipeEntity.getProperty("description");
     LinkedHashSet<String> tags = new LinkedHashSet<>((LinkedList<String>) (LinkedList<?>) getDataAsList(recipeEntity.getProperty("tags"), TAG));
     LinkedHashSet<String> ingredients = new LinkedHashSet<>((LinkedList<String>) (LinkedList<?>) getDataAsList(recipeEntity.getProperty("ingredients"), INGREDIENT));
     LinkedList<Step> steps = (LinkedList<Step>) (LinkedList<?>) getDataAsList(recipeEntity.getProperty("steps"), STEP);
-    return new Recipe(name, description, tags, ingredients, steps);
+    long timestamp = (long) recipeEntity.getProperty("timestamp");
+    return new Recipe(name, description, tags, ingredients, steps, timestamp);
   }
 
-  private Collection<Object> getDataAsList(Object propertiesObject, String type) {
+  /** Gets a list of Recipe parameters from a Datastore property. */
+  private Collection<Object> getDataAsList(Object propertiesObject, String field) {
     Collection<EmbeddedEntity> properties = (Collection<EmbeddedEntity>) propertiesObject;
     Collection<Object> dataAsList = new LinkedList<>();
     for (EmbeddedEntity property : properties) {
-      dataAsList.add(property.getProperty(type));
+      dataAsList.add(property.getProperty(field));
     }
     return dataAsList;
   }
