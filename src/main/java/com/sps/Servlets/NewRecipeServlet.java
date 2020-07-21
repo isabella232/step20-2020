@@ -52,6 +52,9 @@ public class NewRecipeServlet extends HttpServlet {
 
   /*
    * When a spin-off is created, this GET method gets the original recipe's data.
+   * stringToKey() may throw an IllegalArgumentException if keyString is not a parsable string.
+   * datastore.get() may throw an EntityNotFoundException if no entity exists for the given key.
+   * Both exceptions result in the same behavior: no response from the servlet.
    */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -61,6 +64,7 @@ public class NewRecipeServlet extends HttpServlet {
       recipeEntity = datastore.get(KeyFactory.stringToKey(keyString));
     } catch (Exception e) {
       e.printStackTrace();
+      response.setStatus(response.SC_NO_CONTENT);
       return;
     }
     Recipe original = entityToRecipe(recipeEntity);
@@ -77,7 +81,6 @@ public class NewRecipeServlet extends HttpServlet {
    */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    System.out.println(request.getQueryString());
     Collection<String> searchStrings = new HashSet<>();
     String name = request.getParameter("name");
     searchStrings.add(name.toUpperCase());
