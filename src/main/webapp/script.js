@@ -144,6 +144,7 @@ function createResultElement(result) {
   return resultElement;
 }
 
+
 /** Loads options from Datastore and displays them using Datalist
     as autofill suggestions to the user. HTML5 Datalist itself does not
     currently support multiple select so this is a workaround.
