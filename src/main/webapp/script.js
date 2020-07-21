@@ -52,24 +52,9 @@ function getResults(param) {
   fetch('/results?user-query=' + userQuery.toUpperCase()).then(response => response.json()).then((results) => {
     const resultListElement = document.getElementById('result-list');
     results.forEach((result) => {
-      console.log("Result found!");
       resultListElement.appendChild(createResultElement(result));
     })
   });
-}
-
-/** Gets the value of the given parameter from the current URL string. */
-function getURLParamVal(param) {
-  // Get the current page URL.
-  var pageURL = window.location.search.substring(1);
-  // Get the variables in the URL.
-  var urlVariables = pageURL.split('&');
-  for (var i = 0; i < urlVariables.length; i++) {
-    var paramName = urlVariables[i].split('=');
-    if (paramName[0] == param) {
-      return paramName[1];
-    }
-  }
 }
 
 /** Creates an element that represents a result. */
