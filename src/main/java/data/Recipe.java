@@ -14,8 +14,6 @@
 
 package com.google.sps.data;
 
-import java.util.Set;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -40,16 +38,20 @@ public class Recipe {
    */
   public Recipe(Recipe recipe) {
     this.name = recipe.name;
+    this.tags = recipe.tags;
+    this.ingredients = recipe.ingredients;
     this.description = recipe.description;
     this.tags = new HashSet<String>(recipe.tags);
     this.ingredients = new HashSet<String>(recipe.ingredients);
     this.steps = new LinkedList<Step>(recipe.steps);
-    this.spinOffs = new LinkedList<SpinOff>();
+    this.spinOffs = new HashSet<SpinOff>();
   }
 
   /** Default constructor called when creating a new recipe. */
   public Recipe(String name, String description, Set<String> tags, Set<String> ingredients, List<Step> steps) {
     this.name = name;
+    this.tags = tags;
+    this.ingredients = ingredients;
     this.description = description;
     this.tags = tags;
     this.ingredients = ingredients;
