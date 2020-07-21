@@ -68,6 +68,7 @@ public class ResultsServlet extends HttpServlet {
     response.getWriter().println(gson.toJson(testRecipes));
   }
 
+
   public String[] formatQueryAsList(String query) {
     // Replace commas (user inputted separators) with whitespace.
     // This way, we can split on whitespace instead of on commas,

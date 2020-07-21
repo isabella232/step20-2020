@@ -49,10 +49,23 @@ public class FetchOptionsServlet extends HttpServlet {
       ArrayList<String> options = (ArrayList<String>) entity.getProperty("search-strings");
        allOptions.addAll(options);
     }
+    allOptions = titleCaseItems(allOptions);
  
     Gson gson = new Gson();
- 
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(allOptions));
+  }
+
+  /** Title cases all strings in the given set, returning a new set
+      with the modified strings. Assumes that the first character of every
+      string in the given set is already capitalized, since this is the case
+      for search strings, in which all Strings are fully upper-cased, and
+      this servlet is being used to fetch those search strings. */
+  public Set<String> titleCaseItems(Set<String> set) {
+    Set<String> setTitleCase = new HashSet<String>();
+    for (String str:set) {
+      setTitleCase.add(str.substring(0, 1) + str.substring(1).toLowerCase());
+    }
+    return setTitleCase;
   }
 }
