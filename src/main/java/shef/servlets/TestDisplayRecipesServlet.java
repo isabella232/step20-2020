@@ -15,6 +15,7 @@
 package shef.servlets;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import shef.data.TestRecipe;
 import com.google.appengine.api.datastore.DatastoreService;
@@ -30,7 +31,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
  
-/** Servlet responsible for displaying comments. */
+/** Servlet responsible for displaying recipes. */
 @WebServlet("/display-recipes")
 public class TestDisplayRecipesServlet extends HttpServlet {
  
@@ -41,7 +42,7 @@ public class TestDisplayRecipesServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
  
-    List<TestRecipe> testRecipes = new ArrayList<>();
+    List<TestRecipe> testRecipes = new LinkedList<>();
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
       ArrayList<String> searchStrings = (ArrayList<String>) entity.getProperty("search-strings");

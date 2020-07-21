@@ -31,4 +31,4 @@ public class TestRecipe {
     this.searchStrings = searchStrings;
     this.timestamp = timestamp;
   }
-}  
+}   
