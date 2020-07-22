@@ -12,11 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
  
-package com.google.sps.servlets;
+package shef.servlets;
  
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.List;
-import com.google.sps.data.TestRecipe;
+import shef.data.Recipe;
+import shef.data.Step;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -41,19 +44,22 @@ public class TestDisplayRecipesServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
  
-    List<TestRecipe> testRecipes = new ArrayList<>();
+    List<Recipe> recipes = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
-      long id = entity.getKey().getId();
-      ArrayList<String> searchStrings = (ArrayList<String>) entity.getProperty("search-strings");
+      String name = (String) entity.getProperty("name");
+      String description = (String) entity.getProperty("description");
+      Set<String> tags = (HashSet<String>) entity.getProperty("tags");
+      Set<String> ingredients = (HashSet<String>) entity.getProperty("ingredients");
+      List<Step> steps = (ArrayList<Step>) entity.getProperty("steps");
       long timestamp = (long) entity.getProperty("timestamp");
  
-      TestRecipe testRecipe = new TestRecipe(id, searchStrings, timestamp);
-      testRecipes.add(testRecipe);
+      Recipe recipe = new Recipe(name, description, tags, ingredients, steps, timestamp);
+      recipes.add(recipe);
     }
  
     Gson gson = new Gson();
  
     response.setContentType("application/json;");
-    response.getWriter().println(gson.toJson(testRecipes));
+    response.getWriter().println(gson.toJson(recipes));
   }
 }

@@ -54,6 +54,7 @@ public class DisplayCommentsServlet extends HttpServlet {
     String location;
     List<UserComment> userComments = new LinkedList<>();
     for (Entity entity : results.asIterable()) {
+      String recipeKeyString = (String) entity.getProperty("recipe-key-string");
       String comment = (String) entity.getProperty("comment");
       String MMDDYYYY = (String) entity.getProperty("MMDDYYYY");
       userKeyString = (String) entity.getProperty("user-key-string"); // Key corresponding to the user, as a string.
@@ -71,7 +72,7 @@ public class DisplayCommentsServlet extends HttpServlet {
           throw new IOException("Entity not found.");
         }
       }
-      UserComment userComment = new UserComment(userKeyString, username, location, secureReformat(comment), MMDDYYYY);
+      UserComment userComment = new UserComment(recipeKeyString, userKeyString, username, location, secureReformat(comment), MMDDYYYY);
       userComments.add(userComment);
     }
 
