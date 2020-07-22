@@ -22,6 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Arrays;
 
+/** Tests for NewCommentServlet. */
 @RunWith(JUnit4.class)
 public class NewCommentServletTest {
 

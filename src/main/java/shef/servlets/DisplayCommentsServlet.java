@@ -58,7 +58,7 @@ public class DisplayCommentsServlet extends HttpServlet {
       String MMDDYYYY = (String) entity.getProperty("MMDDYYYY");
       userKeyString = (String) entity.getProperty("user-key-string"); // Key corresponding to the user, as a string.
       if (userKeyString == null) { // If the user is not logged in, the key-string entry is blank.
-        username = "Anon";
+        username = "Anonymous";
         location = "Unknown";
       } else {
         try {
