@@ -42,7 +42,7 @@ import javax.servlet.http.HttpServletResponse;
  
 /** Servlet responsible for displaying comments. */
 @WebServlet("/display-recipes")
-public class TestDisplayRecipesServlet extends HttpServlet {
+public class DisplayRecipesServlet extends HttpServlet {
  
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
