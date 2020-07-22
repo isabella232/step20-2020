@@ -13,16 +13,23 @@
 // limitations under the License.
  
 package shef.servlets;
- 
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import shef.data.Recipe;
 import shef.data.Step;
+import shef.servlets.NewRecipeServlet;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EmbeddedEntity;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
@@ -46,20 +53,34 @@ public class TestDisplayRecipesServlet extends HttpServlet {
  
     List<Recipe> recipes = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
-      String name = (String) entity.getProperty("name");
-      String description = (String) entity.getProperty("description");
-      Set<String> tags = (HashSet<String>) entity.getProperty("tags");
-      Set<String> ingredients = (HashSet<String>) entity.getProperty("ingredients");
-      List<Step> steps = (ArrayList<Step>) entity.getProperty("steps");
-      long timestamp = (long) entity.getProperty("timestamp");
- 
-      Recipe recipe = new Recipe(name, description, tags, ingredients, steps, timestamp);
-      recipes.add(recipe);
+      recipes.add(entityToRecipe(entity));
     }
  
     Gson gson = new Gson();
  
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(recipes));
+  }
+
+   /** Converts a Datastore entity into a Recipe. */
+  public Recipe entityToRecipe(Entity recipeEntity) {
+    String key = KeyFactory.keyToString(recipeEntity.getKey());
+    String name = (String) recipeEntity.getProperty("name");
+    String description = (String) recipeEntity.getProperty("description");
+    LinkedHashSet<String> tags = new LinkedHashSet<>((LinkedList<String>) (LinkedList<?>) getDataAsList(recipeEntity.getProperty("tags"), "tag"));
+    LinkedHashSet<String> ingredients = new LinkedHashSet<>((LinkedList<String>) (LinkedList<?>) getDataAsList(recipeEntity.getProperty("ingredients"), "ingredient"));
+    LinkedList<Step> steps = (LinkedList<Step>) (LinkedList<?>) getDataAsList(recipeEntity.getProperty("steps"), "step");
+    long timestamp = (long) recipeEntity.getProperty("timestamp");
+    return new Recipe(key, name, description, tags, ingredients, steps, timestamp);
+  }
+
+  /** Gets a list of Recipe parameters from a Datastore property. */
+  public Collection<Object> getDataAsList(Object propertiesObject, String field) {
+    Collection<EmbeddedEntity> properties = (Collection<EmbeddedEntity>) propertiesObject;
+    Collection<Object> dataAsList = new LinkedList<>();
+    for (EmbeddedEntity property : properties) {
+      dataAsList.add(property.getProperty(field));
+    }
+    return dataAsList;
   }
 }
