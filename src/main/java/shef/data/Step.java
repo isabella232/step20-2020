@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+package shef.data;
+
 public class Step {
 
   private String instruction;
@@ -27,6 +29,11 @@ public class Step {
   @Override
   public String toString() {
     return instruction;
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    return other instanceof Step && instruction.equals(((Step) other).getInstruction());
   }
 
 }

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 import shef.data.TestRecipe;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -56,16 +57,10 @@ public class FetchOptionsServlet extends HttpServlet {
     response.getWriter().println(gson.toJson(allOptions));
   }
 
-  /** Title cases all strings in the given set, returning a new set
-      with the modified strings. Assumes that the first character of every
-      string in the given set is already capitalized, since this is the case
-      for search strings, in which all Strings are fully upper-cased, and
-      this servlet is being used to fetch those search strings. */
-  public Set<String> titleCaseItems(Set<String> set) {
-    Set<String> setTitleCase = new HashSet<String>();
-    for (String str:set) {
-      setTitleCase.add(str.substring(0, 1) + str.substring(1).toLowerCase());
-    }
-    return setTitleCase;
+  /** Title cases all strings in the given array, returning a new array
+      with the modified strings. */
+  public static Set<String> titleCaseItems(Set<String> set) {
+    return set.stream().map(str -> str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase())
+                        .collect(Collectors.toSet()); 
   }
 }

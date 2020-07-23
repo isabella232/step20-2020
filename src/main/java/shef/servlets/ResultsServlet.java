@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package shef.data;
+package shef.servlets;
 
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -68,18 +68,17 @@ public class ResultsServlet extends HttpServlet {
     response.getWriter().println(gson.toJson(testRecipes));
   }
 
-
-  public String[] formatQueryAsList(String query) {
+  public static String[] formatQueryAsList(String query) {
     // Replace commas (user inputted separators) with whitespace.
     // This way, we can split on whitespace instead of on commas,
     // The latter of which requires queries to be trimmed.
     // The search-strings we are querying are in all caps - 
     // in order to match results, query must also be in all upper case.
-    query = query.replace(",", "").toUpperCase();
+    query = query.replace(",", " ").toUpperCase();
     return (String[]) query.split("\\s+");
   }
 
-  public Filter generateFiltersFromQuery(String[] queryList) {
+  public static Filter generateFiltersFromQuery(String[] queryList) {
     // Note: Nothing shows up if nothing is put into the search box.
     // Also, the search value must be a Collection.
     // CompositeFilter fails if there are less than 2 filter items.
