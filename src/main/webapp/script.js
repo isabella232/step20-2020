@@ -132,6 +132,12 @@ function getResults(param) {
   });
 }
 
+/** Gets the value of the given parameter from the current URL string. */
+function getURLParamVal(param) {
+  let searchParams = (new URL(document.location)).searchParams;
+  return searchParams.get(param);
+}
+
 /** Creates an element to display a result. */
 function createResultElement(result) {
   const resultElement = document.createElement('li');
