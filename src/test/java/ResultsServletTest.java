@@ -1,5 +1,5 @@
-import com.google.sps.servlets.ResultsServlet;
-import com.google.sps.data.TestRecipe;
+import shef.servlets.ResultsServlet;
+import shef.data.TestRecipe;
 import static org.mockito.Mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 import java.io.PrintWriter;

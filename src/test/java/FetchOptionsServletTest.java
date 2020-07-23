@@ -1,4 +1,4 @@
-import com.google.sps.servlets.FetchOptionsServlet;
+import shef.servlets.FetchOptionsServlet;
 import static org.mockito.Mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.junit.Assert;

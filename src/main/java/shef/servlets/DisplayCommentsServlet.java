@@ -11,13 +11,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
- 
+
 package shef.servlets;
- 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import shef.data.TestRecipe;
+
+import shef.data.UserComment;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -26,35 +23,49 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
- 
-/** Servlet responsible for displaying recipes. */
-@WebServlet("/display-recipes")
-public class TestDisplayRecipesServlet extends HttpServlet {
- 
+
+/** Servlet responsible for displaying comments. */
+@WebServlet("/display-comments")
+public class DisplayCommentsServlet extends HttpServlet {
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("Recipe").addSort("timestamp", SortDirection.DESCENDING);
- 
+    Query query = new Query("UserComment").addSort("timestamp", SortDirection.DESCENDING);
+
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
- 
-    List<TestRecipe> testRecipes = new LinkedList<>();
+
+    List<UserComment> userComments = new LinkedList<>();
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
-      ArrayList<String> searchStrings = (ArrayList<String>) entity.getProperty("search-strings");
+      String username = (String) entity.getProperty("username");
+      String location = (String) entity.getProperty("location");
+      String comment = (String) entity.getProperty("comment");
       long timestamp = (long) entity.getProperty("timestamp");
- 
-      TestRecipe testRecipe = new TestRecipe(id, searchStrings, timestamp);
-      testRecipes.add(testRecipe);
+      String MMDDYYYY = (String) entity.getProperty("MMDDYYYY");
+
+      UserComment userComment = new UserComment(id, username, location, secureReformat(comment), timestamp, MMDDYYYY);
+      userComments.add(userComment);
     }
- 
+
     Gson gson = new Gson();
- 
+
     response.setContentType("application/json;");
-    response.getWriter().println(gson.toJson(testRecipes));
+    response.getWriter().println(gson.toJson(userComments));
+  }
+
+ /**
+  * Reformat comments to prevent HTML and script injections.
+  * @param input Comment to reformat.
+  * @return Comment with HTML tags replaced.
+  */
+  private String secureReformat(String input) {
+    return input.replace("<", "&lt;").replace(">", "&gt;");
   }
 }

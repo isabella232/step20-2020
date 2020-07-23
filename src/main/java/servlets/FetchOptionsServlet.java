@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
  
-package com.google.sps.servlets;
+package shef.servlets;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-import com.google.sps.data.TestRecipe;
+import shef.data.TestRecipe;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
