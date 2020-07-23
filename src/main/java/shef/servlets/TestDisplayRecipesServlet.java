@@ -15,10 +15,8 @@
 package shef.servlets;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
 import shef.data.TestRecipe;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -33,10 +31,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
  
-/** Servlet responsible for fetching all possible search options,
-    based on existing recipes in Datastore (i.e. recipes on Shef). */
-@WebServlet("/fetch-options")
-public class FetchOptionsServlet extends HttpServlet {
+/** Servlet responsible for displaying recipes. */
+@WebServlet("/display-recipes")
+public class TestDisplayRecipesServlet extends HttpServlet {
  
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -45,23 +42,19 @@ public class FetchOptionsServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
  
-    Set<String> allOptions = new HashSet<>();
+    List<TestRecipe> testRecipes = new LinkedList<>();
     for (Entity entity : results.asIterable()) {
-      ArrayList<String> options = (ArrayList<String>) entity.getProperty("search-strings");
-       allOptions.addAll(titleCaseItems(options));
+      long id = entity.getKey().getId();
+      ArrayList<String> searchStrings = (ArrayList<String>) entity.getProperty("search-strings");
+      long timestamp = (long) entity.getProperty("timestamp");
+ 
+      TestRecipe testRecipe = new TestRecipe(id, searchStrings, timestamp);
+      testRecipes.add(testRecipe);
     }
  
     Gson gson = new Gson();
  
     response.setContentType("application/json;");
-    response.getWriter().println(gson.toJson(allOptions));
-  }
-
-  /** Title cases all strings in the given array, returning a new array
-      with the modified strings. */
-  public static ArrayList<String> titleCaseItems(ArrayList<String> arr) {
-    List<String> titleCaseList = arr.stream().map(str -> str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase())
-                                            .collect(Collectors.toList());
-    return new ArrayList<String>(titleCaseList); 
+    response.getWriter().println(gson.toJson(testRecipes));
   }
 }
