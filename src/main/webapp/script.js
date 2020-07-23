@@ -103,11 +103,22 @@ function createCommentElement(comment) {
   commentElement.className = 'small-sep';
 
   const userComment = document.createElement('span');
-  var userInfoDisplayed = comment.username + " • " + comment.location + " • " + comment.MMDDYYYY;
+  // If there is no associated user (i.e. anon commenter), the userProfile is not hyperlinked,
+  // because it does not exist.
+  let userProfile = "Anonymous";
+  if (comment.username !== "Anonymous" || comment.location !== "Unknown") {
+    // Username hyperlinks to the profile of the user who left the comment.
+    userProfile = hyperlinkText(comment.username, "/profile-page.html?key=" + comment.userKeyString);
+  }
+  var userInfoDisplayed = userProfile + " • " + comment.location + " • " + comment.MMDDYYYY;
   userComment.innerHTML += addParagraph(userInfoDisplayed) + addParagraph(comment.comment);
 
   commentElement.appendChild(userComment);
   return commentElement;
+}
+
+function hyperlinkText(text, link) {
+  return "<a href=" + link + ">" + text + "</a>";
 }
 
 // Sets up the navbar for any page.
