@@ -90,19 +90,19 @@ public class PreferenceServlet extends HttpServlet {
 	  }
   };
 
-  // Set the user's preferences
+  // Set the user's preferences.
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     UserService userService = UserServiceFactory.getUserService();
 
-    // Retrieve the values of all checkboxes that the user did check in the quiz.
-    List<String> quizResponses = Arrays.asList(request.getParameterValues("choice"));
+    // Retrieve the values of all checkboxes that the user checked in the quiz.
+    String[] quizResponses = request.getParameterValues("choice");
     LinkedList<String> preferences = new LinkedList<String>();
 
-    // Add the appropriate preferences for every checkbox the user checked
-    for(String qr : quizResponses) {
-      preferences.addAll(preferenceMap.get(qr));
+    // Add the appropriate preferences for every checkbox the user checked.
+    for(String quizResponse : quizResponses) {
+      preferences.addAll(preferenceMap.get(quizResponse));
     }
 
     // Get the current user's key.
@@ -117,7 +117,8 @@ public class PreferenceServlet extends HttpServlet {
       /** This means the current user, for whom we're trying to set preferences for, doesn't exist.
         * This should never happen. If it does, multiple things have gone seriously wrong.
         */
-      throw new IOException("Entity not found.");
+      e.printStackTrace();
+      return;
     }
 
     // Store the user in Datastore.
