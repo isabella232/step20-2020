@@ -45,22 +45,13 @@ public class ResultsServletTest {
     testDatastore = DatastoreServiceFactory.getDatastoreService();
 
     Entity recipeEntity1 = new Entity("Recipe");
-    List<String> searchStrings1 = new ArrayList<String>();
-    searchStrings1.add("EGG");
-    searchStrings1.add("FLOUR");
-    recipeEntity1.setProperty("search-strings", searchStrings1);
+    recipeEntity1.setProperty("search-strings", Arrays.asList("EGG", "FLOUR"));
 
     Entity recipeEntity2 = new Entity("Recipe");
-    List<String> searchStrings2 = new ArrayList<String>();
-    searchStrings2.add("EGG");
-    searchStrings2.add("BUTTER");
-    recipeEntity2.setProperty("search-strings", searchStrings2);
+    recipeEntity2.setProperty("search-strings", Arrays.asList("EGG", "BUTTER"));
 
     Entity recipeEntity3 = new Entity("Recipe");
-    List<String> searchStrings3 = new ArrayList<String>();
-    searchStrings3.add("AVOCADO");
-    searchStrings3.add("TOMATO");
-    recipeEntity3.setProperty("search-strings", searchStrings3);
+    recipeEntity3.setProperty("search-strings", Arrays.asList("AVOCADO", "TOMATO"));
 
     testDatastore.put(recipeEntity1);
     testDatastore.put(recipeEntity2);
@@ -97,22 +88,16 @@ public class ResultsServletTest {
       the existing mocked Datastore service (testDatastore). */
   @Test
   public void doGetContentTest_singleKeyword() throws Exception {
-    List<String> eggQuery = new ArrayList<String>();
-    eggQuery.add("EGG");
-    Filter containsEgg = new FilterPredicate("search-strings", FilterOperator.IN, eggQuery);
+    Filter containsEgg = new FilterPredicate("search-strings", FilterOperator.IN, Arrays.asList("EGG"));
 
     Assert.assertEquals(2, testDatastore.prepare(new Query("Recipe").setFilter(containsEgg)).countEntities(withLimit(10)));
   }
 
   @Test
   public void doGetContentTest_multipleKeywords() throws Exception {
-    List<String> eggQuery = new ArrayList<String>();
-    eggQuery.add("EGG");
-    List<String> butterQuery = new ArrayList<String>();
-    butterQuery.add("BUTTER");
     Filter containsEggAndButter = new CompositeFilter(CompositeFilterOperator.AND, Arrays.<Filter>asList(
-                                      new FilterPredicate("search-strings", FilterOperator.IN, eggQuery),
-                                      new FilterPredicate("search-strings", FilterOperator.IN, butterQuery)));
+                                      new FilterPredicate("search-strings", FilterOperator.IN, Arrays.asList("EGG")),
+                                      new FilterPredicate("search-strings", FilterOperator.IN, Arrays.asList("BUTTER"))));
 
     Assert.assertEquals(1, testDatastore.prepare(new Query("Recipe").setFilter(containsEggAndButter)).countEntities(withLimit(10)));
   }
@@ -152,16 +137,10 @@ public class ResultsServletTest {
 
   @Test
   public void generateFiltersFromQueryTest_multipleKeywords() {
-    List<String> breadQuery = new ArrayList<String>();
-    breadQuery.add("BREAD");
-    List<String> eggQuery = new ArrayList<String>();
-    eggQuery.add("EGGS");
-    List<String> butterQuery = new ArrayList<String>();
-    butterQuery.add("BUTTER");
     Filter expectedFilter = new CompositeFilter(CompositeFilterOperator.AND, Arrays.<Filter>asList(
-                                new FilterPredicate("search-strings", FilterOperator.IN, breadQuery),
-                                new FilterPredicate("search-strings", FilterOperator.IN, eggQuery),
-                                new FilterPredicate("search-strings", FilterOperator.IN, butterQuery)));
+                                new FilterPredicate("search-strings", FilterOperator.IN, Arrays.asList("BREAD")),
+                                new FilterPredicate("search-strings", FilterOperator.IN, Arrays.asList("EGGS")),
+                                new FilterPredicate("search-strings", FilterOperator.IN, Arrays.asList("BUTTER"))));
 
     String[] queryArr = {"BREAD", "EGGS", "BUTTER"};
     Filter actualFilter = ResultsServlet.generateFiltersFromQuery(queryArr);
