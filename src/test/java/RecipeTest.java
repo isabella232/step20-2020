@@ -19,8 +19,9 @@ import org.junit.Before;
 import org.junit.Test;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
+import java.util.Arrays;
 import shef.data.Recipe;
 import shef.data.SpinOff;
 import shef.data.Step;
@@ -30,27 +31,32 @@ public final class RecipeTest {
 
   private static final String NAME = "Grilled Cheese";
   private static final String DESCRIPTION = "It's literally just melted cheese on bread";
+  private static final Set<String> TAGS = new HashSet<>(Arrays.asList("grilledcheese", "quick"));
+  private static final Set<String> INGREDIENTS = new HashSet<>(Arrays.asList("bread", "cheese", "butter"));
   private static final List<Step> STEPS = Arrays.asList(
       new Step("Toast the bread for 2 minutes"),
       new Step("Melt the cheese"),
       new Step("Put the cheese in the bread")
   );
+  private static final long TIMESTAMP = 0;
   private Recipe recipe;
 
   @Before
   public void setup() {
-    recipe = new Recipe(NAME, DESCRIPTION, new LinkedList(STEPS));
+    recipe = new Recipe(NAME, DESCRIPTION, new HashSet(TAGS), new HashSet(INGREDIENTS), new LinkedList(STEPS), TIMESTAMP);
   }
 
   @Test
   public void appendStep() {
-    List<Step> expectedSteps = new LinkedList<>(STEPS);
-    expectedSteps.add(new Step("butter the bread"));
+    List<Step> expectedSteps = Arrays.asList(
+      new Step("Toast the bread for 2 minutes"),
+      new Step("Melt the cheese"),
+      new Step("Put the cheese in the bread"),
+      new Step("Butter the bread")
+    );
 
-    Recipe expected = new Recipe(NAME, DESCRIPTION, expectedSteps);
-    recipe.appendStep(new Step("butter the bread"));
-
-    Assert.assertEquals(expected, recipe);
+    recipe.appendStep(new Step("Butter the bread"));
+    Assert.assertEquals(expectedSteps, recipe.getSteps());
   }
 
   @Test
@@ -62,9 +68,8 @@ public final class RecipeTest {
         new Step("Put the cheese in the bread")
     );
 
-    Recipe expected = new Recipe(NAME, DESCRIPTION, expectedSteps);
     recipe.addStep(0, new Step("Index 0!"));
-    Assert.assertEquals(expected, recipe);
+    Assert.assertEquals(expectedSteps, recipe.getSteps());
   }
 
   @Test
@@ -76,9 +81,8 @@ public final class RecipeTest {
         new Step("Put the cheese in the bread")
     );
 
-    Recipe expected = new Recipe(NAME, DESCRIPTION, expectedSteps);
     recipe.addStep(1, new Step("Turn on the burner"));
-    Assert.assertEquals(expected, recipe);
+    Assert.assertEquals(expectedSteps, recipe.getSteps());
   }
 
   @Test
@@ -90,9 +94,8 @@ public final class RecipeTest {
         new Step("Index 3!")
     );
 
-    Recipe expected = new Recipe(NAME, DESCRIPTION, expectedSteps);
     recipe.addStep(3, new Step("Index 3!"));
-    Assert.assertEquals(expected, recipe);
+    Assert.assertEquals(expectedSteps, recipe.getSteps());
   }
 
   @Test
@@ -103,9 +106,8 @@ public final class RecipeTest {
         new Step("Put the cheese in the bread")
     );
 
-    Recipe expected = new Recipe(NAME, DESCRIPTION, expectedSteps);
     recipe.setStep(0, new Step("New first step"));
-    Assert.assertEquals(expected, recipe);
+    Assert.assertEquals(expectedSteps, recipe.getSteps());
   }
 
   @Test
@@ -116,9 +118,8 @@ public final class RecipeTest {
         new Step("Put the cheese in the bread")
     );
 
-    Recipe expected = new Recipe(NAME, DESCRIPTION, expectedSteps);
     recipe.setStep(1, new Step("New middle step"));
-    Assert.assertEquals(expected, recipe);
+    Assert.assertEquals(expectedSteps, recipe.getSteps());
   }
 
   @Test
@@ -129,9 +130,8 @@ public final class RecipeTest {
         new Step("New last step")
     );
 
-    Recipe expected = new Recipe(NAME, DESCRIPTION, expectedSteps);
     recipe.setStep(2, new Step("New last step"));
-    Assert.assertEquals(expected, recipe);
+    Assert.assertEquals(expectedSteps, recipe.getSteps());
   }
 
   @Test
@@ -141,9 +141,8 @@ public final class RecipeTest {
         new Step("Put the cheese in the bread")
     );
 
-    Recipe expected = new Recipe(NAME, DESCRIPTION, expectedSteps);
     recipe.removeStep(0);
-    Assert.assertEquals(expected, recipe);
+    Assert.assertEquals(expectedSteps, recipe.getSteps());
   }
 
   @Test
@@ -153,9 +152,8 @@ public final class RecipeTest {
         new Step("Put the cheese in the bread")
     );
 
-    Recipe expected = new Recipe(NAME, DESCRIPTION, expectedSteps);
     recipe.removeStep(1);
-    Assert.assertEquals(expected, recipe);
+    Assert.assertEquals(expectedSteps, recipe.getSteps());
   }
 
   @Test
@@ -165,9 +163,8 @@ public final class RecipeTest {
         new Step("Melt the cheese")
     );
 
-    Recipe expected = new Recipe(NAME, DESCRIPTION, expectedSteps);
     recipe.removeStep(2);
-    Assert.assertEquals(expected, recipe);
+    Assert.assertEquals(expectedSteps, recipe.getSteps());
   }
 
   @Test(expected = IndexOutOfBoundsException.class)
@@ -200,6 +197,67 @@ public final class RecipeTest {
     recipe.removeStep(-10);
   }
 
+
+  @Test
+  public void addTag() {
+    Set<String> expected = new HashSet<>(Arrays.asList("grilledcheese", "quick", "cheese"));
+    recipe.addTag("cheese");
+    Assert.assertEquals(expected, recipe.getTags());
+  }
+
+  @Test
+  public void removeTag() {
+    Set<String> expected = new HashSet<>(Arrays.asList("grilledcheese"));
+    recipe.removeTag("quick");
+    Assert.assertEquals(expected, recipe.getTags());
+  }
+
+  @Test
+  public void removeNonexistentTag() {
+    Set<String> expected = new HashSet<>(Arrays.asList("grilledcheese", "quick"));
+    recipe.removeTag("chicken");
+    Assert.assertEquals(expected, recipe.getTags());
+  }
+
+  @Test
+  public void addIngredient() {
+    Set<String> expected = new HashSet<>(Arrays.asList("bread", "cheese", "butter", "oil"));
+    recipe.addIngredient("oil");
+    Assert.assertEquals(expected, recipe.getIngredients());
+  }
+
+  @Test
+  public void removeIngredient() {
+    Set<String> expected = new HashSet<>(Arrays.asList("cheese", "butter"));
+    recipe.removeIngredient("bread");
+    Assert.assertEquals(expected, recipe.getIngredients());
+  }
+
+  @Test
+  public void removeNonexistentIngredient() {
+    Set<String> expected = new HashSet<>(Arrays.asList("bread", "cheese", "butter"));
+    recipe.removeIngredient("chicken");
+    Assert.assertEquals(expected, recipe.getIngredients());
+  }
+
+  @Test
+  public void addSpinOff() {
+    SpinOff spinOff = new SpinOff(recipe);
+    Set<SpinOff> expected = new HashSet<>(Arrays.asList(spinOff));
+    recipe.addSpinOff(spinOff);
+    Assert.assertEquals(expected, recipe.getSpinOffs());
+  }
+
+  @Test
+  public void removeSpinOff() {
+    Set<SpinOff> expected = new HashSet<SpinOff>();
+    
+    // The SpinOff constructor automatically adds the SpinOff to the recipe's list.
+    SpinOff spinOff = new SpinOff(recipe);
+    recipe.removeSpinOff(spinOff);
+    Assert.assertEquals(expected, recipe.getSpinOffs());
+  }
+
   @Test 
   public void toStringTest() {
     String expected = "\nName: NAME";
@@ -207,7 +265,7 @@ public final class RecipeTest {
     expected += "\nSteps:\n";
     expected += "\tA step\n";
 
-    Recipe testRecipe = new Recipe("NAME", "DESC", Arrays.asList(new Step("A step")));
+    Recipe testRecipe = new Recipe("NAME", "DESC", TAGS, INGREDIENTS, Arrays.asList(new Step("A step")), TIMESTAMP);
     Assert.assertEquals(expected, testRecipe.toString());
   }
 }

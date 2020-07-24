@@ -24,20 +24,18 @@ import java.util.Iterator;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EmbeddedEntity;
 
-/**
- * Stores a recipe's data.
- */
+/** Stores a recipe's data. */
 public class Recipe {
 
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
+  
   private String name;
   private String description;
   private Set<String> tags;
   private Set<String> ingredients;
   private List<Step> steps;
-  private long timestamp;
   private Set<SpinOff> spinOffs;
+  private long timestamp;
 
   /**
    * Copy constructor called when creating spin-offs.
@@ -49,17 +47,18 @@ public class Recipe {
     this.ingredients = new HashSet<>(recipe.ingredients);
     this.steps = new LinkedList<>(recipe.steps);
     this.spinOffs = new HashSet<>();
+    this.timestamp = System.currentTimeMillis();
   }
-  
-  /**
-   * Default constructor called when creating a new recipe.
-   */
+
+  /** Default constructor called when creating a new recipe. */
   public Recipe(String name, String description, Set<String> tags, Set<String> ingredients, List<Step> steps, long timestamp) {
     this.name = name;
     this.description = description;
+    this.tags = tags;
+    this.ingredients = ingredients;
     this.steps = steps;
-    this.timestamp = timestamp;
     this.spinOffs = new HashSet<>();
+    this.timestamp = timestamp;
   }
 
   /** Creates a Recipe from a Datastore entity. */
@@ -92,9 +91,52 @@ public class Recipe {
     description = newDescription;
   }
 
-  /**
-   * Appends a new step to a recipe's list of steps.
-   */
+  /** Gets the recipe's tags. */
+  public Set<String> getTags() {
+    return tags;
+  }
+
+  /** Gets the recipe's ingredients. */
+  public Set<String> getIngredients() {
+    return ingredients;
+  }
+
+  /** Gets the recipe's spin-offs. */
+  public Set<SpinOff> getSpinOffs() {
+    return spinOffs;
+  }
+
+  /** Adds a tag to the recipe. */
+  public void addTag(String tag) {
+    tags.add(tag);
+  }
+
+  /** Adds an ingredient to the recipe. */
+  public void addIngredient(String ingredient) {
+    ingredients.add(ingredient);
+  }
+
+  /** Adds a spin-off to the recipe. */
+  public void addSpinOff(SpinOff spinOff) {
+    spinOffs.add(spinOff);
+  }
+
+  /** Removes a tag from the recipe. */
+  public void removeTag(String tag) {
+    tags.remove(tag);
+  }
+
+  /** Removes an ingredient from the recipe. */
+  public void removeIngredient(String ingredient) {
+    ingredients.remove(ingredient);
+  }
+
+  /** Removes a spin-off from the recipe. */
+  public void removeSpinOff(SpinOff spinOff) {
+    spinOffs.remove(spinOff);
+  }
+
+  /** Appends a new step to a recipe's list of steps. */
   public void appendStep(Step newStep) {
     steps.add(newStep);
   }
@@ -166,11 +208,6 @@ public class Recipe {
   @Override
   public boolean equals(Object other) {
     return other instanceof Recipe && equals(this, (Recipe) other);
-  }
-
-  /** Adds a spin-off to the recipe's list of spin-offs. */
-  protected void addSpinOff(SpinOff spinOff) {
-    spinOffs.add(spinOff);
   }
 
   /**

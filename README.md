@@ -12,28 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package shef.data;
+//Shef image source: https://i.kym-cdn.com/photos/images/newsfeed/001/696/371/637.png
 
-public class Step {
+# Shef
+## Recipe sharing made fun
 
-  private String instruction;
+Welcome to Shef! Run ```mvn package appengine:run``` to get Sheffin'!
 
-  public Step(String instruction) {
-    this.instruction = instruction;
-  }
-
-  public String getInstruction() {
-    return instruction;
-  }
-
-  @Override
-  public String toString() {
-    return instruction;
-  }
-
-  @Override
-  public boolean equals(Object other) {
-    return other instanceof Step && instruction.equals(((Step) other).getInstruction());
-  }
-
-}
+![Shef](https://github.com/googleinterns/step20-2020/blob/UpdateReadme/src/main/webapp/assets/images/shef.png "Shef")
