@@ -68,14 +68,14 @@ public final class UserServlet extends HttpServlet {
       String email = (String) userEntity.getProperty("email");
       String username = (String) userEntity.getProperty("username");
       String location = (String) userEntity.getProperty("location");
-      String imageUrl = (String) userEntity.getProperty("profile-pic-url");
+      String profilePicKey = (String) userEntity.getProperty("profile-pic");
       String bio = (String) userEntity.getProperty("bio");
 
       // Since we chose to store the id as a string in Datastore, it is referred to as "name".
       String id = (String) userKey.getName();
       boolean isCurrentUser = id.equals(userService.getCurrentUser().getUserId());
 
-      User user = new User(keyString, email, username, location, imageUrl, bio, isCurrentUser);
+      User user = new User(keyString, email, username, location, profilePicKey, bio, isCurrentUser);
 
       // Convert to JSON and send it as the response.
       Gson gson = new Gson();
@@ -96,7 +96,7 @@ public final class UserServlet extends HttpServlet {
     // Get properties that don't come from the request.
     String id = userService.getCurrentUser().getUserId();
     String email = userService.getCurrentUser().getEmail();
-    String profilePicUrl = getUploadedFileUrl(request, "profile-pic-url");
+    String profilePicKey = getUploadedFileBlobKey(request, "profile-pic");
 
     // Get properties from the request.
     Map<String, String[]> parameterMap = request.getParameterMap();
@@ -117,8 +117,8 @@ public final class UserServlet extends HttpServlet {
 
     // These properties don't come from the request, so we add to the map here.
     user.setProperty("email", email);
-    if(profilePicUrl != null) {
-      user.setProperty("profile-pic-url", profilePicUrl);
+    if(profilePicKey != null) {
+      user.setProperty("profile-pic", profilePicKey);
     }
 
     final Entity finalUser = user.clone();
@@ -135,8 +135,8 @@ public final class UserServlet extends HttpServlet {
     response.sendRedirect(redirectUrl);
   }
 
-  // Returns a URL that points to the uploaded file, or null if the user didn't upload a file.
-  private String getUploadedFileUrl(HttpServletRequest request, String formInputElementName) {
+  // Returns the String representation of the BlobKey of the uploaded file, or null if the user didn't upload a file.
+  private String getUploadedFileBlobKey(HttpServletRequest request, String formInputElementName) {
     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
     List<BlobKey> blobKeys = blobs.get(formInputElementName);
@@ -156,17 +156,6 @@ public final class UserServlet extends HttpServlet {
       return null;
     }
 
-    // Use ImagesService to get a URL that points to the uploaded file.
-    ImagesService imagesService = ImagesServiceFactory.getImagesService();
-    ServingUrlOptions options = ServingUrlOptions.Builder.withBlobKey(blobKey);
-
-    // To support running in Google Cloud Shell with AppEngine's devserver, we must use the relative
-    // path to the image, rather than the path returned by imagesService which contains a host.
-    try {
-      URL url = new URL(imagesService.getServingUrl(options));
-      return url.getPath();
-    } catch (MalformedURLException e) {
-      return imagesService.getServingUrl(options);
-    }
+  return blobKey.getKeyString();
   }
 }
