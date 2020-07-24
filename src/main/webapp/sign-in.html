@@ -27,37 +27,38 @@ THE SOFTWARE.-->
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="css/style.css"/>
     <script src="script.js"></script>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <link rel="stylesheet" href="css/style.css"/>
+
     <title>shef</title>
   </head>
 
-  <body class="page-container" onload="protectPage(); navBarSetup();">
+  <body class="page-container" onload="getSignInLink(); signInFailMessage();">
     <!--Nav bar-->
     <div id="nav-placeholder"></div>
     <script>
       $(function(){
         $("#nav-placeholder").load("nav.html");
       });
-    </script> 
+    </script>
 
-    <div class="jumbotron-header">
-        <h1 class="display-4">And...that's it!</h1>
-        <p class="lead">You're  now free to explore. Click an item below to get started!</p>
+    <div class="tab-guide">
+        <ul class="list-inline">
+          <li class="list-inline-item-active">Sign In</li>
+          <li class="list-inline-item"><a href="sign-up.html">Sign Up</a></li>
+        </ul>
     </div>
 
     <div class="jumbotron">
-        <ul class="list-group list-group-flush">
-            <a href="profile-page.html" class="list-group-item list-group-item-action">Customize your profile</a>
-            <a href="index.html" class="list-group-item list-group-item-action">View personalized recipes</a>
-            <a href="#" class="list-group-item list-group-item-action">Publish a recipe</a>
-            <a href="#" class="list-group-item list-group-item-action">Schedule a livestream</a>
-            <a href="#" class="list-group-item list-group-item-action disabled">Join or create a group</a>
-          </ul>
+        <h1 id="normal-title" class="display-4">Oh, we didn't realize it was you!</h1>
+        <p id="normal-message" class="lead">Sorry about that - please, let us introduce you to some recipes to make up for our mishap.</p>
+        <p id="fail-message" class="lead text-danger d-none">Failed to sign in: Shef account does not exist.</p>
+        <hr class="my-4">
+        <a id="sign-in-button-big" class="btn btn-primary btn-lg" role="button">Sign in with Google</a>
     </div>
 
-    <img src="assets/images/cooking_1.svg" class="large-img" alt="">
+    <img src="assets/images/jenga_2.svg" class="large-img" alt="">
 
     <!-- Optional JavaScript -->
     <!-- First Popper.js, then Bootstrap JS -->
