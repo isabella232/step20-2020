@@ -236,6 +236,13 @@ function shareViaGmail() {
 
 /** @class A custom element that represents a parameter input. */
 class ParameterInput extends HTMLElement {
+  static placeholders = {
+    'Tag': 'Enter a tag...',
+    'Ingredient': 'Enter an ingredient...',
+    'Equipment': 'Enter a kitchen tool...',
+    'Step': 'Enter a step...'
+  }
+
   constructor() {
     super();
     this.label = document.createElement('label');
@@ -257,6 +264,7 @@ class ParameterInput extends HTMLElement {
     this.parent = this.name + 's';
 
     this.textArea.rows = '1';
+    this.textArea.placeholder = ParameterInput.placeholders[this.name];
     this.addButton.type = 'button';
     this.addButton.innerText = 'Add ' + this.name;
     this.deleteButton.type = 'button';
