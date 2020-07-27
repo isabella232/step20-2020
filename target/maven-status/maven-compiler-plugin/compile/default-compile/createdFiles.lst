@@ -1,8 +1,0 @@
-shef/data/SpinOff.class
-shef/data/Recipe.class
-shef/data/Step.class
-shef/servlets/BrowseRecipesServlet.class
-shef/data/ForYou.class
-shef/data/Trending.class
-shef/data/RecipeFilter.class
-shef/servlets/NewRecipeServlet.class

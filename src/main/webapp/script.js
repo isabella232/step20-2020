@@ -247,14 +247,16 @@ class ParameterInput extends HTMLElement {
     super();
     this.label = document.createElement('label');
     this.textArea = document.createElement('textarea');
-    this.addButton = document.createElement('button');
-    this.deleteButton = document.createElement('button');
+    this.addButton = document.getElementsByTagName('template')[0].content.querySelector('span').cloneNode(true);
+    this.deleteButton = document.getElementsByTagName('template')[1].content.querySelector('span').cloneNode(true);
     this.container = document.createElement('div');
 
     this.container.appendChild(this.label);
+    this.container.appendChild(document.createElement('br'));
     this.container.appendChild(this.textArea);
     this.container.appendChild(this.addButton);
     this.container.appendChild(this.deleteButton);
+    //this.container.appendChild(document.createElement('br'));
   }
 
   /** Once the attributes for the ParameterInput exist, set its values accordingly. */
@@ -264,11 +266,8 @@ class ParameterInput extends HTMLElement {
     this.parent = this.name + 's';
 
     this.textArea.rows = '1';
+    this.textArea.cols = '75';
     this.textArea.placeholder = ParameterInput.placeholders[this.name];
-    this.addButton.type = 'button';
-    this.addButton.innerText = 'Add ' + this.name;
-    this.deleteButton.type = 'button';
-    this.deleteButton.innerText = 'Delete ' + this.name;
     this.setIndexAttributes();
 
     this.appendChild(this.container);
@@ -290,7 +289,7 @@ class ParameterInput extends HTMLElement {
     this.addButton.onclick = event => {
       var newParameter = createParameterInput(this.name, this.index + 1);
       insertParameterInput(this, newParameter);
-    }
+    };
 
     // Deletes the ParameterInput clicked.
     this.deleteButton.onclick = event => {
@@ -298,7 +297,7 @@ class ParameterInput extends HTMLElement {
       const startIndex = this.index;
       this.remove();
       updateIndices(fieldName, startIndex);
-    }
+    };
   }
 
   /** Gets the text in a ParameterInput's text area. */
