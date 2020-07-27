@@ -185,9 +185,7 @@ function navBarSetup() {
 // Gets the profile picture for the navbar.
 function getProfilePicture() {
   fetch('/user').then(response => response.json()).then(userInfo => {
-    //if(profilePicKey != null) {
       document.getElementById('profile-pic-nav').src = '/blob?blob-key=' +  userInfo.profilePicKey;
-    //}
   });
 }
 
