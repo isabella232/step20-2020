@@ -47,7 +47,7 @@ public class PreferenceServlet extends HttpServlet {
     */
   public Map<String, List<String>> preferenceMap = new HashMap<String, List<String>>() {
 	  {
-      // Question 1: What type of person are you?
+      // Question 1: Which of these terms best describe you?
       put("student", Arrays.asList("CHEAP", "INEXPENSIVE", "EASY TO MAKE", "EASY", "SIMPLE", "QUICK", "QUICK TO MAKE"));
       put("influencer", Arrays.asList("DESSERT", "CAKE", "ICE CREAM"));
       put("parent", Arrays.asList("CHEAP", "INEXPENSIVE", "EASY TO MAKE", "EASY", "SIMPLE", "QUICK", "QUICK TO MAKE"));
@@ -57,7 +57,7 @@ public class PreferenceServlet extends HttpServlet {
       put("newbie", Arrays.asList("EASY TO MAKE", "EASY", "SIMPLE", "QUICK", "QUICK TO MAKE"));
 
       // Question 2: What dietary requirements do you have?
-		  put("vegetarian", Arrays.asList("MEAT-FREE", "MEAT FREE", "NO MEAT", "VEGETARIAN", "VEGAN", "FISH-FREE", "FISH FREE", "NO FISH"));
+      put("vegetarian", Arrays.asList("MEAT-FREE", "MEAT FREE", "NO MEAT", "VEGETARIAN", "VEGAN", "FISH-FREE", "FISH FREE", "NO FISH"));
       put("pescetarian", Arrays.asList("FISH","PESCATARIAN", "PESCETARIAN", "TUNA", "SHRIMP", "SALMON", "SHELLFISH", "HALIBUT", "MEAT-FREE", "MEAT FREE", "NO MEAT"));
       put("vegan", Arrays.asList("MEAT-FREE", "MEAT FREE", "NO MEAT", "VEGAN", "FISH-FREE", "FISH FREE", "NO FISH", "DAIRY-FREE", "DAIRY FREE"));
       put("gluten-free", Arrays.asList("GLUTEN-FREE", "GLUTEN FREE", "NO GLUTEN"));
@@ -100,9 +100,11 @@ public class PreferenceServlet extends HttpServlet {
     String[] quizResponses = request.getParameterValues("choice");
     LinkedList<String> preferences = new LinkedList<String>();
 
-    // Add the appropriate preferences for every checkbox the user checked.
-    for(String quizResponse : quizResponses) {
-      preferences.addAll(preferenceMap.get(quizResponse));
+    if(quizResponses != null) {
+      // Add the appropriate preferences for every checkbox the user checked.
+      for(String quizResponse : quizResponses) {
+        preferences.addAll(preferenceMap.get(quizResponse));
+      }
     }
 
     // Get the current user's key.
