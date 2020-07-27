@@ -50,7 +50,12 @@ function storeLiveStreamInfo() {
     Will work only for a URL of a certain format
     (i.e. youtube.com/watch?v=). */
 function getIdFromUrl(url) {
-  return url.substring(url.lastIndexOf('=') + 1);
+  if (url.includes('&')) {
+    let searchParams = new URLSearchParams(url);
+    return searchParams.get("v");
+  } else {
+    return url.substring(url.lastIndexOf('=') + 1);
+  }
 }
 
 /** Videos: List Retrieval */
