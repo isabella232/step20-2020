@@ -392,6 +392,7 @@ function getOriginalRecipe() {
   const key = document.getElementById('key').value;
   if (key) {
     fetch('/new-recipe?key=' + key).then(response => response.json()).then((recipe) => {
+      console.log(recipe);
       populateRecipeCreationForm(recipe);
     });
   }
@@ -399,8 +400,8 @@ function getOriginalRecipe() {
 
 /** Populates the fields of the recipe editor with a parent recipe's data. */
 function populateRecipeCreationForm(recipe) {
-  document.getElementById('name').value = recipe.name;
-  document.getElementById('description').value = recipe.description;
+  document.getElementById('dishNameInput').value = recipe.name;
+  document.getElementById('descriptionTextArea').value = recipe.description;
   populateFormField('Tag', recipe.tags);
   populateFormField('Ingredient', recipe.ingredients);
   populateFormField('Step', recipe.steps);
@@ -461,4 +462,10 @@ function createRecipeForBrowsing(recipe) {
   container.appendChild(name);
   container.appendChild(description);
   return container;
+}
+
+function getRecipeImageUploadUrl() {
+  fetch('/recipe-image-upload-url').then(response => response.text()).then(url => {
+    document.getElementById('form').action = url;
+  });
 }
