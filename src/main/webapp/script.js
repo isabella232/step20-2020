@@ -121,6 +121,74 @@ function hyperlinkText(text, link) {
   return "<a href=" + link + ">" + text + "</a>";
 }
 
+/** Fetches recipes from the server and adds them to the DOM. */
+function loadRecipes() {
+  // rowVars used to dynamically name divs of class row.
+  var rowVars = {};
+  let recipeCount = 0;
+  let rowCount = 0;
+  fetch('/display-recipes').then(response => response.json()).then((recipes) => {
+    const recipeGrid = document.getElementById('recipe-grid');
+    recipes.forEach((recipe) => {
+      // Every three live streams, create a new row.
+      if (recipeCount % 3 == 0) {
+        rowCount++;
+        rowVars['recipeRow' + rowCount] = document.createElement('div');
+        rowVars['recipeRow' + rowCount].className = "row";
+      }
+      rowVars['recipeRow' + rowCount].appendChild(createFeedElement(recipe));
+      recipeGrid.appendChild(rowVars['recipeRow' + rowCount]);
+      recipeCount++;
+    })
+  });
+}
+ 
+/** Creates an element that represents a feed item,
+    for example a Recipe or Live Stream. */
+function createFeedElement(item) {
+  const feedItem = document.createElement('div');
+  feedItem.className = 'col feed-img-container';
+  // Using a constant image because, as is, recipes doesn't support photos.
+  feedItem.innerHTML += "<img src=" + "https://tinyurl.com/y8eph3n6" + ">";
+  // On click, redirect to corresponding recipe.
+  feedItem.onclick = function() {
+    window.location="/recipe.html?key=" + item.key;
+  }
+ 
+  const overlay = document.createElement('div');
+  overlay.className = "overlay";
+ 
+  const unorderedList = document.createElement('ul');
+  unorderedList.className = "list-unstyled";
+ 
+  const listElement = document.createElement('li');
+  listElement.className = "list-space";
+  listElement.innerText= item.name;
+  
+  unorderedList.appendChild(listElement);
+  overlay.appendChild(unorderedList);
+  feedItem.appendChild(overlay);
+  return feedItem;
+}
+
+function recipePageInit() {
+  getRecipeInfo();
+  loadComments();
+}
+
+function getRecipeInfo() {
+  var url = window.location.href;
+  var key = url.split('?')[1];
+
+  fetch('/new-recipe?' + key).then(response => response.json()).then(recipe => {
+    document.getElementById('recipe-title').innerHTML = recipe.name;
+    document.getElementById('recipe-description').innerHTML = recipe.description;
+    document.getElementById('recipe-tags').innerHTML = recipe.tags;
+    document.getElementById('recipe-ingredients').innerHTML = recipe.ingredients;
+    document.getElementById('recipe-steps').innerHTML = recipe.steps;
+  });
+}
+
 // Sets up the navbar for any page.
 function navBarSetup() {
   fetch('/sign-in').then(response => response.json()).then(info => {

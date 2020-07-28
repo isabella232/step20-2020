@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps.data;
+package shef.data;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -26,6 +26,7 @@ public class Recipe {
 
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
   
+  private String key;
   private String name;
   private String description;
   private Set<String> tags;
@@ -50,6 +51,20 @@ public class Recipe {
 
   /** Default constructor called when creating a new recipe. */
   public Recipe(String name, String description, Set<String> tags, Set<String> ingredients, List<Step> steps, long timestamp) {
+    this.name = name;
+    this.tags = tags;
+    this.ingredients = ingredients;
+    this.description = description;
+    this.tags = tags;
+    this.ingredients = ingredients;
+    this.steps = steps;
+    this.timestamp = timestamp;
+    this.spinOffs = new HashSet<>();
+  }
+
+  /** Constructor called when creating a recipe to display on the recipe feed. */
+  public Recipe(String key, String name, String description, Set<String> tags, Set<String> ingredients, List<Step> steps, long timestamp) {
+    this.key = key;
     this.name = name;
     this.tags = tags;
     this.ingredients = ingredients;

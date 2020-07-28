@@ -37,6 +37,9 @@ public class NewCommentServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Entity userCommentEntity = new Entity("UserComment");
 
+    String recipeKeyString = request.getParameter("recipe-key-string");
+    userCommentEntity.setProperty("recipe-key-string", recipeKeyString);
+
     // Check if the user is logged in.
     // If so, they must have an account. So, get the user's key,
     // as a string. If not, leave the key-string property blank.
