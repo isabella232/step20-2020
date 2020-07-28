@@ -108,7 +108,7 @@ public final class UserServlet extends HttpServlet {
     } catch (EntityNotFoundException e) {
       // Create a new User entity with data from the request.
       user = new Entity(userKey);
-      redirectUrl = "/account-creation-finish.html";
+      redirectUrl = "/quiz.html";
     }
 
     // These properties don't come from the request, so we add to the map here.
