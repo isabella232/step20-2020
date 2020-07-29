@@ -402,8 +402,12 @@ function getOriginalRecipe() {
 function populateRecipeCreationForm(recipe) {
   document.getElementById('dishNameInput').value = recipe.name;
   document.getElementById('descriptionTextArea').value = recipe.description;
+  document.getElementById('timeInput').value = recipe.time;
+  document.getElementById('servingsInput').value = recipe.servings;
+  document.getElementById('recipe-image').src = recipe.imageUrl;
   populateFormField('Tag', recipe.tags);
   populateFormField('Ingredient', recipe.ingredients);
+  populateFormField('Equipment', recipe.equipment);
   populateFormField('Step', recipe.steps);
 }
 
@@ -412,10 +416,10 @@ function populateFormField(fieldName, data) {
   for (var i = 0; i < data.length; i++) {
     var parameter = document.getElementById(fieldName + i);
     if (parameter !== null) {
-      parameter.text = data[i];
+      parameter.text = getText(data[i]);
     } else {
       var newParameter = createParameterInput(fieldName, i);
-      newParameter.text = data[i];
+      newParameter.text = getText(data[i]);
       appendParameterInput(fieldName + 's', newParameter);
     }
   }
