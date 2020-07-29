@@ -15,7 +15,7 @@
 // Set the sign-in link for the sign-in page.
 function getSignInLink() {
   fetch('/sign-in').then(response => response.json()).then(info => {
-    const linkEl = document.getElementById('sign-in-button');
+    const linkEl = document.getElementById('sign-in-button-big');
     linkEl.href = info.url;
   });
 }
@@ -72,7 +72,7 @@ function fetchBlobstoreUrl() {
 // Enables or disables the editable form in the profile page.
 function toggleProfileEditMode() {
   const staticEl = document.getElementById('static-user-info');
-  const editableEl = document.getElementById('user-form');
+  const editableEl = document.getElementById('editable-user-info');
   const buttonEl = document.getElementById('edit-button');
 
   if(staticEl.classList.contains('d-none')) {
@@ -182,10 +182,10 @@ function navBarSetup() {
   });
 }
 
-// Gets the profile picture for the navbar
+// Gets the profile picture for the navbar.
 function getProfilePicture() {
   fetch('/user').then(response => response.json()).then(userInfo => {
-    document.getElementById('profile-pic-nav').src = '/blob?blob-key=' +  userInfo.profilePicKey;
+      document.getElementById('profile-pic-nav').src = '/blob?blob-key=' +  userInfo.profilePicKey;
   });
 }
 
@@ -410,4 +410,13 @@ function populateFormField(fieldName, data) {
       appendParameterInput(fieldName + 's', newParameter);
     }
   }
+}
+
+/** Called by every page that requires the user to be logged in order to access. */
+function protectPage() {
+  fetch('/sign-in-status').then(response => response.text()).then((signedIn) => {
+    if(signedIn === "false") {
+      window.location.replace("/index.html");
+    }
+  });
 }
