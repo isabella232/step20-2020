@@ -123,7 +123,7 @@ function hyperlinkText(text, link) {
 
 /** Fetches recipes from the server and adds them to the DOM. */
 function loadRecipes() {
-  // rowVars used to dynamically name divs of class row.
+  // rowVars used to dynamically name divs of class row, for up to 3 recipes.
   var rowVars = {};
   let recipeCount = 0;
   let rowCount = 0;
@@ -183,9 +183,74 @@ function getRecipeInfo() {
   fetch('/new-recipe?' + key).then(response => response.json()).then(recipe => {
     document.getElementById('recipe-title').innerHTML = recipe.name;
     document.getElementById('recipe-description').innerHTML = recipe.description;
-    document.getElementById('recipe-tags').innerHTML = recipe.tags;
-    document.getElementById('recipe-ingredients').innerHTML = recipe.ingredients;
-    document.getElementById('recipe-steps').innerHTML = recipe.steps;
+    displayTags(recipe.tags);
+    displayIngredients(recipe.ingredients);
+    displaySteps(recipe.steps);
+  });
+}
+
+/** Formats and displays tags on the page. */
+function displayTags(tagsList) {
+  var tagSection = document.getElementById('recipe-tags');
+  let tagCount = 0;
+  tagsList.forEach((tag) => {
+    tagCount++;
+    tagSection.innerHTML += "#" + tag
+    if (tagCount < tagsList.length) {
+      tagSection.innerHTML += ", ";
+    }
+  });
+}
+
+/** Formats and displays ingredients, with corresponding checkboxes, on the page. */
+function displayIngredients(ingredList) {
+  var ingredElements = {};  // ingredElements used to dynamically name divs of class form-check small-sep, for a single ingredient.
+  let ingredCount = 0;
+  var ingredSection = document.getElementById('recipe-ingredients');
+  ingredList.forEach((ingredient) => {
+    ingredElements['ingredElement' + ingredCount] = document.createElement('div');
+    ingredElements['ingredElement' + ingredCount].className = "form-check small-sep";
+
+    // Create a checkbox.
+    var input = document.createElement("input");
+    input.type = "checkbox";
+    input.class = "form-check-input";
+    // Label the checkbox with the individual ingredient.
+    var label = document.createElement("label");
+    label.label = "form-check-label";
+    label.innerHTML = "<p>" + ingredient + "</p>";
+
+    ingredElements['ingredElement' + ingredCount].appendChild(input);
+    ingredElements['ingredElement' + ingredCount].appendChild(label);
+    ingredSection.appendChild(ingredElements['ingredElement' + ingredCount]);
+    ingredCount++;
+  });
+}
+
+/** Formats and displays steps on the page. */
+function displaySteps(stepList) {
+  var rowVars = {};  // rowVars used to dynamically name divs of class row, for a single step.
+  let stepCount = 1;
+  var stepSection = document.getElementById('recipe-steps');
+  stepList.forEach((step) => {
+    rowVars['stepElement' + stepCount] = document.createElement('div');
+    rowVars['stepElement' + stepCount].className = "row";
+
+    // Create and format the step number.
+    var stepNumElement = document.createElement("div");
+    stepNumElement.class = "col-sm-2 col-md-2 col-lg-2";
+    var stepNum = document.createElement("h3");
+    stepNum.innerText += stepCount + ". ";
+    stepNumElement.appendChild(stepNum);
+    // Create and format the step text.
+    var stepTextElement = document.createElement("p");
+    stepTextElement.class = "col-sm-10 col-md-10 col-lg-10";
+    stepTextElement.innerHTML = step;
+
+    rowVars['stepElement' + stepCount].appendChild(stepNumElement);
+    rowVars['stepElement' + stepCount].appendChild(stepTextElement);
+    stepSection.appendChild(rowVars['stepElement' + stepCount]);
+    stepCount++;
   });
 }
 
