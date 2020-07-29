@@ -103,11 +103,155 @@ function createCommentElement(comment) {
   commentElement.className = 'small-sep';
 
   const userComment = document.createElement('span');
-  var userInfoDisplayed = comment.username + " • " + comment.location + " • " + comment.MMDDYYYY;
+  // If there is no associated user (i.e. anon commenter), the userProfile is not hyperlinked,
+  // because it does not exist.
+  let userProfile = "Anonymous";
+  if (comment.username !== "Anonymous" || comment.location !== "Unknown") {
+    // Username hyperlinks to the profile of the user who left the comment.
+    userProfile = hyperlinkText(comment.username, "/profile-page.html?key=" + comment.userKeyString);
+  }
+  var userInfoDisplayed = userProfile + " • " + comment.location + " • " + comment.MMDDYYYY;
   userComment.innerHTML += addParagraph(userInfoDisplayed) + addParagraph(comment.comment);
 
   commentElement.appendChild(userComment);
   return commentElement;
+}
+
+function hyperlinkText(text, link) {
+  return "<a href=" + link + ">" + text + "</a>";
+}
+
+/** Fetches recipes from the server and adds them to the DOM. */
+function loadRecipes() {
+  // rowVars used to dynamically name divs of class row, for up to 3 recipes.
+  var rowVars = {};
+  let recipeCount = 0;
+  let rowCount = 0;
+  fetch('/display-recipes').then(response => response.json()).then((recipes) => {
+    const recipeGrid = document.getElementById('recipe-grid');
+    recipes.forEach((recipe) => {
+      // Every three live streams, create a new row.
+      if (recipeCount % 3 == 0) {
+        rowCount++;
+        rowVars['recipeRow' + rowCount] = document.createElement('div');
+        rowVars['recipeRow' + rowCount].className = "row";
+      }
+      rowVars['recipeRow' + rowCount].appendChild(createFeedElement(recipe));
+      recipeGrid.appendChild(rowVars['recipeRow' + rowCount]);
+      recipeCount++;
+    })
+  });
+}
+ 
+/** Creates an element that represents a feed item,
+    for example a Recipe or Live Stream. */
+function createFeedElement(item) {
+  const feedItem = document.createElement('div');
+  feedItem.className = 'col feed-img-container';
+  // Using a constant image because, as is, recipes doesn't support photos.
+  feedItem.innerHTML += "<img src=" + "https://tinyurl.com/y8eph3n6" + ">";
+  // On click, redirect to corresponding recipe.
+  feedItem.onclick = function() {
+    window.location="/recipe.html?key=" + item.key;
+  }
+ 
+  const overlay = document.createElement('div');
+  overlay.className = "overlay";
+ 
+  const unorderedList = document.createElement('ul');
+  unorderedList.className = "list-unstyled";
+ 
+  const listElement = document.createElement('li');
+  listElement.className = "list-space";
+  listElement.innerText= item.name;
+  
+  unorderedList.appendChild(listElement);
+  overlay.appendChild(unorderedList);
+  feedItem.appendChild(overlay);
+  return feedItem;
+}
+
+function recipePageInit() {
+  getRecipeInfo();
+  loadComments();
+}
+
+function getRecipeInfo() {
+  var url = window.location.href;
+  var key = url.split('?')[1];
+
+  fetch('/new-recipe?' + key).then(response => response.json()).then(recipe => {
+    document.getElementById('recipe-title').innerHTML = recipe.name;
+    document.getElementById('recipe-description').innerHTML = recipe.description;
+    displayTags(recipe.tags);
+    displayIngredients(recipe.ingredients);
+    displaySteps(recipe.steps);
+  });
+}
+
+/** Formats and displays tags on the page. */
+function displayTags(tagsList) {
+  var tagSection = document.getElementById('recipe-tags');
+  let tagCount = 0;
+  tagsList.forEach((tag) => {
+    tagCount++;
+    tagSection.innerHTML += "#" + tag
+    if (tagCount < tagsList.length) {
+      tagSection.innerHTML += ", ";
+    }
+  });
+}
+
+/** Formats and displays ingredients, with corresponding checkboxes, on the page. */
+function displayIngredients(ingredList) {
+  var ingredElements = {};  // ingredElements used to dynamically name divs of class form-check small-sep, for a single ingredient.
+  let ingredCount = 0;
+  var ingredSection = document.getElementById('recipe-ingredients');
+  ingredList.forEach((ingredient) => {
+    ingredElements['ingredElement' + ingredCount] = document.createElement('div');
+    ingredElements['ingredElement' + ingredCount].className = "form-check small-sep";
+
+    // Create a checkbox.
+    var input = document.createElement("input");
+    input.type = "checkbox";
+    input.class = "form-check-input";
+    // Label the checkbox with the individual ingredient.
+    var label = document.createElement("label");
+    label.label = "form-check-label";
+    label.innerHTML = "<p>" + ingredient + "</p>";
+
+    ingredElements['ingredElement' + ingredCount].appendChild(input);
+    ingredElements['ingredElement' + ingredCount].appendChild(label);
+    ingredSection.appendChild(ingredElements['ingredElement' + ingredCount]);
+    ingredCount++;
+  });
+}
+
+/** Formats and displays steps on the page. */
+function displaySteps(stepList) {
+  var rowVars = {};  // rowVars used to dynamically name divs of class row, for a single step.
+  let stepCount = 1;
+  var stepSection = document.getElementById('recipe-steps');
+  stepList.forEach((step) => {
+    rowVars['stepElement' + stepCount] = document.createElement('div');
+    rowVars['stepElement' + stepCount].className = "row";
+
+    // Create and format the step number.
+    var stepNumElement = document.createElement("div");
+    stepNumElement.class = "col-sm-2 col-md-2 col-lg-2";
+    var stepNum = document.createElement("h3");
+    stepNum.innerText += stepCount + ". ";
+    stepNumElement.appendChild(stepNum);
+    // Create and format the step text.
+    var stepTextElement = document.createElement("p");
+    stepTextElement.class = "col-sm-10 col-md-10 col-lg-10";
+    stepTextElement.innerHTML = step;
+
+    rowVars['stepElement' + stepCount].appendChild(stepNumElement);
+    rowVars['stepElement' + stepCount].appendChild(stepTextElement);
+    stepSection.appendChild(rowVars['stepElement' + stepCount]);
+    stepCount++;
+  });
 }
 
 function addParagraph(content) {
