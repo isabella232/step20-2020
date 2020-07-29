@@ -32,6 +32,7 @@ import shef.data.Trending;
 import java.util.List;
 import java.util.LinkedList;
 
+/** Returns recipes to browse based on changeable algorithms. */
 @WebServlet("/browse-recipes")
 public class BrowseRecipesServlet extends HttpServlet  {
 
@@ -42,9 +43,12 @@ public class BrowseRecipesServlet extends HttpServlet  {
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
+  /**
+   * Pulls recipes from Datastore for browsing.
+   * The algorithm used is passed in as a parameter in the request.
+   */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
     String algorithm = request.getParameter("algorithm");
     RecipeFilter filter = null;
     if (algorithm.equals("foryou")) {
