@@ -543,6 +543,7 @@ function populateRecipeCreationForm(recipe) {
   populateFormField('Step', recipe.steps);
 }
 
+/** Populates the ParamterInputs in a field with a parent recipe's data. */
 function populateFormField(fieldName, data) {
   for (var i = 0; i < data.length; i++) {
     var parameter = document.getElementById(fieldName + i);
@@ -554,6 +555,49 @@ function populateFormField(fieldName, data) {
       appendParameterInput(fieldName + 's', newParameter);
     }
   }
+}
+
+/** Gets the text of a tag, ingredient, or step. */
+function getText(data) {
+  if (typeof data == 'string') {
+    return data;
+  } else {
+    return data.instruction;
+  }
+}
+
+/**
+ * Gets recipes for browsing, based on the algorithm provided.
+ * For You displays recipes unique to each user's preferences.
+ * Trending displays the recipes that are most popular. */
+function getRecipes(algorithm) {
+  const results = document.getElementById('results');
+  results.innerHTML = '';
+  fetch('/browse-recipes?algorithm=' + algorithm).then(response => response.json()).then((recipes) => {
+    for (var i = 0; i < recipes.length; i++) {
+      results.appendChild(createRecipeForBrowsing(recipes[i]));
+      results.appendChild(document.createElement('br'));
+    }
+  });
+}
+
+/** Helper method that creates a DOM element to display a recipe. */
+function createRecipeForBrowsing(recipe) {
+  const container = document.createElement('div');
+  container.id = 'recipe';
+  container.style.border = 'thick solid #000';
+  container.style.width = '30%';
+  container.style.backgroundColor = '#ccc'
+
+  const name = document.createElement('h2');
+  name.innerText = recipe.name;
+
+  const description = document.createElement('p');
+  description.innerText = recipe.description;
+
+  container.appendChild(name);
+  container.appendChild(description);
+  return container;
 }
 
 /** Called by every page that requires the user to be logged in order to access. */
