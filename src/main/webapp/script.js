@@ -404,7 +404,7 @@ function populateRecipeCreationForm(recipe) {
   document.getElementById('descriptionTextArea').value = recipe.description;
   document.getElementById('timeInput').value = recipe.time;
   document.getElementById('servingsInput').value = recipe.servings;
-  document.getElementById('recipe-image').src = recipe.imageUrl;
+  document.getElementById('recipe-image').src = '/blob?blob-key=' + recipe.imageKey;
   populateFormField('Tag', recipe.tags);
   populateFormField('Ingredient', recipe.ingredients);
   populateFormField('Equipment', recipe.equipment);

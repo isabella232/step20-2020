@@ -74,7 +74,7 @@ public class NewRecipeServlet extends HttpServlet {
     searchStrings.add(name.toUpperCase());
     double time = Double.parseDouble(request.getParameter("time"));
     double servings = Double.parseDouble(request.getParameter("servings"));
-    String imageUrl = RecipeImageUploadUrlServlet.getRecipeImageUrl(request, "image");
+    String imageKey = BlobServlet.getUploadedFileBlobKey(request, "image");
     String description = request.getParameter("description");
     Collection<EmbeddedEntity> tags = getParameters(request, TAG, searchStrings);
     Collection<EmbeddedEntity> ingredients = getParameters(request, INGREDIENT, searchStrings);
@@ -92,7 +92,7 @@ public class NewRecipeServlet extends HttpServlet {
     recipe.setProperty("name", name);
     recipe.setProperty("time", time);
     recipe.setProperty("servings", servings);
-    recipe.setProperty("imageUrl", imageUrl);
+    recipe.setProperty("imageKey", imageKey);
     recipe.setProperty("description", description);
     recipe.setProperty("tags", tags);
     recipe.setProperty("ingredients", ingredients);

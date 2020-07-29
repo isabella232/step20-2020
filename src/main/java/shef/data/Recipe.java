@@ -33,7 +33,7 @@ public class Recipe {
   private String description;
   private double time;
   private double servings;
-  private String imageUrl;
+  private String imageKey;
   private Set<String> tags;
   private Set<String> ingredients;
   private Set<String> equipment;
@@ -71,7 +71,7 @@ public class Recipe {
     this.description = (String) recipeEntity.getProperty("description");
     this.time = (double) recipeEntity.getProperty("time");
     this.servings = (double) recipeEntity.getProperty("servings");
-    this.imageUrl = (String) recipeEntity.getProperty("imageUrl");
+    this.imageKey = (String) recipeEntity.getProperty("imageKey");
     this.tags = getTagsFromEntity((Collection<EmbeddedEntity>) recipeEntity.getProperty("tags"));
     this.ingredients = getIngredientsFromEntity((Collection<EmbeddedEntity>) recipeEntity.getProperty("ingredients"));
     this.equipment = getEquipmentFromEntity((Collection<EmbeddedEntity>) recipeEntity.getProperty("equipment"));
