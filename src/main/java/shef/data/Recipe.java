@@ -29,6 +29,7 @@ public class Recipe {
 
   private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
   
+  private String key;
   private String name;
   private String description;
   private double time;
@@ -77,6 +78,20 @@ public class Recipe {
     this.equipment = getEquipmentFromEntity((Collection<EmbeddedEntity>) recipeEntity.getProperty("equipment"));
     this.steps = getStepsFromEntity((Collection<EmbeddedEntity>) recipeEntity.getProperty("steps"));
     this.timestamp = (long) recipeEntity.getProperty("timestamp");
+  }
+
+  /** Constructor called when creating a recipe to display on the recipe feed. */
+  public Recipe(String key, String name, String description, Set<String> tags, Set<String> ingredients, List<Step> steps, long timestamp) {
+    this.key = key;
+    this.name = name;
+    this.tags = tags;
+    this.ingredients = ingredients;
+    this.description = description;
+    this.tags = tags;
+    this.ingredients = ingredients;
+    this.steps = steps;
+    this.timestamp = timestamp;
+    this.spinOffs = new HashSet<>();
   }
 
   /** Gets the recipe's name. */
