@@ -39,7 +39,6 @@ public class RecipeImageUploadUrlServlet extends HttpServlet {
     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     String uploadUrl = blobstoreService.createUploadUrl("/new-recipe");
     response.setContentType("text/html");
-    System.out.println("Got upload URL " + uploadUrl);
     response.getWriter().println(uploadUrl);
   }
 
