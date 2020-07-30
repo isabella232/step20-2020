@@ -963,7 +963,7 @@ function displaySteps(stepList) {
     // Create and format the step text.
     var stepTextElement = document.createElement("p");
     stepTextElement.class = "col-sm-10 col-md-10 col-lg-10";
-    stepTextElement.innerHTML = step;
+    stepTextElement.innerHTML = step.instruction;
 
     rowVars['stepElement' + stepCount].appendChild(stepNumElement);
     rowVars['stepElement' + stepCount].appendChild(stepTextElement);
@@ -978,7 +978,7 @@ function addParagraph(content) {
 
 /** Redirects the user to the result page, with the given parameter for user-query. */
 function redirectToResults(userQuery) {
-  document.location.href = "search-results-test.html?user-query=" + userQuery;
+  document.location.href = "results.html?user-query=" + userQuery;
   return false;
 }
 
