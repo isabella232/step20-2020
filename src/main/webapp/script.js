@@ -1301,7 +1301,7 @@ function getText(data) {
  * For You displays recipes unique to each user's preferences.
  * Trending displays the recipes that are most popular. */
 function getRecipes(algorithm) {
-  const results = document.getElementById('results');
+  const results = document.getElementById('recipe-grid');
   results.innerHTML = '';
   fetch('/browse-recipes?algorithm=' + algorithm).then(response => response.json()).then((recipes) => {
     for (var i = 0; i < recipes.length; i++) {
