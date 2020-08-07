@@ -16,7 +16,7 @@ limitations under the License.
 ## Recipe sharing made fun
 
 Welcome to Shef! Shef is a recipe-sharing social media platform designed with creativity in mind.  
-Visit [URL HERE] to get Sheffin'!  
+[Click here](https://shef-step-2020.appspot.com/) to get Sheffin'!  
   
 ![Shef](https://github.com/googleinterns/step20-2020/blob/master/src/main/webapp/assets/images/shef.png)  
   
