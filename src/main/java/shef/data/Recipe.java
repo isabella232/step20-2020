@@ -23,6 +23,8 @@ import java.util.logging.*;
 import java.util.Iterator;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EmbeddedEntity;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 
 /** Stores a recipe's data. */
 public class Recipe {
@@ -68,6 +70,7 @@ public class Recipe {
 
   /** Creates a Recipe from a Datastore entity. */
   public Recipe(Entity recipeEntity) {
+    this.key = KeyFactory.keyToString(recipeEntity.getKey());
     this.name = (String) recipeEntity.getProperty("name");
     this.description = (String) recipeEntity.getProperty("description");
     this.time = (double) recipeEntity.getProperty("time");

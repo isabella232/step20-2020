@@ -1,5 +1,4 @@
 import shef.servlets.ResultsServlet;
-import shef.data.TestRecipe;
 import static org.mockito.Mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 import java.io.PrintWriter;
